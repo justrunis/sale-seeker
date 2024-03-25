@@ -58,12 +58,12 @@ export default function Register() {
     },
   };
 
-  const { isLoading: isSending, sendRequest } = useHttp(
+  const { isLoading, sendRequest } = useHttp(
     "http://localhost:4000/register",
     requestConfig
   );
 
-  function handleRegistration(event) {
+  async function handleRegistration(event) {
     event.preventDefault();
     setPasswordsAreNotEqual(false);
 
@@ -85,7 +85,7 @@ export default function Register() {
       return;
     }
 
-    const response = sendRequest(
+    const response = await sendRequest(
       JSON.stringify({
         username: data.username,
         email: data.email,
@@ -196,8 +196,9 @@ export default function Register() {
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2 mx-2"
             type="submit"
+            disabled={isLoading}
           >
-            Register
+            {isLoading ? "Loading..." : "Register"}
           </button>
           <button
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2 mx-2"
