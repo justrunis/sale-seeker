@@ -13,7 +13,7 @@ const dummyItems = [
     id: 2,
     title: "Samsung Galaxy S21",
     description:
-      "The Samsung Galaxy S21 is a flagship Android smartphone with a beautiful display and excellent camera capabilities.",
+      "The Samsung Galaxy S21 is a flagship Android smartphone with a beautiful display and excellent camera capabilities. The Samsung Galaxy S21 is a flagship Android smartphone with a beautiful display and excellent camera capabilities. The Samsung Galaxy S21 is a flagship Android smartphone with a beautiful display and excellent camera capabilities. ",
     price: 899,
     image: "https://images.kaina24.lt/43/14/samsung-galaxy-s21-128gb-2.jpg",
     rating: 4.7,
@@ -113,6 +113,16 @@ const dummyItems = [
     rating: 4.5,
     category: "Clothing",
   },
+  {
+    id: 12,
+    title: "Blue Jeans",
+    description: "Classic blue jeans for a casual and comfortable look.",
+    price: 39,
+    image:
+      "https://isto.pt/cdn/shop/products/Everyday_Denim_Blue_1.jpg?v=1668613349&width=1946",
+    rating: 4.6,
+    category: "Clothing",
+  },
 ];
 
 const dummyReviews = [
@@ -193,6 +203,29 @@ const dummyReviews = [
     rating: 3.0,
     comment: "Average sound quality and limited features.",
   },
+];
+
+const categories = [
+  { id: 1, name: "Electronics" },
+  { id: 2, name: "Clothing" },
+  { id: 3, name: "Books" },
+  { id: 4, name: "Home & Kitchen" },
+  { id: 5, name: "Beauty & Personal Care" },
+  { id: 6, name: "Sports & Outdoors" },
+  { id: 7, name: "Toys & Games" },
+  { id: 8, name: "Health & Household" },
+  { id: 9, name: "Automotive" },
+  { id: 10, name: "Tools & Home Improvement" },
+  { id: 11, name: "Baby" },
+  { id: 12, name: "Pet Supplies" },
+  { id: 13, name: "Office Products" },
+  { id: 14, name: "Grocery & Gourmet Food" },
+  { id: 15, name: "Movies & TV" },
+  { id: 16, name: "Music" },
+  { id: 17, name: "Industrial & Scientific" },
+  { id: 18, name: "Arts, Crafts & Sewing" },
+  { id: 19, name: "Patio, Lawn & Garden" },
+  { id: 20, name: "Jewelry" },
 ];
 
 export { dummyItems, dummyReviews };

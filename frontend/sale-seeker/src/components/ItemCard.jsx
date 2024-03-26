@@ -54,10 +54,10 @@ export default function ItemCard({ item }) {
               </button>
               <button
                 onClick={addItemToCartHandler}
-                className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+                className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter flex items-center"
               >
                 Add to cart
-                <IoIosCart className="inline-block ml-2" />
+                {/* <IoIosCart className="ml-2" /> */}
               </button>
             </div>
           </div>

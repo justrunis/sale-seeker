@@ -41,7 +41,7 @@ export default function Item() {
               alt="product image"
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col max-w-96">
             <div className="mt-5">
               <h1 className="text-3xl font-bold mt-10">{item.title}</h1>
             </div>
