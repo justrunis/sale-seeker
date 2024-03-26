@@ -44,7 +44,7 @@ export default function Login() {
     }
     toast.success(`User ${user.email} logged in.`);
     dispatch(loginActions.login(response.data.user));
-    navigate("/");
+    navigate("/home");
   };
 
   const cssClasses =
@@ -80,7 +80,7 @@ export default function Login() {
             Clear
           </button>
           <p>
-            Don't have an account?{" "}
+            Don't have an account yet?{" "}
             <a
               className="text-blue-500 hover:text-blue-800 my-2"
               href="/register"
@@ -90,7 +90,6 @@ export default function Login() {
           </p>
         </form>
       </div>
-      {isLoggedIn && <p>Welcome, {user.email}</p>}
     </>
   );
 }

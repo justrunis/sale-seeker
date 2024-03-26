@@ -2,6 +2,8 @@ import Rating from "@mui/material/Rating";
 import { useSelector, useDispatch } from "react-redux";
 import { cartActions } from "../store/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { currencyFormatter } from "./util/formating";
+import { IoIosCart } from "react-icons/io";
 
 export default function ItemCard({ item }) {
   const dispatch = useDispatch();
@@ -39,9 +41,9 @@ export default function ItemCard({ item }) {
               {item.rating}
             </span>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <span className="text-3xl font-bold text-gray-900 dark:text-white">
-              {item.price}€
+              {currencyFormatter.format(item.price)}
             </span>
             <div className="flex items-center justify-center gap-3">
               <button
@@ -55,6 +57,7 @@ export default function ItemCard({ item }) {
                 className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
               >
                 Add to cart
+                <IoIosCart className="inline-block ml-2" />
               </button>
             </div>
           </div>
