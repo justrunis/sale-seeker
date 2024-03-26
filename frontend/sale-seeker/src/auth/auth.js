@@ -23,6 +23,14 @@ export function AuthVerify(token) {
   }
 }
 
+export function getToken() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return null;
+  }
+  return JSON.parse(token).token;
+}
+
 export function getUserEmail(token) {
   const decodedToken = parseJwt(token);
   return decodedToken.email;

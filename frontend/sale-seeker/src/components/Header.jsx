@@ -1,11 +1,18 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
-import { RiSunLine } from "react-icons/ri";
-import { CiSun } from "react-icons/ci";
-import { useSelector } from "react-redux";
+import { IoIosCart, IoIosHome } from "react-icons/io";
+import { CiLogout } from "react-icons/ci";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loginActions } from "../store/slices/loginSlice";
+import { cartActions } from "../store/slices/cartSlice";
+import { toast } from "react-toastify";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
 
   function changeTheme() {
@@ -13,10 +20,24 @@ export default function Header() {
     const theme = root.getAttribute("data-theme");
 
     if (theme === "dark") {
-      root.setAttribute("data-theme", "cupcake");
+      root.setAttribute("data-theme", "emerald");
     } else {
       root.setAttribute("data-theme", "dark");
     }
+  }
+
+  function handleLogout() {
+    dispatch(loginActions.logout());
+    toast.success("User logged out.");
+    navigate("/login");
+  }
+
+  function handleShowCart() {
+    if (!isLoggedIn) {
+      toast.error("Please login to view cart.");
+      return navigate("/login");
+    }
+    dispatch(cartActions.showCart());
   }
 
   return (
@@ -26,11 +47,35 @@ export default function Header() {
         <nav>
           <ul className="flex space-x-4">
             {isLoggedIn && (
-              <li>
-                <Link to="/" className="text-white hover:text-gray-300">
-                  Home
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link to="/home" className="text-white hover:text-gray-300">
+                    <IoIosHome />
+                  </Link>
+                </li>
+                <li>
+                  <span className="flex flex-column">
+                    <Link
+                      onClick={handleShowCart}
+                      className="text-white hover:text-gray-300"
+                    >
+                      <IoIosCart />
+                    </Link>
+                    <p className="text-white hover:text-gray-300">
+                      {useSelector((state) => state.cart.items.length)}
+                    </p>
+                  </span>
+                </li>
+                <li>
+                  <Link
+                    onClick={handleLogout}
+                    className="text-white hover:text-gray-300"
+                    to="/login"
+                  >
+                    <CiLogout />
+                  </Link>
+                </li>
+              </>
             )}
             {!isLoggedIn && (
               <li>
@@ -46,13 +91,11 @@ export default function Header() {
                 </Link>
               </li>
             )}
-            <li>
-              <label className="swap swap-rotate">
-                <input type="checkbox" onChange={changeTheme} />
-                <RiMoonFill className="swap-off" />
-                <RiSunFill className="swap-on" />
-              </label>
-            </li>
+            <label className="swap swap-rotate">
+              <input type="checkbox" onChange={changeTheme} />
+              <RiMoonFill className="swap-on text-white hover:text-gray-300" />
+              <RiSunFill className="swap-off text-white hover:text-gray-300" />
+            </label>
           </ul>
         </nav>
       </div>

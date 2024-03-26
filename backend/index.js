@@ -143,7 +143,6 @@ app.post("/login", async (req, res) => {
   }
 
   const token = generateJwtToken(user);
-  console.log("Token:", token);
   res.json({
     message: "Logged in successfully",
     user: { username: user.username, email: user.email, token },
