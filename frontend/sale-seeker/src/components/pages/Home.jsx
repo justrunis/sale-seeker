@@ -20,7 +20,7 @@ export default function Home() {
   const items = useSelector((state) => state.items.items);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 9;
+  const itemsPerPage = 3;
   const totalPages = Math.ceil(items.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -29,6 +29,11 @@ export default function Home() {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
+  const buttonClass = `px-3 py-1 rounded-md mx-1 text-white focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-4 py-3 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter`;
+
+  const activeButtonClass = `${buttonClass} bg-secondary hover:bg-accent`;
+  const inactiveButtonClass = `${buttonClass} bg-primary hover:bg-accent`;
 
   return (
     <>
@@ -40,17 +45,17 @@ export default function Home() {
             <ItemCard key={index} item={item} />
           ))}
         </div>
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center my-4">
           <nav className="inline-flex">
             <ul className="flex items-center">
               {Array.from({ length: totalPages }, (_, index) => (
                 <li key={index}>
                   <button
-                    className={`px-3 py-1 rounded-md mx-1 ${
+                    className={
                       currentPage === index + 1
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-gray-700"
-                    }`}
+                        ? activeButtonClass
+                        : inactiveButtonClass
+                    }
                     onClick={() => handlePageChange(index + 1)}
                   >
                     {index + 1}

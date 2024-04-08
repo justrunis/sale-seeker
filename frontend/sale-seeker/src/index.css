@@ -2,19 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-.modal {
-  background-color: #e4ddd4;
-  border-radius: 6px;
-  border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  padding: 1rem;
-  width: 80%;
-  max-width: 40rem;
-  animation: fade-slide-up 0.3s ease-out forwards;
+.modal-class {
+  border: 5px solid #312c1d;
 }
 
-.modal::backdrop {
-  background-color: rgba(0, 0, 0, 0.55);
+.modal-class::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .cart h2 {
@@ -62,4 +55,12 @@
 .cart-item-actions button:active {
   background-color: #1d1a16;
   color: #ffab04;
+}
+
+@media screen and (max-width: 766px) {
+  .modal {
+    max-width: 70vh;
+    max-height: 70vh;
+    padding: 0;
+  }
 }

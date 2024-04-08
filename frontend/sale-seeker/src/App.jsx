@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getToken } from "./auth/auth";
 import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
 import Item from "./components/pages/Item";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       <Cart />
+      <Checkout />
     </>
   );
 }

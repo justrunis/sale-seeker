@@ -52,6 +52,13 @@ const cartSlice = createSlice({
     hideCart(state) {
       state.show = false;
     },
+    getTotalPrice(state) {
+      let totalPrice = 0;
+      state.items.forEach((item) => {
+        totalPrice += item.totalPrice;
+      });
+      return totalPrice;
+    },
   },
 });
 

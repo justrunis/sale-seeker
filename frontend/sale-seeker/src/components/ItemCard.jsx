@@ -20,14 +20,14 @@ export default function ItemCard({ item }) {
 
   return (
     <>
-      <div className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between">
+      <div className="w-full max-w-sm bg-base border border-base-900 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between">
         <img
           className="w-full h-80 object-contain p-8"
           src={!item.image ? "https://via.placeholder.com/1080" : item.image}
           alt="product image"
         />
         <div className="px-5 pb-5">
-          <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          <h5 className="text-xl font-semibold tracking-tight text-base-900 dark:text-white">
             {item.title}
           </h5>
           <div className="flex items-center mt-2.5 mb-5">
@@ -42,7 +42,7 @@ export default function ItemCard({ item }) {
             </span>
           </div>
           <div className="flex items-center justify-between gap-3">
-            <span className="text-3xl font-bold text-gray-900 dark:text-white">
+            <span className="text-3xl font-bold text-base-900 dark:text-white">
               {currencyFormatter.format(item.price)}
             </span>
             <div className="flex items-center justify-center gap-3">
@@ -57,7 +57,7 @@ export default function ItemCard({ item }) {
                 className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter flex items-center"
               >
                 Add to cart
-                {/* <IoIosCart className="ml-2" /> */}
+                <IoIosCart className="ml-2" />
               </button>
             </div>
           </div>

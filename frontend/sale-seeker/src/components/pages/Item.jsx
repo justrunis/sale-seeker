@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Header from "../Header";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -6,13 +7,26 @@ import Reviews from "../Reviews";
 import { currencyFormatter } from "../util/formating";
 import { IoIosCart } from "react-icons/io";
 import { dummyReviews } from "../../tempdata";
+import { useDispatch } from "react-redux";
+import { cartActions } from "../../store/slices/cartSlice";
+import { dummyItems } from "../../tempdata";
+import { itemsActions } from "../../store/slices/itemsSlice";
+import Pagination from "@mui/material/Pagination";
 
 export default function Item() {
   const id = useParams().id;
+  const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1);
+  const reviewsPerPage = 3;
 
   const item = useSelector((state) =>
     state.items.items.find((item) => item.id === Number(id))
   );
+
+  // dispatch dummy items for now
+  if (!item) {
+    dispatch(itemsActions.setItems(dummyItems));
+  }
 
   if (!item) {
     return (
@@ -27,10 +41,22 @@ export default function Item() {
     );
   }
 
+  function addItemToCartHandler() {
+    dispatch(cartActions.addItemToCart(item));
+  }
+
+  // Calculate the index of the first review on the current page
+  const indexOfLastReview = currentPage * reviewsPerPage;
+  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
+  const currentReviews = dummyReviews.slice(
+    indexOfFirstReview,
+    indexOfLastReview
+  );
+
   return (
     <>
       <Header />
-      <div className="container mx-auto p-10 bg-secondary">
+      <div className="container mx-auto p-10 bg-secondary h-100">
         <div className="flex flex-col md:flex-row justify-around content-center">
           <div className="justify-self-center self-center">
             <img
@@ -76,7 +102,10 @@ export default function Item() {
             <span className="text-3xl font-bold dark:text-white">
               {currencyFormatter.format(item.price)}
             </span>
-            <button className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter">
+            <button
+              onClick={addItemToCartHandler}
+              className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+            >
               Add to cart
               <IoIosCart className="inline-block ml-2" />
             </button>
@@ -84,10 +113,27 @@ export default function Item() {
         </div>
 
         <h2 className="text-xl font-semibold mb-5">Reviews</h2>
-        <div className="menu bg-base-100 w-100 rounded-box">
-          {dummyReviews.map((review) => (
+
+        <div className="menu bg-base-100 w-100 rounded-box py-8">
+          {currentReviews.map((review) => (
             <Reviews key={review.id} review={review} />
           ))}
+          <div className="mt-5">
+            <Pagination
+              count={Math.ceil(dummyReviews.length / reviewsPerPage)}
+              color="secondary"
+              page={currentPage}
+              onChange={(event, page) => setCurrentPage(page)}
+              className="flex justify-center"
+              classes={{
+                root: "flex justify-center",
+                ul: "flex gap-2",
+                page: "bg-secondary text-base-900 px-4 py-2 rounded-md hover:bg-accent",
+                pageActive: "bg-primary text-white px-4 py-2 rounded-md",
+                icon: "bg-secondary text-base-900 px-4 py-2 rounded-full hover:bg-accent",
+              }}
+            />
+          </div>
         </div>
       </div>
     </>

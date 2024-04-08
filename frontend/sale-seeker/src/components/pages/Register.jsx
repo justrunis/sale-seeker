@@ -6,6 +6,7 @@ import { useState } from "react";
 import useHttp from "../../hooks/useHttp";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import logo from "../../../public/logos/png/logo-color.png";
 
 export default function Register() {
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
@@ -120,6 +121,11 @@ export default function Register() {
           onSubmit={handleRegistration}
         >
           <h1 className="text-2xl font-bold text-center">Register</h1>
+          <img
+            className="w-40 h-40 object-cover rounded-lg bg-base-100 mx-auto my-4"
+            src={logo}
+            alt="logo"
+          />
           <Input
             label="Username"
             id="username"

@@ -5,6 +5,7 @@ import Header from "../Header";
 import useHttp from "../../hooks/useHttp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import logo from "../../../public/logos/png/logo-color.png";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -59,6 +60,11 @@ export default function Login() {
           onSubmit={handleLogin}
         >
           <h2 className="text-2xl font-bold text-center">Login</h2>
+          <img
+            className="w-40 h-40 object-cover rounded-lg bg-base-100 mx-auto my-4"
+            src={logo}
+            alt="logo"
+          />
           <Input className={cssClasses} label="Email" id="email" type="email" />
           <Input
             className={cssClasses}
