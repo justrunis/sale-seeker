@@ -149,6 +149,53 @@ app.post("/login", async (req, res) => {
   });
 });
 
+// Get all items
+app.get("/items", async (req, res) => {
+  const result = await query("SELECT * FROM items");
+  res.json(result.rows);
+});
+
+// Get a single item
+app.get("/items/:id", async (req, res) => {
+  const { id } = req.params;
+  const result = await query("SELECT * FROM items WHERE id = $1", [id]);
+  if (result.rowCount === 0) {
+    return res.status(404).json({ message: "Item not found." });
+  }
+  res.json(result.rows[0]);
+});
+
+// get all users
+app.get("/users", async (req, res) => {
+  const result = await query("SELECT * FROM users");
+  res.json(result.rows);
+});
+
+// remove a user
+app.delete("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const result = await query("DELETE FROM users WHERE id = $1", [id]);
+  if (result.rowCount === 0) {
+    return res.status(404).json({ message: "User not found." });
+  }
+  res.json({ message: "User deleted." });
+});
+
+// update a user
+app.put("/users/:id", async (req, res) => {
+  const { id, username, email, role } = req.body;
+  console.log(id);
+  console.log(req.body);
+  const result = await query(
+    "UPDATE users SET username = $1, email = $2, role = $3 WHERE id = $4",
+    [username, email, role, id]
+  );
+  if (result.rowCount === 0) {
+    return res.status(404).json({ message: "User not found." });
+  }
+  res.json({ message: "User updated." });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

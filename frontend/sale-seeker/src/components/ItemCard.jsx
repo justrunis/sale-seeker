@@ -33,7 +33,7 @@ export default function ItemCard({ item }) {
           <div className="flex items-center mt-2.5 mb-5">
             <Rating
               name="half-rating-read"
-              defaultValue={item.rating}
+              defaultValue={Number(item.rating)}
               precision={0.1}
               readOnly
             />

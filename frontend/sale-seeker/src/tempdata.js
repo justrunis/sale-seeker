@@ -4,7 +4,7 @@ const dummyItems = [
     title: "iPhone 12 Pro",
     description:
       "The iPhone 12 Pro is a powerful and feature-packed smartphone with a stunning design.",
-    price: 999,
+    price: 999.85,
     image: "https://images.kaina24.lt/43/69/apple-iphone-12-pro-1.jpg",
     rating: 4.8,
     category: "Electronics",
@@ -14,7 +14,7 @@ const dummyItems = [
     title: "Samsung Galaxy S21",
     description:
       "The Samsung Galaxy S21 is a flagship Android smartphone with a beautiful display and excellent camera capabilities. The Samsung Galaxy S21 is a flagship Android smartphone with a beautiful display and excellent camera capabilities. The Samsung Galaxy S21 is a flagship Android smartphone with a beautiful display and excellent camera capabilities. ",
-    price: 899,
+    price: 899.85,
     image: "https://images.kaina24.lt/43/14/samsung-galaxy-s21-128gb-2.jpg",
     rating: 4.7,
     category: "Electronics",
@@ -24,7 +24,7 @@ const dummyItems = [
     title: "Google Pixel 5",
     description:
       "The Google Pixel 5 is a top-notch Android phone with a clean software experience and impressive camera performance.",
-    price: 699,
+    price: 699.99,
     image: "https://images.kaina24.lt/43/52/google-pixel-5.jpg",
     rating: 4.5,
     category: "Electronics",

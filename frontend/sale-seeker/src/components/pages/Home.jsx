@@ -1,70 +1,94 @@
 import Header from "../Header";
 import ItemCard from "../ItemCard";
-import { useSelector, useDispatch } from "react-redux";
-import { itemsActions } from "../../store/slices/itemsSlice";
-import { useEffect } from "react";
-import { currencyFormatter } from "../util/formating";
 import { useState } from "react";
-import { dummyItems } from "../../tempdata";
+import { Pagination } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { fetchItems } from "../util/http";
+import LoadingIndicator from "../UI/LoadingIndicator";
+import ErrorBlock from "../UI/ErrorBlock";
 
 export default function Home() {
-  const dispatch = useDispatch();
+  const {
+    data: items,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["items"],
+    queryFn: ({ signal }) => fetchItems({ signal }),
+  });
 
-  useEffect(() => {
-    async function getAllItems() {
-      dispatch(itemsActions.setItems(dummyItems));
-    }
-    getAllItems();
-  }, []);
-
-  const items = useSelector((state) => state.items.items);
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 3;
-  const totalPages = Math.ceil(items.length / itemsPerPage);
+  const totalPages = Math.ceil(items?.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = items?.slice(indexOfFirstItem, indexOfLastItem);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const buttonClass = `px-3 py-1 rounded-md mx-1 text-white focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-4 py-3 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter`;
+  let content;
 
-  const activeButtonClass = `${buttonClass} bg-secondary hover:bg-accent`;
-  const inactiveButtonClass = `${buttonClass} bg-primary hover:bg-accent`;
+  if (isLoading) {
+    content = (
+      <>
+        <div className="flex justify-center">
+          <LoadingIndicator />
+        </div>
+      </>
+    );
+  }
+
+  if (isError) {
+    content = (
+      <>
+        <div className="flex justify-center">
+          <ErrorBlock
+            title="An error occurred!"
+            message={error.info?.message || "Failed to fetch items."}
+          />
+        </div>
+      </>
+    );
+  }
+
+  if (items) {
+    content = (
+      <>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 justify-items-center align-items-center">
+          {currentItems?.map((item, index) => (
+            <ItemCard key={index} item={item} />
+          ))}
+        </div>
+        <div className="mt-5">
+          <Pagination
+            count={totalPages}
+            color="secondary"
+            page={currentPage}
+            onChange={(event, page) => handlePageChange(page)}
+            className="flex justify-center"
+            classes={{
+              root: "flex justify-center bg-white p-4",
+              ul: "flex gap-2",
+              page: "bg-secondary text-base-900 px-4 py-2 rounded-md hover:bg-accent",
+              pageActive: "bg-primary text-white px-4 py-2 rounded-md",
+              icon: "bg-secondary text-base-900 px-4 py-2 rounded-full hover:bg-accent",
+            }}
+          />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
       <Header />
       <div className="container mx-auto px-auto">
         <h1 className="text-3xl font-bold text-center mt-10">Home</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 justify-items-center align-items-center">
-          {currentItems.map((item, index) => (
-            <ItemCard key={index} item={item} />
-          ))}
-        </div>
-        <div className="flex justify-center my-4">
-          <nav className="inline-flex">
-            <ul className="flex items-center">
-              {Array.from({ length: totalPages }, (_, index) => (
-                <li key={index}>
-                  <button
-                    className={
-                      currentPage === index + 1
-                        ? activeButtonClass
-                        : inactiveButtonClass
-                    }
-                    onClick={() => handlePageChange(index + 1)}
-                  >
-                    {index + 1}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+        {content}
       </div>
     </>
   );
