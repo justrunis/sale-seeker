@@ -9,6 +9,7 @@ import Modal from "../UI/Modal";
 import { toast } from "react-toastify";
 import { Pagination } from "@mui/material";
 import UserModal from "../UserModal";
+import ItemsList from "../ItemsList";
 
 export default function Admin({ token }) {
   let content;
@@ -247,6 +248,13 @@ export default function Admin({ token }) {
           <div className="flex flex-col">
             <h2 className="text-xl font-semibold">Users</h2>
             {content}
+          </div>
+        </div>
+
+        <div className="menu bg-base-100 w-100 rounded-box py-8 mt-5">
+          <div className="flex flex-col">
+            <h2 className="text-xl font-semibold">Items</h2>
+            <ItemsList />
           </div>
         </div>
       </div>
