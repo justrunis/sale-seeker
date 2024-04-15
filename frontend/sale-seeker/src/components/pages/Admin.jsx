@@ -153,13 +153,13 @@ export default function Admin({ token }) {
                 <td className="flex gap-2">
                   <button
                     onClick={() => handleStartEdit(user)}
-                    className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+                    className="btn btn-primary"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleStartDelete(user.id)}
-                    className="text-white bg-red-400 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+                    className="btn btn-accent"
                   >
                     Delete
                   </button>
@@ -216,14 +216,11 @@ export default function Admin({ token }) {
                 <div className="flex gap-5">
                   <button
                     onClick={handleStopDelete}
-                    className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+                    className="btn btn-primary"
                   >
                     Cancel
                   </button>
-                  <button
-                    onClick={handleDeleteUser}
-                    className="text-white bg-red-400 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
-                  >
+                  <button onClick={handleDeleteUser} className="btn btn-accent">
                     Delete
                   </button>
                 </div>
@@ -246,7 +243,7 @@ export default function Admin({ token }) {
       <div className="container mx-auto p-10 bg-secondary h-100">
         <div className="menu bg-base-100 w-100 rounded-box py-8">
           <div className="flex flex-col">
-            <h2 className="text-xl font-semibold">Users</h2>
+            <h2 className="text-xl font-semibold mb-10">Users</h2>
             {content}
           </div>
         </div>

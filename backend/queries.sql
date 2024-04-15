@@ -21,6 +21,17 @@ CREATE TABLE items (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE reviews (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    rating DECIMAL NOT NULL,
+    item_id INT REFERENCES items(id),
+    user_id INT REFERENCES users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO items (title, description, price, image, rating, category) 
 VALUES 
     ('iPhone 12 Pro', 'The iPhone 12 Pro is a powerful and feature-packed smartphone with a stunning design.', 999, 'https://images.kaina24.lt/43/69/apple-iphone-12-pro-1.jpg', 4.8, 'Electronics'),

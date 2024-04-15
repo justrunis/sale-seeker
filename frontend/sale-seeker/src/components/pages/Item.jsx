@@ -91,26 +91,13 @@ export default function Item() {
                 {Number(item.rating)}
               </span>
             </div>
-            {getUserRole(getToken()) === "admin" && (
-              <div className="flex gap-5">
-                <button className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter">
-                  Edit
-                </button>
-                <button className="text-white bg-red-400 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter">
-                  Delete
-                </button>
-              </div>
-            )}
           </div>
         </div>
         <div className="flex items-center justify-between gap-5 bg-base-100 p-10 h-25 rounded justify-self-center self-center shadow-2xl">
           <span className="text-3xl font-bold dark:text-white">
             {currencyFormatter.format(item.price)}
           </span>
-          <button
-            onClick={addItemToCartHandler}
-            className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
-          >
+          <button onClick={addItemToCartHandler} className="btn btn-primary">
             Add to cart
             <IoIosCart className="inline-block ml-2" />
           </button>

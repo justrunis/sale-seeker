@@ -46,15 +46,12 @@ export default function ItemCard({ item }) {
               {currencyFormatter.format(item.price)}
             </span>
             <div className="flex items-center justify-center gap-3">
-              <button
-                onClick={handleItemPage}
-                className="text-white bg-secondary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
-              >
+              <button onClick={handleItemPage} className="btn btn-secondary">
                 View
               </button>
               <button
                 onClick={addItemToCartHandler}
-                className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter flex items-center"
+                className="btn btn-primary"
               >
                 Add to cart
                 <IoIosCart className="ml-2" />
