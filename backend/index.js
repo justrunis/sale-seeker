@@ -6,6 +6,7 @@ import pg from "pg";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import Pool from "pg-pool";
+import auth from "./auth/auth.js";
 
 dotenv.config();
 
@@ -195,6 +196,85 @@ app.put("/users/:id", async (req, res) => {
     return res.status(404).json({ message: "User not found." });
   }
   res.json({ message: "User updated." });
+});
+
+// add an item
+app.post("/items", auth, async (req, res) => {
+  const user = req.user;
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+  console.log(req.body);
+  const { title, price, image, description } = req.body;
+  let category = req.body.category;
+  const currentTime = new Date().toISOString();
+
+  // Capitalize the first letter of the category
+  category = category.charAt(0).toUpperCase() + category.slice(1);
+
+  const result = await query(
+    "INSERT INTO items (title, price, image, description, category, rating, user_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+    [
+      title,
+      price,
+      image,
+      description,
+      category,
+      0,
+      user.id,
+      currentTime,
+      currentTime,
+    ]
+  );
+  if (result.rowCount === 0) {
+    return res.status(500).json({ message: "Failed to create item." });
+  }
+  res.status(201).json({ message: "Item created." });
+});
+
+// delete an item
+app.delete("/items/:id", auth, async (req, res) => {
+  console.log("DELETE ITEM");
+  const user = req.user;
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+  const id = req.params.id;
+
+  const result = await query("DELETE FROM items WHERE id = $1", [id]);
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({ message: "Item not found." });
+  }
+  res.json({ message: "Item deleted." });
+});
+
+//update an item
+app.put("/items/:id", auth, async (req, res) => {
+  console.log(req.body);
+  const user = req.user;
+  console.log(user);
+
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  const { id } = req.params;
+
+  const { title, price, image, description } = req.body;
+  const currentTime = new Date().toISOString();
+  let category =
+    req.body.category.charAt(0).toUpperCase() + req.body.category.slice(1);
+
+  const result = await query(
+    "UPDATE items SET title = $1, price = $2, image = $3, description = $4, category = $5, updated_at = $6 WHERE id = $7",
+    [title, price, image, description, category, currentTime, id]
+  );
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({ message: "Item not found." });
+  }
+  res.status(200).json({ message: "Item updated." });
 });
 
 app.listen(port, () => {

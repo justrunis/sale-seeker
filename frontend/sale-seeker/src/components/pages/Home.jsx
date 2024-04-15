@@ -20,7 +20,7 @@ export default function Home() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 3;
+  const itemsPerPage = 6;
   const totalPages = Math.ceil(items?.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;

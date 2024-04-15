@@ -13,6 +13,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./components/util/http";
 import AdminRoute from "./components/AdminRoute";
 import Admin from "./components/pages/Admin";
+import Header from "./components/Header";
 
 function App() {
   const token = getToken();
