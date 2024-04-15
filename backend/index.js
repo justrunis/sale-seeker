@@ -277,6 +277,55 @@ app.put("/items/:id", auth, async (req, res) => {
   res.status(200).json({ message: "Item updated." });
 });
 
+// get reviews
+app.get("/reviews/:id", async (req, res) => {
+  console.log(req.params);
+
+  const { id } = req.params;
+
+  const result = await query(
+    "SELECT * FROM reviews WHERE item_id = $1 ORDER BY created_at DESC",
+    [id]
+  );
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({ message: "No reviews found." });
+  }
+
+  const user = await query("SELECT * FROM users WHERE id = $1", [
+    result.rows[0].user_id,
+  ]);
+
+  const reviews = result.rows.map((review) => {
+    return {
+      id: review.id,
+      title: review.title,
+      user: user.rows[0].username,
+      description: review.description,
+      rating: review.rating,
+    };
+  });
+
+  res.json(reviews);
+});
+
+// add review
+app.post("/reviews", auth, async (req, res) => {
+  console.log(req.body);
+  const { id, comment, rating, userId } = req.body;
+  const currentTime = new Date().toISOString();
+
+  const result = await query(
+    "INSERT INTO reviews (title, item_id, user_id, description, rating, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+    ["Comment", id, userId, comment, rating, currentTime, currentTime]
+  );
+
+  if (result.rowCount === 0) {
+    return res.status(500).json({ message: "Failed to create review." });
+  }
+  res.status(201).json({ message: "Review created." });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

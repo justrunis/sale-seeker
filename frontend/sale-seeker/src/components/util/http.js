@@ -150,3 +150,44 @@ export async function addItem({ item }) {
 
   return true;
 }
+
+export async function fetchReviews({ id }) {
+  const URL = `${BASE_URL}/reviews/${id}`;
+  const response = await fetch(URL);
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while fetching the reviews");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const reviews = await response.json();
+  reviews.comment = reviews.description;
+
+  return reviews;
+}
+
+export async function addReview({ item, userId }) {
+  console.log("REVIEW", item);
+  console.log("USER", userId);
+
+  const URL = `${BASE_URL}/reviews`;
+  const response = await fetch(URL, {
+    method: "POST",
+    body: JSON.stringify({ ...item, userId }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while adding the review");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return true;
+}

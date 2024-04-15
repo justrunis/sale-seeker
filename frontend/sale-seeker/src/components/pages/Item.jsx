@@ -2,19 +2,20 @@ import React, { useState } from "react";
 import Header from "../Header";
 import { useParams } from "react-router-dom";
 import Rating from "@mui/material/Rating";
-import Reviews from "../Reviews";
+import Review from "../Review";
 import { currencyFormatter } from "../util/formating";
 import { IoIosCart } from "react-icons/io";
 import { dummyReviews } from "../../tempdata";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../store/slices/cartSlice";
-import Pagination from "@mui/material/Pagination";
 
-import { fetchItem } from "../util/http";
+import { fetchItem, fetchReviews } from "../util/http";
 import { useQuery } from "@tanstack/react-query";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
 import Pager from "../UI/Pager";
+import Modal from "../UI/Modal";
+import ReviewModal from "../ReviewModal";
 
 export default function Item() {
   const params = useParams();
@@ -22,6 +23,8 @@ export default function Item() {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const reviewsPerPage = 3;
+
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const {
     data: item,
@@ -31,6 +34,16 @@ export default function Item() {
   } = useQuery({
     queryKey: ["item", { id }],
     queryFn: ({ signal }) => fetchItem({ id, signal }),
+  });
+
+  const {
+    data: reviews,
+    isLoading: reviewsLoading,
+    isError: isReviewError,
+    error: reviewsError,
+  } = useQuery({
+    queryKey: ["reviews", { id }],
+    queryFn: ({ signal }) => fetchReviews({ id, signal }),
   });
 
   let content;
@@ -109,24 +122,44 @@ export default function Item() {
     dispatch(cartActions.addItemToCart(item));
   }
 
+  function handleReviewModal() {
+    console.log("Review modal");
+    setIsReviewModalOpen(true);
+  }
+
+  function handleStopReviewModal() {
+    setIsReviewModalOpen(false);
+  }
+
   // Calculate the index of the first review on the current page
   const indexOfLastReview = currentPage * reviewsPerPage;
   const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
-  const currentReviews = dummyReviews.slice(
-    indexOfFirstReview,
-    indexOfLastReview
-  );
+  let currentReviews = [];
+
+  if (reviews) {
+    currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+  }
 
   return (
     <>
       <Header />
+      <ReviewModal
+        close={handleStopReviewModal}
+        isOpen={isReviewModalOpen}
+        item={item || ""}
+      />
       <div className="container mx-auto p-10 bg-secondary h-100">
         {content}
         <h2 className="text-xl font-semibold mb-5">Reviews</h2>
 
         <div className="menu bg-base-100 w-100 rounded-box py-8">
+          <div className="mb-5">
+            <button onClick={handleReviewModal} className="btn btn-primary">
+              Write a review
+            </button>
+          </div>
           {currentReviews.map((review) => (
-            <Reviews key={review.id} review={review} />
+            <Review key={review.id} review={review} />
           ))}
           <div className="mt-5 flex justify-center">
             <Pager

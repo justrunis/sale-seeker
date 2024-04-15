@@ -1,5 +1,6 @@
 import Rating from "@mui/material/Rating";
-export default function Reviews({ review }) {
+export default function Review({ review }) {
+  console.log(review);
   return (
     <>
       <div key={review.id} className="mt-5 border-b pb-5">
@@ -15,7 +16,7 @@ export default function Reviews({ review }) {
           </span>
         </div>
         <p className="mt-2 text-accent font-semibold">{review.user}</p>
-        <p className="mt-2 text-accent">{review.comment}</p>
+        <p className="mt-2 text-accent">{review.description}</p>
       </div>
     </>
   );
