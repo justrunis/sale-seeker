@@ -7,11 +7,11 @@ import { getUserRole } from "../../auth/auth";
 import { useState } from "react";
 import Modal from "../UI/Modal";
 import { toast } from "react-toastify";
-import { Pagination } from "@mui/material";
 import UserModal from "../UserModal";
 import ItemsList from "../ItemsList";
 import { useSelector } from "react-redux";
 import Pager from "../UI/Pager";
+import { makeFirstLetterUpperCase } from "../util/formating";
 
 export default function Admin() {
   let content;
@@ -152,7 +152,9 @@ export default function Admin() {
                 <td className="px-4 py-2">{user.id}</td>
                 <td className="px-4 py-2">{user.username}</td>
                 <td className="px-4 py-2">{user.email}</td>
-                <td className="px-4 py-2">{user.role}</td>
+                <td className="px-4 py-2">
+                  {makeFirstLetterUpperCase(user.role)}
+                </td>
                 <td className="flex gap-2">
                   <button
                     onClick={() => handleStartEdit(user)}
@@ -235,6 +237,9 @@ export default function Admin() {
         />
       )}
       <div className="container mx-auto p-10 bg-secondary h-100">
+        <h1 className="text-3xl font-bold uppercase mb-10 text-center">
+          Admin panel
+        </h1>
         <div className="menu bg-base-100 w-100 rounded-box py-8">
           <div className="flex flex-col">
             <h2 className="text-xl font-semibold mb-10">Users</h2>

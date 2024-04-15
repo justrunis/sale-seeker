@@ -220,7 +220,7 @@ app.post("/items", auth, async (req, res) => {
       image,
       description,
       category,
-      0,
+      0.0,
       user.id,
       currentTime,
       currentTime,

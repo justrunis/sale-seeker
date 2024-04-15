@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoIosCart, IoIosHome } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
@@ -13,9 +13,9 @@ import { getToken, getUserRole } from "../auth/auth";
 export default function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to track menu open/close
 
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
-  let itemCount = useSelector((state) => state.cart.items.length);
 
   function changeTheme() {
     const root = document.documentElement;
@@ -45,50 +45,77 @@ export default function Header() {
   return (
     <header className="bg-primary py-4 text-neutral-content flex justify-between">
       <h1 className="text-white text-2xl font-bold ml-5">Sale Seeker</h1>
-      <nav className="nav mr-10">
-        <ul className="flex space-x-4">
+      <div className="lg:hidden">
+        <button
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          className="text-white hover:text-gray-300 focus:outline-none"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            {isMenuOpen ? (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            ) : (
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            )}
+          </svg>
+        </button>
+      </div>
+      <nav className={`nav ${isMenuOpen ? "block" : "hidden"} lg:block mr-10`}>
+        <ul className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
           {isLoggedIn && (
             <>
               <li>
                 <Link
                   to="/home"
-                  className="text-white hover:text-gray-300 flex flex-column items-center gap-1"
+                  className="text-white hover:text-gray-300 flex items-center gap-1"
                 >
-                  Home
                   <IoIosHome />
+                  Home
                 </Link>
               </li>
               {getUserRole(getToken()) === "admin" && (
                 <li>
                   <Link
                     to="/admin"
-                    className="text-white hover:text-gray-300 flex flex-column items-center gap-1"
+                    className="text-white hover:text-gray-300 flex items-center gap-1"
                   >
-                    Admin
                     <RiAdminFill />
+                    Admin
                   </Link>
                 </li>
               )}
               <li>
-                <span className="flex flex-column">
-                  <Link
-                    onClick={handleShowCart}
-                    className="text-white hover:text-gray-300 flex flex-column items-center gap-1"
-                  >
-                    Cart
-                    <IoIosCart />
-                    {itemCount}
-                  </Link>
-                </span>
+                <Link
+                  onClick={handleShowCart}
+                  className="text-white hover:text-gray-300 flex items-center gap-1"
+                >
+                  <IoIosCart />
+                  Cart {useSelector((state) => state.cart.items.length)}
+                </Link>
               </li>
               <li>
                 <Link
                   onClick={handleLogout}
-                  className="text-white hover:text-gray-300 flex flex-column items-center gap-1"
+                  className="text-white hover:text-gray-300 flex items-center gap-1"
                   to="/login"
                 >
-                  Logout
                   <CiLogout />
+                  Logout
                 </Link>
               </li>
             </>
@@ -107,23 +134,8 @@ export default function Header() {
               </Link>
             </li>
           )}
-          <label
-            htmlFor="menu-toggle"
-            className="block lg:hidden cursor-pointer"
-          >
-            <svg
-              className="fill-current text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              width="20"
-              height="20"
-            >
-              <title>Menu</title>
-              <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-            </svg>
-          </label>
-          <input className="hidden" type="checkbox" id="menu-toggle" />
-          <div className="hidden lg:flex lg:items-center lg:w-auto lg:space-x-4">
+          {/* Theme toggle */}
+          <div className=" lg:flex lg:items-center lg:w-auto lg:space-x-4">
             <label className="swap swap-rotate inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"

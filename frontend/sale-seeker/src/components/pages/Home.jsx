@@ -1,7 +1,6 @@
 import Header from "../Header";
 import ItemCard from "../ItemCard";
 import { useState } from "react";
-import { Pagination } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { fetchItems } from "../util/http";
 import LoadingIndicator from "../UI/LoadingIndicator";

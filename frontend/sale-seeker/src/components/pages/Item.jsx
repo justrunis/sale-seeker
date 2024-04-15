@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Header from "../Header";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import Rating from "@mui/material/Rating";
 import Reviews from "../Reviews";
 import { currencyFormatter } from "../util/formating";
@@ -15,7 +14,7 @@ import { fetchItem } from "../util/http";
 import { useQuery } from "@tanstack/react-query";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
-import { getToken, getUserRole } from "../../auth/auth";
+import Pager from "../UI/Pager";
 
 export default function Item() {
   const params = useParams();
@@ -129,20 +128,11 @@ export default function Item() {
           {currentReviews.map((review) => (
             <Reviews key={review.id} review={review} />
           ))}
-          <div className="mt-5">
-            <Pagination
-              count={Math.ceil(dummyReviews.length / reviewsPerPage)}
-              color="secondary"
-              page={currentPage}
-              onChange={(event, page) => setCurrentPage(page)}
-              className="flex justify-center"
-              classes={{
-                root: "flex justify-center bg-white p-4",
-                ul: "flex gap-2",
-                page: "bg-secondary text-base-900 px-4 py-2 rounded-md hover:bg-accent",
-                pageActive: "bg-primary text-white px-4 py-2 rounded-md",
-                icon: "bg-secondary text-base-900 px-4 py-2 rounded-full hover:bg-accent",
-              }}
+          <div className="mt-5 flex justify-center">
+            <Pager
+              totalPages={Math.ceil(dummyReviews.length / reviewsPerPage)}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           </div>
         </div>
