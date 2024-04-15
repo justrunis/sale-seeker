@@ -15,6 +15,7 @@ export default function Header() {
   const dispatch = useDispatch();
 
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+  let itemCount = useSelector((state) => state.cart.items.length);
 
   function changeTheme() {
     const root = document.documentElement;
@@ -76,7 +77,7 @@ export default function Header() {
                   >
                     Cart
                     <IoIosCart />
-                    {useSelector((state) => state.cart.items.length)}
+                    {itemCount}
                   </Link>
                 </span>
               </li>

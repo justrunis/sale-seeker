@@ -1,6 +1,5 @@
 import { currencyFormatter } from "./util/formating.js";
 export default function CartItem({ item, onIncrease, onDecrease }) {
-  console.log(item);
   return (
     <li className="cart-item flex items-center justify-between">
       <span className="flex-grow">{item.title}</span>

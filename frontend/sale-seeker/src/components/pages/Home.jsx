@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchItems } from "../util/http";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
+import Pager from "../UI/Pager";
 
 export default function Home() {
   const {
@@ -63,8 +64,8 @@ export default function Home() {
             <ItemCard key={index} item={item} />
           ))}
         </div>
-        <div className="mt-5">
-          <Pagination
+        <div className="my-5 flex justify-center">
+          {/*<Pagination
             count={totalPages}
             color="secondary"
             page={currentPage}
@@ -77,6 +78,11 @@ export default function Home() {
               pageActive: "bg-primary text-white px-4 py-2 rounded-md",
               icon: "bg-secondary text-base-900 px-4 py-2 rounded-full hover:bg-accent",
             }}
+          />*/}
+          <Pager
+            totalPages={totalPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </div>
       </>

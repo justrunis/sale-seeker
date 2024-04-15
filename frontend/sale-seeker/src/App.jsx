@@ -16,18 +16,17 @@ import Admin from "./components/pages/Admin";
 import Header from "./components/Header";
 
 function App() {
-  const token = getToken();
   return (
     <>
       <QueryClientProvider client={queryClient}>
         <ToastContainer position="top-center" />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<ProtectedRoute token={token} />}>
+            <Route path="/" element={<ProtectedRoute />}>
               <Route path="/home" element={<Home />} />
               <Route path="item/:id" element={<Item />} />
-              <Route element={<AdminRoute token={token} />}>
-                <Route path="/admin" element={<Admin token={token} />} />
+              <Route element={<AdminRoute />}>
+                <Route path="/admin" element={<Admin />} />
               </Route>
             </Route>
             <Route path="/login" element={<Login />} />

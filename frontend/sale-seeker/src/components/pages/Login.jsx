@@ -43,8 +43,8 @@ export default function Login() {
       toast.error(response.error || "Failed to login.");
       return;
     }
-    toast.success(`User ${user.email} logged in.`);
     dispatch(loginActions.login(response.data.user));
+    toast.success(`User ${user.email} logged in.`);
     navigate("/home");
   };
 

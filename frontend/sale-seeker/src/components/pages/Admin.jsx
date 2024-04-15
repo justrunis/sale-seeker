@@ -10,9 +10,12 @@ import { toast } from "react-toastify";
 import { Pagination } from "@mui/material";
 import UserModal from "../UserModal";
 import ItemsList from "../ItemsList";
+import { useSelector } from "react-redux";
+import Pager from "../UI/Pager";
 
-export default function Admin({ token }) {
+export default function Admin() {
   let content;
+  const token = useSelector((state) => state.login.user).token;
 
   if (getUserRole(token) !== "admin") {
     return (
@@ -36,7 +39,7 @@ export default function Admin({ token }) {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 5;
+  const usersPerPage = 5;
 
   function handleDeleteUser() {
     deleteUserMutation({ id: deleteId });
@@ -126,9 +129,9 @@ export default function Admin({ token }) {
   }
 
   if (data) {
-    const totalPages = Math.ceil(data.length / itemsPerPage);
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const totalPages = Math.ceil(data.length / usersPerPage);
+    const indexOfLastItem = currentPage * usersPerPage;
+    const indexOfFirstItem = indexOfLastItem - usersPerPage;
     const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
     content = (
@@ -168,20 +171,11 @@ export default function Admin({ token }) {
             ))}
           </tbody>
         </table>
-        <div className="mt-5">
-          <Pagination
-            count={totalPages}
-            color="secondary"
-            page={currentPage}
-            onChange={(event, page) => handlePageChange(page)}
-            className="flex justify-center"
-            classes={{
-              root: "flex justify-center bg-white p-4",
-              ul: "flex gap-2",
-              page: "bg-secondary text-base-900 px-4 py-2 rounded-md hover:bg-accent",
-              pageActive: "bg-primary text-white px-4 py-2 rounded-md",
-              icon: "bg-secondary text-base-900 px-4 py-2 rounded-full hover:bg-accent",
-            }}
+        <div className="mt-5 flex justify-center">
+          <Pager
+            totalPages={totalPages}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
           />
         </div>
       </>
