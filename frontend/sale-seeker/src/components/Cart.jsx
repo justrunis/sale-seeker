@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { cartActions } from "../store/slices/cartSlice";
 import CartItem from "./CartItem";
 import { currencyFormatter } from "./util/formating";
-import { checkoutActions } from "../store/slices/checkoutSlice";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export default function Cart() {
   const dispatch = useDispatch();
@@ -29,7 +29,6 @@ export default function Cart() {
       toast.error("Your cart is empty.");
       return;
     }
-    dispatch(checkoutActions.showCheckout());
   }
 
   return (
@@ -68,9 +67,15 @@ export default function Cart() {
           <button className="btn btn-secondary" onClick={handleCloseCart}>
             Close
           </button>
-          <button className="btn btn-primary" onClick={handleShowCheckout}>
-            Checkout
-          </button>
+          {allItems.length > 0 && (
+            <Link
+              to="checkout"
+              onClick={handleShowCheckout}
+              className="btn btn-primary"
+            >
+              Checkout
+            </Link>
+          )}
         </div>
       </div>
     </Modal>

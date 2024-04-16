@@ -212,3 +212,24 @@ export async function fetchAverageRating({ id, signal }) {
 
   return averageRating.avg;
 }
+
+export async function sendPaymentInformation({ paymentInformation }) {
+  const URL = `${BASE_URL}/payment`;
+  const response = await fetch(URL, {
+    method: "POST",
+    body: JSON.stringify(paymentInformation),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while sending the payment");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return true;
+}

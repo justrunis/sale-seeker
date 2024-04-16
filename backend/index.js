@@ -251,9 +251,7 @@ app.delete("/items/:id", auth, async (req, res) => {
 
 //update an item
 app.put("/items/:id", auth, async (req, res) => {
-  console.log(req.body);
   const user = req.user;
-  console.log(user);
 
   if (user.role !== "admin") {
     return res.status(403).json({ message: "Unauthorized" });
@@ -279,8 +277,6 @@ app.put("/items/:id", auth, async (req, res) => {
 
 // get reviews
 app.get("/reviews/:id", async (req, res) => {
-  console.log(req.params);
-
   const { id } = req.params;
 
   const result = await query(
@@ -311,7 +307,6 @@ app.get("/reviews/:id", async (req, res) => {
 
 // add review
 app.post("/reviews", auth, async (req, res) => {
-  console.log(req.body);
   const { id, comment, rating, userId } = req.body;
   const currentTime = new Date().toISOString();
 
@@ -334,6 +329,42 @@ app.get("/reviews/average/:id", async (req, res) => {
     [id]
   );
   res.json(result.rows[0]);
+});
+
+// payment information
+app.post("/payment", auth, async (req, res) => {
+  // will need to check if user didn't change the prices in the frontend later here
+  const { cartItems, totalPrice } = req.body;
+
+  const userId = req.user.id;
+  const currentTime = new Date().toISOString();
+
+  const result = await query(
+    "INSERT INTO orders (user_id, total, items, created_at) VALUES ($1, $2, $3, $4)",
+    [userId, totalPrice, JSON.stringify(cartItems), currentTime]
+  );
+
+  if (result.rowCount === 0) {
+    return res.status(500).json({ message: "Failed to create order." });
+  }
+
+  res.json({ message: "Payment received." });
+});
+
+// get all orders
+app.get("/orders", auth, async (req, res) => {
+  const user = req.user;
+
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  const result = await query("SELECT * FROM orders");
+
+  if (result.rowCount === 0) {
+    return res.json([]);
+  }
+  res.json(result.rows);
 });
 
 app.listen(port, () => {

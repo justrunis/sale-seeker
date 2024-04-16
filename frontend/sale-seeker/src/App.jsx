@@ -13,7 +13,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./components/util/http";
 import AdminRoute from "./components/AdminRoute";
 import Admin from "./components/pages/Admin";
-import Header from "./components/Header";
+import CheckoutPage from "./components/pages/Checkout";
 
 function App() {
   return (
@@ -25,6 +25,7 @@ function App() {
             <Route path="/" element={<ProtectedRoute />}>
               <Route path="/home" element={<Home />} />
               <Route path="item/:id" element={<Item />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<Admin />} />
               </Route>
@@ -32,9 +33,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>
+          <Cart />
+          <Checkout />
         </BrowserRouter>
-        <Cart />
-        <Checkout />
       </QueryClientProvider>
     </>
   );
