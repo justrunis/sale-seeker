@@ -16,6 +16,7 @@ import ErrorBlock from "../UI/ErrorBlock";
 import Pager from "../UI/Pager";
 import Modal from "../UI/Modal";
 import ReviewModal from "../ReviewModal";
+import ItemRating from "../ItemRating";
 
 export default function Item() {
   const params = useParams();
@@ -91,18 +92,7 @@ export default function Item() {
             <p className="mt-2 text-sm">{item.category}</p>
           </div>
           <div className="mt-5">
-            <h2 className="text-l font-semibold">Rating</h2>
-            <div className="flex items-center mt-2.5 mb-5">
-              <Rating
-                name="half-rating-read"
-                defaultValue={Number(item.rating)}
-                precision={0.1}
-                readOnly
-              />
-              <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-                {Number(item.rating)}
-              </span>
-            </div>
+            <ItemRating key={item.id} id={item.id} />
           </div>
         </div>
         <div className="flex items-center justify-between gap-5 bg-base-100 p-10 h-25 rounded justify-self-center self-center shadow-2xl">

@@ -64,20 +64,6 @@ export default function Home() {
           ))}
         </div>
         <div className="my-5 flex justify-center">
-          {/*<Pagination
-            count={totalPages}
-            color="secondary"
-            page={currentPage}
-            onChange={(event, page) => handlePageChange(page)}
-            className="flex justify-center"
-            classes={{
-              root: "flex justify-center bg-white p-4",
-              ul: "flex gap-2",
-              page: "bg-secondary text-base-900 px-4 py-2 rounded-md hover:bg-accent",
-              pageActive: "bg-primary text-white px-4 py-2 rounded-md",
-              icon: "bg-secondary text-base-900 px-4 py-2 rounded-full hover:bg-accent",
-            }}
-          />*/}
           <Pager
             totalPages={totalPages}
             currentPage={currentPage}

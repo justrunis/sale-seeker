@@ -4,6 +4,7 @@ import { cartActions } from "../store/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { currencyFormatter } from "./util/formating";
 import { IoIosCart } from "react-icons/io";
+import { useState } from "react";
 
 export default function ItemCard({ item }) {
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ export default function ItemCard({ item }) {
     event.preventDefault();
     navigate(`/item/${item.id}`);
   }
+
+  const [ratingValue, setRatingValue] = useState(Number(item.rating));
 
   return (
     <>
@@ -33,7 +36,7 @@ export default function ItemCard({ item }) {
           <div className="flex items-center mt-2.5 mb-5">
             <Rating
               name="half-rating-read"
-              defaultValue={Number(item.rating)}
+              value={ratingValue}
               precision={0.1}
               readOnly
             />

@@ -22,6 +22,7 @@ export default function ReviewModal({ close, isOpen, item }) {
     mutationFn: addReview,
     onSuccess: () => {
       queryClient.invalidateQueries("reviews");
+      queryClient.invalidateQueries("averageRating");
       toast.success("Review added successfully.");
       close();
     },

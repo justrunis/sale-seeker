@@ -189,10 +189,11 @@ export async function addReview({ item, userId }) {
   return true;
 }
 
-export async function fetchAverageRating({ id }) {
+export async function fetchAverageRating({ id, signal }) {
   const URL = `${BASE_URL}/reviews/average/${id}`;
   const response = await fetch(URL, {
     method: "GET",
+    signal,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${getToken()}`,
