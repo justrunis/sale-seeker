@@ -163,7 +163,7 @@ export default function Item() {
           ))}
           <div className="mt-5 flex justify-center">
             <Pager
-              totalPages={Math.ceil(dummyReviews.length / reviewsPerPage)}
+              totalPages={Math.ceil(reviews?.length / reviewsPerPage)}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />
