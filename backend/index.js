@@ -354,6 +354,7 @@ app.post("/payment", auth, async (req, res) => {
 // get all orders
 app.get("/orders", auth, async (req, res) => {
   const user = req.user;
+  const userId = req.user.id;
 
   if (user.role !== "admin") {
     return res.status(403).json({ message: "Unauthorized" });

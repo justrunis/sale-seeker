@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 const AdminRoute = ({ redirectPath = "/home", children }) => {
   const token = useSelector((state) => state.login.user).token;
-  console.log(getUserRole(token));
   if (getUserRole(token) !== "admin") {
     return <Navigate to={redirectPath} replace />;
   }

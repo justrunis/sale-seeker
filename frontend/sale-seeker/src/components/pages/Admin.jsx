@@ -12,6 +12,7 @@ import ItemsList from "../ItemsList";
 import { useSelector } from "react-redux";
 import Pager from "../UI/Pager";
 import { makeFirstLetterUpperCase } from "../util/formating";
+import OrdersList from "../OrdersList";
 
 export default function Admin() {
   let content;
@@ -251,6 +252,13 @@ export default function Admin() {
           <div className="flex flex-col">
             <h2 className="text-xl font-semibold">Items</h2>
             <ItemsList />
+          </div>
+        </div>
+
+        <div className="menu bg-base-100 w-100 rounded-box py-8 mt-5">
+          <div className="flex flex-col">
+            <h2 className="text-xl font-semibold">Orders</h2>
+            <OrdersList />
           </div>
         </div>
       </div>

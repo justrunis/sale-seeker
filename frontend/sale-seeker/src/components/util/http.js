@@ -213,6 +213,26 @@ export async function fetchAverageRating({ id, signal }) {
   return averageRating.avg;
 }
 
+export async function fetchAllOrders() {
+  const URL = `${BASE_URL}/orders`;
+  const response = await fetch(URL, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while fetching the orders");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const orders = await response.json();
+
+  return orders;
+}
+
 export async function sendPaymentInformation({ paymentInformation }) {
   const URL = `${BASE_URL}/payment`;
   const response = await fetch(URL, {
