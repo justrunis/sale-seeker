@@ -158,16 +158,42 @@ export default function Item() {
               Write a review
             </button>
           </div>
-          {currentReviews.map((review) => (
-            <Review key={review.id} review={review} />
-          ))}
-          <div className="mt-5 flex justify-center">
-            <Pager
-              totalPages={Math.ceil(reviews?.length / reviewsPerPage)}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-            />
-          </div>
+          {reviewsLoading && (
+            <div className="flex justify-center">
+              <LoadingIndicator />
+            </div>
+          )}
+          {isReviewError ? (
+            <div className="flex justify-center">
+              <ErrorBlock error={reviewsError} />
+            </div>
+          ) : (
+            <>
+              {reviews && reviews.length === 0 ? (
+                <div className="flex justify-center items-center flex-col">
+                  <h2 className="text-xl font-bold mb-5">No reviews found.</h2>
+                  <p>
+                    Be the first to write a review for this item. Click the
+                    button above.
+                  </p>
+                </div>
+              ) : (
+                <>
+                  {" "}
+                  {currentReviews.map((review) => (
+                    <Review key={review.id} review={review} />
+                  ))}
+                  <div className="mt-5 flex justify-center">
+                    <Pager
+                      totalPages={Math.ceil(reviews?.length / reviewsPerPage)}
+                      currentPage={currentPage}
+                      setCurrentPage={setCurrentPage}
+                    />
+                  </div>
+                </>
+              )}
+            </>
+          )}
         </div>
       </div>
     </>

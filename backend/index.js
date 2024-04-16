@@ -289,7 +289,7 @@ app.get("/reviews/:id", async (req, res) => {
   );
 
   if (result.rowCount === 0) {
-    return res.status(404).json({ message: "No reviews found." });
+    return res.json([]);
   }
 
   const user = await query("SELECT * FROM users WHERE id = $1", [
@@ -324,6 +324,16 @@ app.post("/reviews", auth, async (req, res) => {
     return res.status(500).json({ message: "Failed to create review." });
   }
   res.status(201).json({ message: "Review created." });
+});
+
+// get average rating for an item
+app.get("/reviews/average/:id", async (req, res) => {
+  const { id } = req.params;
+  const result = await query(
+    "SELECT AVG(rating) FROM reviews WHERE item_id = $1",
+    [id]
+  );
+  res.json(result.rows[0]);
 });
 
 app.listen(port, () => {

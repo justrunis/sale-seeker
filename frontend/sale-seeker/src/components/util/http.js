@@ -169,9 +169,6 @@ export async function fetchReviews({ id }) {
 }
 
 export async function addReview({ item, userId }) {
-  console.log("REVIEW", item);
-  console.log("USER", userId);
-
   const URL = `${BASE_URL}/reviews`;
   const response = await fetch(URL, {
     method: "POST",
@@ -190,4 +187,27 @@ export async function addReview({ item, userId }) {
   }
 
   return true;
+}
+
+export async function fetchAverageRating({ id }) {
+  const URL = `${BASE_URL}/reviews/average/${id}`;
+  const response = await fetch(URL, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error(
+      "An error occurred while fetching the average rating"
+    );
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+  const averageRating = await response.json();
+
+  return averageRating.avg;
 }
