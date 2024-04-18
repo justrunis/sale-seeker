@@ -14,6 +14,7 @@ import { queryClient } from "./components/util/http";
 import AdminRoute from "./components/AdminRoute";
 import Admin from "./components/pages/Admin";
 import CheckoutPage from "./components/pages/Checkout";
+import Welcome from "./components/pages/Welcome";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           <Routes>
             <Route path="/" element={<ProtectedRoute />}>
               <Route path="/home" element={<Home />} />
-              <Route path="item/:id" element={<Item />} />
+              <Route path="/item/:id" element={<Item />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<Admin />} />
@@ -32,6 +33,7 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/welcome" element={<Welcome />} />
           </Routes>
           <Cart />
           <Checkout />

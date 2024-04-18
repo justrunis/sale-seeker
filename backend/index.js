@@ -360,7 +360,9 @@ app.get("/orders", auth, async (req, res) => {
     return res.status(403).json({ message: "Unauthorized" });
   }
 
-  const result = await query("SELECT * FROM orders");
+  const result = await query(
+    "SELECT orders.*, users.username FROM orders INNER JOIN users ON orders.user_id = users.id"
+  );
 
   if (result.rowCount === 0) {
     return res.json([]);

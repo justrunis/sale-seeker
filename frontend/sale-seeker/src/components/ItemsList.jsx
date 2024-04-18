@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import Modal from "./UI/Modal";
 import ItemForm from "./ItemForm";
 import Pager from "./UI/Pager";
+import { currencyFormatter } from "./util/formating";
 
 export default function ItemsList() {
   const {
@@ -236,7 +237,9 @@ export default function ItemsList() {
                       className="h-20 w-20"
                     />
                   </td>
-                  <td className="px-4 py-2">{item.price}</td>
+                  <td className="px-4 py-2">
+                    {currencyFormatter.format(item.price)}
+                  </td>
                   <td className="px-4 py-2">{item.category}</td>
                   <td className="px-4 py-2 flex gap-5">
                     <button
