@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { IoIosCart, IoIosHome } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
+import { CgProfile } from "react-icons/cg";
 import { RiAdminFill } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -86,6 +87,15 @@ export default function Header() {
                 >
                   <IoIosHome />
                   Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/profile"
+                  className="text-white hover:text-gray-300 flex items-center gap-1"
+                >
+                  Profile
+                  <CgProfile />
                 </Link>
               </li>
               {getUserRole(getToken()) === "admin" && (

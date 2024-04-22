@@ -13,6 +13,8 @@ import { useSelector } from "react-redux";
 import Pager from "../UI/Pager";
 import { makeFirstLetterUpperCase } from "../util/formating";
 import OrdersList from "../OrdersList";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { motion } from "framer-motion";
 
 export default function Admin() {
   let content;
@@ -241,26 +243,58 @@ export default function Admin() {
         <h1 className="text-3xl font-bold uppercase mb-10 text-center">
           Admin panel
         </h1>
-        <div className="menu bg-base-100 w-100 rounded-box py-8">
-          <div className="flex flex-col">
-            <h2 className="text-xl font-semibold mb-10">Users</h2>
-            {content}
-          </div>
-        </div>
 
-        <div className="menu bg-base-100 w-100 rounded-box py-8 mt-5">
-          <div className="flex flex-col">
-            <h2 className="text-xl font-semibold">Items</h2>
-            <ItemsList />
-          </div>
-        </div>
+        <Tabs>
+          <TabList className="flex bg-base-100 p-2 rounded-t-md gap-5">
+            <Tab className="btn btn-primary">Users</Tab>
+            <Tab className="btn btn-primary">Items</Tab>
+            <Tab className="btn btn-primary">Orders</Tab>
+          </TabList>
+          <hr />
 
-        <div className="menu bg-base-100 w-100 rounded-box py-8 mt-5">
-          <div className="flex flex-col">
-            <h2 className="text-xl font-semibold">Orders</h2>
-            <OrdersList />
-          </div>
-        </div>
+          <TabPanel>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="menu bg-base-100 w-100 rounded-b-box py-8"
+            >
+              <div className="flex flex-col">
+                <h2 className="text-xl font-semibold mb-10">Users</h2>
+                {content}
+              </div>
+            </motion.div>
+          </TabPanel>
+          <TabPanel>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="menu bg-base-100 w-100 rounded-b-box py-8"
+            >
+              <div className="flex flex-col">
+                <h2 className="text-xl font-semibold">Items</h2>
+                <ItemsList />
+              </div>
+            </motion.div>
+          </TabPanel>
+          <TabPanel>
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.3 }}
+              className="menu bg-base-100 w-100 rounded-b-box py-8"
+            >
+              <div className="flex flex-col">
+                <h2 className="text-xl font-semibold">Orders</h2>
+                <OrdersList />
+              </div>
+            </motion.div>
+          </TabPanel>
+        </Tabs>
       </div>
     </>
   );

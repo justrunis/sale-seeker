@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { currencyFormatter } from "./util/formating";
 import { IoIosCart } from "react-icons/io";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function ItemCard({ item }) {
   const dispatch = useDispatch();
@@ -23,7 +24,12 @@ export default function ItemCard({ item }) {
 
   return (
     <>
-      <div className="w-full max-w-sm bg-base border border-base-900 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-sm bg-base border border-base-900 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col justify-between"
+      >
         <img
           className="w-full h-80 object-contain p-8"
           src={!item.image ? "https://via.placeholder.com/1080" : item.image}
@@ -62,7 +68,7 @@ export default function ItemCard({ item }) {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

@@ -5,7 +5,6 @@ import Register from "./components/pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getToken } from "./auth/auth";
 import Cart from "./components/Cart";
 import Checkout from "./components/Checkout";
 import Item from "./components/pages/Item";
@@ -15,6 +14,7 @@ import AdminRoute from "./components/AdminRoute";
 import Admin from "./components/pages/Admin";
 import CheckoutPage from "./components/pages/Checkout";
 import Welcome from "./components/pages/Welcome";
+import Profile from "./components/pages/Profile";
 
 function App() {
   return (
@@ -27,6 +27,7 @@ function App() {
               <Route path="/home" element={<Home />} />
               <Route path="/item/:id" element={<Item />} />
               <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/profile" element={<Profile />} />
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<Admin />} />
               </Route>

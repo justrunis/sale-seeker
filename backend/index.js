@@ -173,6 +173,19 @@ app.get("/users", async (req, res) => {
   res.json(result.rows);
 });
 
+// get a single user by id
+app.get("/users/:id", async (req, res) => {
+  const { id } = req.params;
+  const result = await query(
+    "SELECT id, username, email, role, created_at, updated_at FROM users WHERE id = $1",
+    [id]
+  );
+  if (result.rowCount === 0) {
+    return res.status(404).json({ message: "User not found." });
+  }
+  res.json(result.rows[0]);
+});
+
 // remove a user
 app.delete("/users/:id", async (req, res) => {
   const { id } = req.params;
@@ -405,6 +418,27 @@ app.put("/orderStatusChange/:id", auth, async (req, res) => {
   }
 
   res.json({ message: "Order status changed." });
+});
+
+app.get("/orders/user/:id", auth, async (req, res) => {
+  const user = req.user;
+  const userId = req.params.id;
+
+  console.log("USER", user);
+  console.log("USERID", userId);
+
+  if (user.id !== parseInt(userId)) {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  const result = await query("SELECT * FROM orders WHERE user_id = $1", [
+    userId,
+  ]);
+
+  if (result.rowCount === 0) {
+    return res.json([]);
+  }
+  res.json(result.rows);
 });
 
 app.listen(port, () => {

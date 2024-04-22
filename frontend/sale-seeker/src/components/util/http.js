@@ -53,6 +53,44 @@ export async function fetchUsers({ signal }) {
   return users;
 }
 
+export async function fetchUser({ signal, id }) {
+  const URL = `${BASE_URL}/users/${id}`;
+  const response = await fetch(URL, { signal });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while fetching the user");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const user = await response.json();
+
+  return user;
+}
+
+export async function fetchUserOrders({ signal, userId }) {
+  console.log("USERID", userId);
+  const URL = `${BASE_URL}/orders/user/${userId}`;
+  const response = await fetch(URL, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+    signal,
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while fetching the orders");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const orders = await response.json();
+
+  return orders;
+}
+
 export async function deleteUser({ id }) {
   const URL = `${BASE_URL}/users/${id}`;
   const response = await fetch(URL, {
