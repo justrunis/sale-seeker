@@ -370,6 +370,43 @@ app.get("/orders", auth, async (req, res) => {
   res.json(result.rows);
 });
 
+app.delete("/orders/:id", auth, async (req, res) => {
+  const user = req.user;
+  const orderId = req.params.id;
+
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  const result = await query("DELETE FROM orders WHERE id = $1", [orderId]);
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({ message: "Order not found." });
+  }
+  res.json({ message: "Order deleted." });
+});
+
+app.put("/orderStatusChange/:id", auth, async (req, res) => {
+  const user = req.user;
+  const orderId = req.params.id;
+  const { status } = req.body;
+
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  const result = await query("UPDATE orders SET status = $1 WHERE id = $2", [
+    status,
+    orderId,
+  ]);
+
+  if (result.rowCount === 0) {
+    return res.status(404).json({ message: "Order not found." });
+  }
+
+  res.json({ message: "Order status changed." });
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

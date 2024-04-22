@@ -38,7 +38,10 @@ CREATE TABLE orders (
     items JSONB NOT NULL,
     user_id INT REFERENCES users(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    status VARCHAR(50) DEFAULT 'Pending';
 );
+
+ALTER TABLE orders ADD COLUMN status VARCHAR(50) DEFAULT 'Pending';
 
 
 INSERT INTO items (title, description, price, image, rating, category) 

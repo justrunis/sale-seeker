@@ -59,7 +59,6 @@ export default function ItemsList() {
   }
 
   function handleItemDelete(id) {
-    console.log("Delete item: ", id);
     deleteItemMutation({ id });
   }
 
@@ -178,22 +177,20 @@ export default function ItemsList() {
                 </div>
               </>
             ) : (
-              <>
-                <div className="flex gap-5">
-                  <button
-                    onClick={handleStopDelete}
-                    className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={() => handleItemDelete(deleteId)}
-                    className="text-white bg-red-400 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </>
+              <div className="flex gap-5">
+                <button
+                  onClick={handleStopDelete}
+                  className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleItemDelete(deleteId)}
+                  className="text-white bg-red-400 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+                >
+                  Delete
+                </button>
+              </div>
             )}
           </div>
         </Modal>

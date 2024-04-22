@@ -233,6 +233,54 @@ export async function fetchAllOrders() {
   return orders;
 }
 
+export async function deleteOrder({ id }) {
+  console.log("ID", id);
+
+  const URL = `${BASE_URL}/orders/${id}`;
+  const response = await fetch(URL, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while deleting the order");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return true;
+}
+
+export async function changeOrderStatus({ id, status }) {
+  console.log("ID", id);
+  console.log("STATUS", status);
+
+  const URL = `${BASE_URL}/orderStatusChange/${id}`;
+
+  const response = await fetch(URL, {
+    method: "PUT",
+    body: JSON.stringify({ status }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error(
+      "An error occurred while changing the order status"
+    );
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return true;
+}
+
 export async function sendPaymentInformation({ paymentInformation }) {
   const URL = `${BASE_URL}/payment`;
   const response = await fetch(URL, {
