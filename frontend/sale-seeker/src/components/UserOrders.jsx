@@ -7,6 +7,7 @@ import {
   currencyFormatter,
   makeFirstLetterUpperCase,
 } from "./util/formating";
+import { motion } from "framer-motion";
 
 export default function UserOrders({ userId }) {
   const {
@@ -22,7 +23,12 @@ export default function UserOrders({ userId }) {
   console.log(orders);
 
   return (
-    <div className="menu bg-base-100 w-100 rounded-box py-8">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.4 }}
+      className="menu bg-base-100 w-100 rounded-box py-8"
+    >
       <h2 className="text-2xl font-bold mb-4 text-center">Orders</h2>
       {isError && (
         <div className="flex justify-center">
@@ -59,8 +65,13 @@ export default function UserOrders({ userId }) {
                   </td>
                 </tr>
               ) : (
-                orders.map((order) => (
-                  <tr key={order.id}>
+                orders.map((order, index) => (
+                  <motion.tr
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.6 + index * 0.2 }}
+                    key={order.id}
+                  >
                     <td className="px-4 py-2">{order.id}</td>
                     <td className="px-4 py-2">
                       {dateFormating.format(order.date)}
@@ -81,13 +92,13 @@ export default function UserOrders({ userId }) {
                         ))}
                       </ul>
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))
               )}
             </tbody>
           </table>
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

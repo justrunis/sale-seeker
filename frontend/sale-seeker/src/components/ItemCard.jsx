@@ -6,6 +6,7 @@ import { currencyFormatter } from "./util/formating";
 import { IoIosCart } from "react-icons/io";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { toast } from "react-toastify";
 
 export default function ItemCard({ item }) {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ export default function ItemCard({ item }) {
 
   function addItemToCartHandler() {
     dispatch(cartActions.addItemToCart(item));
+    toast.success(`${item.title} added to cart!`);
   }
 
   function handleItemPage(event) {

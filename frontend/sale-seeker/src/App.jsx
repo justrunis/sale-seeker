@@ -15,6 +15,7 @@ import Admin from "./components/pages/Admin";
 import CheckoutPage from "./components/pages/Checkout";
 import Welcome from "./components/pages/Welcome";
 import Profile from "./components/pages/Profile";
+import { AnimatePresence } from "framer-motion";
 
 function App() {
   return (

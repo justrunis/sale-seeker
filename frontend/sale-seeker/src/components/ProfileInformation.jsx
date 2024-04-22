@@ -1,8 +1,14 @@
 import { makeFirstLetterUpperCase } from "./util/formating";
+import { motion } from "framer-motion";
 
 export default function ProfileInformation({ user }) {
   return (
-    <div className="max-w-md bg-base-100 shadow-md rounded px-8 pt-6 pb-8 mb-4 self-center">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5, delay: 0.2 }}
+      className="max-w-md bg-base-100 shadow-md rounded px-8 pt-6 pb-8 mb-4 self-center"
+    >
       <div className="flex flex-col justify-center">
         <h2 className="text-lg font-bold mb-4 text-center">{user.username}</h2>
         <img
@@ -26,6 +32,6 @@ export default function ProfileInformation({ user }) {
           </span>
         </li>
       </ul>
-    </div>
+    </motion.div>
   );
 }

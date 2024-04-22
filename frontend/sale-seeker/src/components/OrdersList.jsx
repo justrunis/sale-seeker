@@ -14,6 +14,7 @@ import Modal from "./UI/Modal";
 import { toast } from "react-toastify";
 import Select from "./UI/Select";
 import { makeFirstLetterUpperCase } from "./util/formating";
+import { motion } from "framer-motion";
 
 export default function OrdersList() {
   const {
@@ -239,8 +240,13 @@ export default function OrdersList() {
               </tr>
             </thead>
             <tbody>
-              {currentOrders.map((order) => (
-                <tr key={order.id}>
+              {currentOrders.map((order, index) => (
+                <motion.tr
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  key={order.id}
+                >
                   <td className="px-4 py-2">{order.id}</td>
                   <td className="px-4 py-2">{order.username}</td>
                   <td className="px-4 py-2">
@@ -271,7 +277,7 @@ export default function OrdersList() {
                       Delete
                     </button>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
           </table>

@@ -2,6 +2,8 @@ import Header from "../Header";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CheckoutForm from "../CheckoutForm";
+import { motion } from "framer-motion";
+import { currencyFormatter } from "../util/formating";
 
 export default function Checkout() {
   const cartItems = useSelector((state) => state.cart.items);
@@ -11,7 +13,12 @@ export default function Checkout() {
   return (
     <>
       <Header />
-      <div className="container mx-auto p-10 bg-secondary h-100">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="container mx-auto p-10 bg-secondary h-100"
+      >
         <h1 className="text-2xl font-bold my-5 text-center">Checkout</h1>
         <div className="menu bg-base-100 w-100 rounded-box py-8">
           <div className="flex flex-col">
@@ -40,24 +47,35 @@ export default function Checkout() {
                     </tr>
                   </thead>
                   <tbody>
-                    {cartItems.map((item) => (
-                      <tr key={item.id}>
+                    {cartItems.map((item, index) => (
+                      <motion.tr
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 * index }}
+                        key={item.id}
+                      >
                         <td className="py-2">{item.title}</td>
                         <td className="py-2">{item.quantity}</td>
-                        <td className="py-2">{item.totalPrice}</td>
-                      </tr>
+                        <td className="py-2">
+                          {currencyFormatter.format(item.totalPrice)}
+                        </td>
+                      </motion.tr>
                     ))}
                   </tbody>
                 </table>
                 <div className="flex justify-end mt-5 mr-5">
-                  <p className="text-xl font-bold">Total: {finalPrice}</p>
+                  <p className="text-xl font-bold">
+                    Total: {currencyFormatter.format(finalPrice)}
+                  </p>
                 </div>
-                <CheckoutForm cartItems={cartItems} totalPrice={finalPrice} />
+                <div className="flex flex-col items-center">
+                  <CheckoutForm cartItems={cartItems} totalPrice={finalPrice} />
+                </div>
               </>
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

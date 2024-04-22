@@ -15,6 +15,7 @@ import Modal from "./UI/Modal";
 import ItemForm from "./ItemForm";
 import Pager from "./UI/Pager";
 import { currencyFormatter } from "./util/formating";
+import { motion } from "framer-motion";
 
 export default function ItemsList() {
   const {
@@ -204,11 +205,12 @@ export default function ItemsList() {
           />
         </div>
       )}
-      {isLoading ? (
+      {isLoading && (
         <div className="flex justify-center">
           <LoadingIndicator />
         </div>
-      ) : (
+      )}
+      {!isLoading && !isError && (
         <div className="flex flex-col align-center justify-content-center items-center">
           <table className="table w-full">
             <thead>
@@ -222,8 +224,13 @@ export default function ItemsList() {
               </tr>
             </thead>
             <tbody>
-              {currentItems.map((item) => (
-                <tr key={item.id}>
+              {currentItems.map((item, index) => (
+                <motion.tr
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  key={item.id}
+                >
                   <td className="px-4 py-2">{item.id}</td>
                   <td className="px-4 py-2">{item.title}</td>
 
@@ -252,7 +259,7 @@ export default function ItemsList() {
                       Delete
                     </button>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
           </table>

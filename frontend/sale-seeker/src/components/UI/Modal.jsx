@@ -8,23 +8,20 @@ export default function Modal({ children, open, onClose, className = "" }) {
   useEffect(() => {
     const modal = dialog.current;
     if (open) {
-      modal.showModal();
+      modal.style.display = "block";
+    } else {
+      modal.style.display = "none";
     }
-    return () => modal.close();
   }, [open]);
 
   return createPortal(
     <motion.dialog
-      variants={{
-        hidden: { opacity: 0, y: 30 },
-        visible: { opacity: 1, y: 0 },
-      }}
-      initial="hidden"
-      animate="visible"
-      exit="hidden"
-      ref={dialog}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: open ? 1 : 0, y: open ? 0 : 30 }}
+      exit={{ opacity: 0, y: 30 }}
       className={`modal-class ${className}`}
       onClose={onClose}
+      ref={dialog}
     >
       {children}
     </motion.dialog>,

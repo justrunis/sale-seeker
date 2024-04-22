@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { sendPaymentInformation } from "./util/http";
 import LoadingIndicator from "./UI/LoadingIndicator";
 import ErrorBlock from "./UI/ErrorBlock";
+import { motion } from "framer-motion";
 
 export default function CheckoutForm({ cartItems, totalPrice }) {
   const [state, setState] = useState({
@@ -151,59 +152,88 @@ export default function CheckoutForm({ cartItems, totalPrice }) {
         </div>
       )}
       {!isSuccess && !isPaymentLoading && !isPaymentError && (
-        <div className="flex flex-col sm:flex-row items-start gap-5">
-          <form
-            className="flex flex-col gap-5 self-center mt-5"
-            onSubmit={handlePaymentSubmit}
-          >
-            <input
-              type="text"
-              name="number"
-              placeholder="Card Number"
-              value={state.number}
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              className={cssClasses}
-            />
-            <input
-              type="text"
-              name="name"
-              placeholder="Cardholder Name"
-              value={state.name}
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              className={cssClasses}
-            />
-            <input
-              type="text"
-              name="expiry"
-              placeholder="Expiry Date (yy/dd)"
-              value={state.expiry}
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              className={cssClasses}
-            />
-            <input
-              type="text"
-              name="cvc"
-              placeholder="CVC"
-              value={state.cvc}
-              onChange={handleInputChange}
-              onFocus={handleInputFocus}
-              className={cssClasses}
-            />
-            <button className="btn btn-secondary">Pay now</button>
-          </form>
-          <div className="self-center">
-            <Cards
-              number={state.number}
-              expiry={state.expiry}
-              cvc={state.cvc}
-              name={state.name}
-              focused={state.focus}
-            />
+        <>
+          <h1 className="text-2xl font-bold my-5 text-center">
+            Payment method
+          </h1>
+          <div className="flex flex-col sm:flex-row items-start gap-5">
+            <form
+              className="flex flex-col gap-5 self-center mt-5"
+              onSubmit={handlePaymentSubmit}
+            >
+              <motion.input
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                type="text"
+                name="number"
+                placeholder="Card Number"
+                value={state.number}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                className={cssClasses}
+              />
+              <motion.input
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+                type="text"
+                name="name"
+                placeholder="Cardholder Name"
+                value={state.name}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                className={cssClasses}
+              />
+              <motion.input
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+                type="text"
+                name="expiry"
+                placeholder="Expiry Date (yy/dd)"
+                value={state.expiry}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                className={cssClasses}
+              />
+              <motion.input
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+                type="text"
+                name="cvc"
+                placeholder="CVC"
+                value={state.cvc}
+                onChange={handleInputChange}
+                onFocus={handleInputFocus}
+                className={cssClasses}
+              />
+              <motion.button
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.0 }}
+                className="btn btn-secondary"
+              >
+                Pay now
+              </motion.button>
+            </form>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.2 }}
+              className="self-center"
+            >
+              <Cards
+                number={state.number}
+                expiry={state.expiry}
+                cvc={state.cvc}
+                name={state.name}
+                focused={state.focus}
+              />
+            </motion.div>
           </div>
-        </div>
+        </>
       )}
     </>
   );

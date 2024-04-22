@@ -17,6 +17,7 @@ import Pager from "../UI/Pager";
 import Modal from "../UI/Modal";
 import ReviewModal from "../ReviewModal";
 import ItemRating from "../ItemRating";
+import { motion } from "framer-motion";
 
 export default function Item() {
   const params = useParams();
@@ -67,7 +68,12 @@ export default function Item() {
 
   if (item) {
     content = (
-      <div className="flex flex-col md:flex-row justify-around content-center">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="flex flex-col md:flex-row justify-around content-center"
+      >
         <div className="justify-self-center self-center">
           <img
             className="w-100 h-80 object-cover rounded-lg bg-base-100"
@@ -76,26 +82,56 @@ export default function Item() {
           />
         </div>
         <div className="flex flex-col max-w-96">
-          <div className="mt-5">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mt-5"
+          >
             <h1 className="text-3xl font-bold mt-10">{item.title}</h1>
-          </div>
-          <div className="mt-5">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mt-5"
+          >
             <h2 className="text-l font-semibold">Description</h2>
             <p className="mt-2 text-sm">{item.description}</p>
-          </div>
-          <div className="mt-5">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="mt-5"
+          >
             <h2 className="text-l font-semibold">Item id</h2>
             <p className="mt-2 text-sm">{item.id}</p>
-          </div>
-          <div className="mt-5">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8 }}
+            className="mt-5"
+          >
             <h2 className="text-l font-semibold">Category</h2>
             <p className="mt-2 text-sm">{item.category}</p>
-          </div>
-          <div className="mt-5">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.0 }}
+            className="mt-5"
+          >
             <ItemRating key={item.id} id={item.id} />
-          </div>
+          </motion.div>
         </div>
-        <div className="flex items-center justify-between gap-5 bg-base-100 p-10 h-25 rounded justify-self-center self-center shadow-2xl">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.2 }}
+          className="flex items-center justify-between gap-5 bg-base-100 p-10 h-25 rounded justify-self-center self-center shadow-2xl"
+        >
           <span className="text-3xl font-bold dark:text-white">
             {currencyFormatter.format(item.price)}
           </span>
@@ -103,8 +139,8 @@ export default function Item() {
             Add to cart
             <IoIosCart className="inline-block ml-2" />
           </button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     );
   }
 
@@ -169,9 +205,15 @@ export default function Item() {
                 </div>
               ) : (
                 <>
-                  {" "}
-                  {currentReviews.map((review) => (
-                    <Review key={review.id} review={review} />
+                  {currentReviews.map((review, index) => (
+                    <motion.div
+                      key={review.id}
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: 0.2 * index }}
+                    >
+                      <Review key={review.id} review={review} />
+                    </motion.div>
                   ))}
                   <div className="mt-5 flex justify-center">
                     <Pager

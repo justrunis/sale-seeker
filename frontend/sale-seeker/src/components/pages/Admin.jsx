@@ -42,6 +42,8 @@ export default function Admin() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+
   const usersPerPage = 5;
 
   function handleDeleteUser() {
@@ -150,8 +152,13 @@ export default function Admin() {
             </tr>
           </thead>
           <tbody>
-            {currentItems.map((user) => (
-              <tr key={user.id}>
+            {currentItems.map((user, index) => (
+              <motion.tr
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                key={user.id}
+              >
                 <td className="px-4 py-2">{user.id}</td>
                 <td className="px-4 py-2">{user.username}</td>
                 <td className="px-4 py-2">{user.email}</td>
@@ -172,7 +179,7 @@ export default function Admin() {
                     Delete
                   </button>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>
@@ -244,11 +251,29 @@ export default function Admin() {
           Admin panel
         </h1>
 
-        <Tabs>
+        <Tabs onSelect={(index) => setSelectedTabIndex(index)}>
           <TabList className="flex bg-base-100 p-2 rounded-t-md gap-5">
-            <Tab className="btn btn-primary">Users</Tab>
-            <Tab className="btn btn-primary">Items</Tab>
-            <Tab className="btn btn-primary">Orders</Tab>
+            <Tab
+              className={
+                selectedTabIndex === 0 ? "btn btn-primary" : "btn btn-secondary"
+              }
+            >
+              Users
+            </Tab>
+            <Tab
+              className={
+                selectedTabIndex === 1 ? "btn btn-primary" : "btn btn-secondary"
+              }
+            >
+              Items
+            </Tab>
+            <Tab
+              className={
+                selectedTabIndex === 2 ? "btn btn-primary" : "btn btn-secondary"
+              }
+            >
+              Orders
+            </Tab>
           </TabList>
           <hr />
 
