@@ -34,6 +34,7 @@
     "react-router-dom": "^6.22.3",
     "react-scripts": "^5.0.1",
     "react-tabs": "^6.0.2",
+    "react-textarea-autosize": "^8.5.3",
     "react-toastify": "^10.0.5",
     "redux": "^5.0.1",
     "web-vitals": "^3.5.2"

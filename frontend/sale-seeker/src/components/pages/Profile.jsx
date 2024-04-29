@@ -52,7 +52,7 @@ export default function Profile() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
+                transition={{ duration: 0.5 }}
               >
                 <TabList className="flex bg-base-100 p-2 rounded-t-md gap-5">
                   <Tab

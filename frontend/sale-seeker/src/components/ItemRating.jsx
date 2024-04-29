@@ -38,16 +38,24 @@ export default function ItemRating({ id }) {
         <div className="flex justify-center">
           <ErrorBlock title="An error has occurred" message={error.message} />
         </div>
+      ) : ratingValue > 0 ? (
+        <>
+          <div className="flex items-center mt-2.5 mb-5">
+            <Rating
+              name="half-rating-read"
+              value={ratingValue}
+              precision={0.1}
+              readOnly
+            />
+            <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
+              {round(averageRating, 1)}
+            </span>
+          </div>
+        </>
       ) : (
         <div className="flex items-center mt-2.5 mb-5">
-          <Rating
-            name="half-rating-read"
-            value={ratingValue}
-            precision={0.1}
-            readOnly
-          />
-          <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-            {round(averageRating, 1)}
+          <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
+            No rating
           </span>
         </div>
       )}

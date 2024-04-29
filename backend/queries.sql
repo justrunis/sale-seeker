@@ -36,10 +36,15 @@ CREATE TABLE orders (
     id SERIAL PRIMARY KEY,
     total DECIMAL NOT NULL,
     items JSONB NOT NULL,
-    user_id INT REFERENCES users(id),
+    user_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     status VARCHAR(50) DEFAULT 'Pending'
 );
+
+ALTER TABLE orders
+ADD COLUMN user_id INT;
+
+
 
 INSERT INTO items (title, description, price, image, rating, category) 
 VALUES 

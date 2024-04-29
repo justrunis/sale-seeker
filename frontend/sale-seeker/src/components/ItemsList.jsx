@@ -30,9 +30,6 @@ export default function ItemsList() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [isAdding, setIsAdding] = useState(false);
-  const [addedItem, setAddedItem] = useState(null);
-
   const [isEditing, setIsEditing] = useState(false);
   const [editedItem, setEditedItem] = useState(null);
 
@@ -40,10 +37,6 @@ export default function ItemsList() {
   const [deleteId, setDeleteId] = useState(null);
 
   const itemsPerPage = 5;
-
-  function handlePageChange(page) {
-    setCurrentPage(page);
-  }
 
   function handleItemEdit(item, id) {
     editItemMutation({ id, item });

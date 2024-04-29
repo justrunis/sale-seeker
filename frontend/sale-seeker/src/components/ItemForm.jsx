@@ -100,6 +100,10 @@ export default function ItemForm({
         required
         isTextArea={true}
         className={inputClasses}
+        onInput={(e) => {
+          e.target.style.height = "auto";
+          e.target.style.height = e.target.scrollHeight + "px";
+        }}
       />
       <div className="mb-4">
         <Select
@@ -126,7 +130,7 @@ export default function ItemForm({
         <button
           disabled={isPending}
           type="submit"
-          className="w-full bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+          className="btn btn-primary w-full"
         >
           {item ? "Edit" : "Add"}
         </button>
@@ -135,7 +139,7 @@ export default function ItemForm({
         <button
           disabled={isPending}
           onClick={onClose}
-          className="w-full bg-red-400 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+          className="btn btn-accent w-full"
         >
           Close
         </button>

@@ -56,6 +56,7 @@ export default function OrdersList() {
         queryKey: ["orders"],
       });
       toast.success("Order status changed successfully.");
+      setIsEditingOrderStatus(false);
     },
   });
 
@@ -101,6 +102,7 @@ export default function OrdersList() {
   let currentOrders = [];
 
   if (orders) {
+    console.log(orders);
     totalPages = Math.ceil(orders.length / ordersPerPage);
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;

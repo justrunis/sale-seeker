@@ -202,9 +202,10 @@ export default function Admin() {
           <div className="p-10">
             <h2 className="text-2xl font-bold text-red-500">Are you sure?</h2>
             <p className="text-red-500 my-5">
-              Do you really want to delete this user? This action cannot be
-              undone.
+              Do you really want to delete this user? All users orders, items
+              and reviews will be deleted as well.
             </p>
+            <p className="text-red-500 my-5">This action cannot be undone.</p>
             {isDeleteError && (
               <ErrorBlock
                 title="An error occurred!"

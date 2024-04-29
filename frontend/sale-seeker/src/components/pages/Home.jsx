@@ -7,6 +7,7 @@ import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
 import Pager from "../UI/Pager";
 import { motion, AnimatePresence } from "framer-motion";
+import SearchBar from "../SearchBar";
 
 export default function Home() {
   const {
@@ -26,7 +27,7 @@ export default function Home() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 6;
+  const itemsPerPage = 3;
   const totalPages = Math.ceil(items?.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -95,6 +96,7 @@ export default function Home() {
   return (
     <>
       <Header />
+      <SearchBar />
       <div className="container mx-auto px-auto">
         <h1 className="text-3xl font-bold text-center mt-10">Home</h1>
         {content}

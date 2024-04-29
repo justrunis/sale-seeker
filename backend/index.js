@@ -198,6 +198,9 @@ app.delete("/users/:id", auth, async (req, res) => {
     return res.status(403).json({ message: "Unauthorized" });
   }
   const { id } = req.params;
+  await query("DELETE FROM reviews WHERE user_id = $1", [id]);
+  await query("DELETE FROM items WHERE user_id = $1", [id]);
+  await query("DELETE FROM orders WHERE user_id = $1", [id]);
   const result = await query("DELETE FROM users WHERE id = $1", [id]);
   if (result.rowCount === 0) {
     return res.status(404).json({ message: "User not found." });
@@ -404,6 +407,7 @@ app.get("/orders", auth, async (req, res) => {
   if (result.rowCount === 0) {
     return res.json([]);
   }
+
   res.json(result.rows);
 });
 
