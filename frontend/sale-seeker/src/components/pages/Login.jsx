@@ -22,10 +22,9 @@ export default function Login() {
     },
   };
 
-  const { isLoading, sendRequest } = useHttp(
-    "http://localhost:4000/login",
-    requestConfig
-  );
+  const URL = import.meta.env.VITE_API_URL;
+
+  const { isLoading, sendRequest } = useHttp(`${URL}/login`, requestConfig);
 
   const handleLogin = async (event) => {
     event.preventDefault();

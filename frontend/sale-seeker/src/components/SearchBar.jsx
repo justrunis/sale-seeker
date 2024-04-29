@@ -11,7 +11,7 @@ export default function SearchBar({ handleSearch, handlePriceSort }) {
         className="input input-bordered text-base-content"
         onChange={(e) => handleSearch(e.target.value)}
       />
-      <Select
+      {/* <Select
         label="Sort by Price"
         id="sort-price"
         options={[
@@ -20,7 +20,7 @@ export default function SearchBar({ handleSearch, handlePriceSort }) {
         ]}
         onChange={(e) => handlePriceSort(e.target.value)}
         className="input input-bordered text-base-content"
-      />
+      /> */}
     </div>
   );
 }

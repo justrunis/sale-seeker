@@ -8,8 +8,10 @@ import ErrorBlock from "../UI/ErrorBlock";
 import Pager from "../UI/Pager";
 import { motion, AnimatePresence } from "framer-motion";
 import SearchBar from "../SearchBar";
+import Input from "../UI/Input";
 
 export default function Home() {
+  const [searchQuery, setSearchQuery] = useState("");
   const {
     data: items,
     isLoading,
@@ -28,10 +30,13 @@ export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = 3;
-  const totalPages = Math.ceil(items?.length / itemsPerPage);
+  const filteredItems = items?.filter((item) =>
+    item.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+  const totalPages = Math.ceil(filteredItems?.length / itemsPerPage);
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = items?.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filteredItems?.slice(indexOfFirstItem, indexOfLastItem);
 
   let content;
 
@@ -93,10 +98,15 @@ export default function Home() {
     );
   }
 
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    setCurrentPage(1); // Reset pagination when search query changes
+  };
+
   return (
     <>
       <Header />
-      <SearchBar />
+      <SearchBar handleSearch={handleSearch} />
       <div className="container mx-auto px-auto">
         <h1 className="text-3xl font-bold text-center mt-10">Home</h1>
         {content}

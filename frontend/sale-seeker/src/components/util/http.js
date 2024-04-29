@@ -1,8 +1,9 @@
 import { QueryClient } from "@tanstack/react-query";
 import { getToken } from "../../auth/auth";
+import env from "react-dotenv";
 
 export const queryClient = new QueryClient();
-const BASE_URL = "http://localhost:4000";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function fetchItems({ signal }) {
   const URL = `${BASE_URL}/items`;

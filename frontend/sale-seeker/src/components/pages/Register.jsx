@@ -60,10 +60,9 @@ export default function Register() {
     },
   };
 
-  const { isLoading, sendRequest } = useHttp(
-    "http://localhost:4000/register",
-    requestConfig
-  );
+  const URL = import.meta.env.VITE_API_URL;
+
+  const { isLoading, sendRequest } = useHttp(`${URL}/register`, requestConfig);
 
   async function handleRegistration(event) {
     event.preventDefault();
