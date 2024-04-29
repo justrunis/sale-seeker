@@ -75,16 +75,13 @@ export default function UserModal({
                 <option value="admin">Admin</option>
                 <option value="user">User</option>
               </select>
-              <button
-                type="submit"
-                className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
-              >
+              <button type="submit" className="btn btn-primary">
                 Save
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="text-white bg-red-400 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+                className="btn btn-accent"
               >
                 Close
               </button>

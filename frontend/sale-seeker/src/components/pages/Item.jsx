@@ -150,7 +150,6 @@ export default function Item() {
   }
 
   function handleReviewModal() {
-    console.log("Review modal");
     setIsReviewModalOpen(true);
   }
 

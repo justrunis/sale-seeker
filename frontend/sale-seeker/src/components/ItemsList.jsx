@@ -30,6 +30,9 @@ export default function ItemsList() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
+  const [isAdding, setIsAdding] = useState(false);
+  const [addedItem, setAddedItem] = useState(null);
+
   const [isEditing, setIsEditing] = useState(false);
   const [editedItem, setEditedItem] = useState(null);
 

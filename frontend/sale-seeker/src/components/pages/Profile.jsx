@@ -27,9 +27,9 @@ export default function Profile() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex flex-col justify-center container mx-auto p-10 bg-secondary h-100">
+      <div className="container mx-auto p-10 bg-secondary h-100 flex-grow">
         <h1 className="text-3xl font-bold mb-4 text-center mt-5">Profile</h1>
         {isError && (
           <div className="flex justify-center">
@@ -85,6 +85,6 @@ export default function Profile() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }

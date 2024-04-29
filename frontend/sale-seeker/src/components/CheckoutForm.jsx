@@ -7,6 +7,8 @@ import { sendPaymentInformation } from "./util/http";
 import LoadingIndicator from "./UI/LoadingIndicator";
 import ErrorBlock from "./UI/ErrorBlock";
 import { motion } from "framer-motion";
+import { cartActions } from "../store/slices/cartSlice";
+import { useDispatch } from "react-redux";
 
 export default function CheckoutForm({ cartItems, totalPrice }) {
   const [state, setState] = useState({
@@ -19,6 +21,8 @@ export default function CheckoutForm({ cartItems, totalPrice }) {
 
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const dispatch = useDispatch();
+
   const {
     mutate: sendPaymentInformationMutation,
     isLoading: isPaymentLoading,
@@ -28,6 +32,7 @@ export default function CheckoutForm({ cartItems, totalPrice }) {
     mutationFn: sendPaymentInformation,
     onSuccess: (data) => {
       toast.success("Payment successful!", data);
+      dispatch(cartActions.clearCart());
       setIsSuccess(true);
     },
     onError: (error) => {

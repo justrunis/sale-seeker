@@ -119,7 +119,7 @@ export default function OrdersList() {
         <div className="flex justify-center">
           <ErrorBlock
             title="An error occurred while fetching orders"
-            message={error.message || "Failed to fetch orders"}
+            message={error.info?.message || "Failed to fetch orders"}
           />
         </div>
       )}

@@ -127,7 +127,7 @@ export default function Admin() {
       <div className="flex justify-center">
         <ErrorBlock
           title="An error occurred!"
-          message={error.info?.message || "Failed to fetch items."}
+          message={error.info?.message || "Failed to fetch users."}
         />
       </div>
     );
@@ -195,7 +195,7 @@ export default function Admin() {
   }
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
       {isDeleting && (
         <Modal onClose={handleStopDelete} open={isDeleting}>
@@ -246,7 +246,7 @@ export default function Admin() {
           error={editError}
         />
       )}
-      <div className="container mx-auto p-10 bg-secondary h-100">
+      <div className="container mx-auto p-10 bg-secondary h-100 flex-grow">
         <h1 className="text-3xl font-bold uppercase mb-10 text-center">
           Admin panel
         </h1>
@@ -321,6 +321,6 @@ export default function Admin() {
           </TabPanel>
         </Tabs>
       </div>
-    </>
+    </div>
   );
 }

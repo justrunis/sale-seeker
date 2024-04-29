@@ -51,6 +51,10 @@ const cartSlice = createSlice({
     hideCart(state) {
       state.show = false;
     },
+    clearCart(state) {
+      state.items = [];
+      state.totalQuantity = 0;
+    },
     getTotalPrice(state) {
       let totalPrice = 0;
       state.items.forEach((item) => {

@@ -39,7 +39,10 @@ export async function fetchItem({ id, signal }) {
 
 export async function fetchUsers({ signal }) {
   const URL = `${BASE_URL}/users`;
-  const response = await fetch(URL, { signal });
+  const response = await fetch(URL, {
+    signal,
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
 
   if (!response.ok) {
     const error = new Error("An error occurred while fetching users");
@@ -55,7 +58,12 @@ export async function fetchUsers({ signal }) {
 
 export async function fetchUser({ signal, id }) {
   const URL = `${BASE_URL}/users/${id}`;
-  const response = await fetch(URL, { signal });
+  const response = await fetch(URL, {
+    signal,
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
 
   if (!response.ok) {
     const error = new Error("An error occurred while fetching the user");
@@ -94,6 +102,9 @@ export async function deleteUser({ id }) {
   const URL = `${BASE_URL}/users/${id}`;
   const response = await fetch(URL, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
   });
 
   if (!response.ok) {
@@ -113,6 +124,7 @@ export async function editUser({ id, user }) {
     body: JSON.stringify(user),
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
     },
   });
 

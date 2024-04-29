@@ -94,8 +94,8 @@ export default function Header() {
                   to="/profile"
                   className="text-white hover:text-gray-300 flex items-center gap-1"
                 >
-                  Profile
                   <CgProfile />
+                  Profile
                 </Link>
               </li>
               {getUserRole(getToken()) === "admin" && (

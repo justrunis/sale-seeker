@@ -169,7 +169,11 @@ app.get("/items/:id", async (req, res) => {
 });
 
 // get all users
-app.get("/users", async (req, res) => {
+app.get("/users", auth, async (req, res) => {
+  const user = req.user;
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
   const result = await query("SELECT * FROM users");
   res.json(result.rows);
 });
@@ -188,7 +192,11 @@ app.get("/users/:id", async (req, res) => {
 });
 
 // remove a user
-app.delete("/users/:id", async (req, res) => {
+app.delete("/users/:id", auth, async (req, res) => {
+  const user = req.user;
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
   const { id } = req.params;
   const result = await query("DELETE FROM users WHERE id = $1", [id]);
   if (result.rowCount === 0) {
@@ -198,7 +206,11 @@ app.delete("/users/:id", async (req, res) => {
 });
 
 // update a user
-app.put("/users/:id", async (req, res) => {
+app.put("/users/:id", auth, async (req, res) => {
+  const user = req.user;
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
   const { id, username, email, role } = req.body;
   console.log(id);
   console.log(req.body);
@@ -248,7 +260,6 @@ app.post("/items", auth, async (req, res) => {
 
 // delete an item
 app.delete("/items/:id", auth, async (req, res) => {
-  console.log("DELETE ITEM");
   const user = req.user;
   if (user.role !== "admin") {
     return res.status(403).json({ message: "Unauthorized" });

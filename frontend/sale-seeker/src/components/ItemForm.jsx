@@ -106,11 +106,11 @@ export default function ItemForm({
           id="category"
           name="category"
           label="Category"
-          value={item?.category}
+          value={item?.category || ""}
           onChange={(e) =>
             setEditingItem({ ...editingItem, category: e.target.value })
           }
-          defaultValue={editingItem?.category.toLowerCase()}
+          defaultValue={editingItem?.category?.toLowerCase()}
           options={selectOptions}
           className="mt-1 p-2 block w-full border border-secondary rounded-md shadow-sm focus:outline-none"
         />

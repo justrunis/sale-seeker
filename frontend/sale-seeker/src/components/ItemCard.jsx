@@ -49,17 +49,25 @@ export default function ItemCard({ item, rating }) {
           <h5 className="text-xl font-semibold tracking-tight text-base-900 dark:text-white">
             {item.title}
           </h5>
-          <div className="flex items-center mt-2.5 mb-5">
-            <Rating
-              name="half-rating-read"
-              value={Number(ratingValue) || 0}
-              precision={0.1}
-              readOnly
-            />
-            <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-              {ratingValue || 0}
-            </span>
-          </div>
+          {ratingValue > 0 ? (
+            <div className="flex items-center mt-2.5 mb-5">
+              <Rating
+                name="half-rating-read"
+                value={Number(ratingValue) || 0}
+                precision={0.1}
+                readOnly
+              />
+              <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
+                {ratingValue || 0}
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center mt-2.5 mb-5">
+              <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">
+                No rating
+              </span>
+            </div>
+          )}
           <div className="flex items-center justify-between gap-3">
             <span className="text-3xl font-bold text-base-900 dark:text-white">
               {currencyFormatter.format(item.price)}
