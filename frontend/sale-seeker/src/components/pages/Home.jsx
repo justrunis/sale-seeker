@@ -2,7 +2,7 @@ import Header from "../Header";
 import ItemCard from "../ItemCard";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { fetchItems } from "../util/http";
+import { fetchItems, fetchAllAverageRatings } from "../util/http";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
 import Pager from "../UI/Pager";
@@ -17,6 +17,11 @@ export default function Home() {
   } = useQuery({
     queryKey: ["items"],
     queryFn: ({ signal }) => fetchItems({ signal }),
+  });
+
+  const { data: ratings } = useQuery({
+    queryKey: ["reviews"],
+    queryFn: ({ signal }) => fetchAllAverageRatings({ signal }),
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -66,7 +71,12 @@ export default function Home() {
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <ItemCard item={item} />
+                <ItemCard
+                  item={item}
+                  rating={ratings?.filter(
+                    (rating) => rating.item_id === item.id
+                  )}
+                />
               </motion.div>
             ))}
           </AnimatePresence>

@@ -18,6 +18,7 @@ import Modal from "../UI/Modal";
 import ReviewModal from "../ReviewModal";
 import ItemRating from "../ItemRating";
 import { motion } from "framer-motion";
+import TypingAnimation from "../Animations/TypingAnimation";
 
 export default function Item() {
   const params = useParams();
@@ -167,14 +168,14 @@ export default function Item() {
   }
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
       <ReviewModal
         close={handleStopReviewModal}
         isOpen={isReviewModalOpen}
         item={item || ""}
       />
-      <div className="container mx-auto p-10 bg-secondary h-100">
+      <div className="container mx-auto p-10 bg-secondary h-100 flex-grow">
         {content}
         <h2 className="text-xl font-semibold mb-5">Reviews</h2>
 
@@ -196,13 +197,20 @@ export default function Item() {
           ) : (
             <>
               {reviews && reviews.length === 0 ? (
-                <div className="flex justify-center items-center flex-col">
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="flex justify-center items-center flex-col"
+                >
                   <h2 className="text-xl font-bold mb-5">No reviews found.</h2>
-                  <p>
-                    Be the first to write a review for this item. Click the
-                    button above.
-                  </p>
-                </div>
+                  <TypingAnimation
+                    el="p"
+                    text="Be the first to write a review for this item. Click the button above."
+                    className="text-center"
+                    once
+                  />
+                </motion.div>
               ) : (
                 <>
                   {currentReviews.map((review, index) => (
@@ -228,6 +236,6 @@ export default function Item() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

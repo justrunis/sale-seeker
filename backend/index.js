@@ -344,6 +344,18 @@ app.get("/reviews/average/:id", async (req, res) => {
   res.json(result.rows[0]);
 });
 
+// get all reviews average for each item
+app.get("/allReviews/average", async (req, res) => {
+  const result = await query(
+    "SELECT item_id, AVG(rating) FROM reviews GROUP BY item_id"
+  );
+
+  if (result.rowCount === 0) {
+    return res.json([]);
+  }
+  res.json(result.rows);
+});
+
 // payment information
 app.post("/payment", auth, async (req, res) => {
   // will need to check if user didn't change the prices in the frontend later here
@@ -383,6 +395,7 @@ app.get("/orders", auth, async (req, res) => {
   res.json(result.rows);
 });
 
+// delete an order
 app.delete("/orders/:id", auth, async (req, res) => {
   const user = req.user;
   const orderId = req.params.id;
@@ -399,6 +412,7 @@ app.delete("/orders/:id", auth, async (req, res) => {
   res.json({ message: "Order deleted." });
 });
 
+// change order status
 app.put("/orderStatusChange/:id", auth, async (req, res) => {
   const user = req.user;
   const orderId = req.params.id;
@@ -420,6 +434,7 @@ app.put("/orderStatusChange/:id", auth, async (req, res) => {
   res.json({ message: "Order status changed." });
 });
 
+// get orders for a user
 app.get("/orders/user/:id", auth, async (req, res) => {
   const user = req.user;
   const userId = req.params.id;

@@ -17,3 +17,8 @@ export const dateFormating = new Intl.DateTimeFormat("en-GB", {
   month: "long",
   day: "2-digit",
 });
+
+export const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return dateFormating.format(date);
+};

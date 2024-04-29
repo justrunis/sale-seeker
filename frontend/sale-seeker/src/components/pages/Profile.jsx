@@ -6,12 +6,13 @@ import ErrorBlock from "../UI/ErrorBlock";
 import ProfileInformation from "../ProfileInformation";
 import UserOrders from "../UserOrders";
 import { getToken, getUserId } from "../../auth/auth";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Profile() {
   const token = getToken();
   const userId = getUserId(token);
-
-  console.log(userId);
 
   const {
     data: user,
@@ -22,6 +23,8 @@ export default function Profile() {
     queryKey: ["user", { id: userId }],
     queryFn: ({ signal }) => fetchUser({ signal, id: userId }),
   });
+
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
   return (
     <>
@@ -45,8 +48,40 @@ export default function Profile() {
         )}
         {!isLoading && !isError && (
           <div className="mt-8 flex flex-col">
-            <ProfileInformation user={user} />
-            <UserOrders userId={userId} />
+            <Tabs onSelect={(index) => setSelectedTabIndex(index)}>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <TabList className="flex bg-base-100 p-2 rounded-t-md gap-5">
+                  <Tab
+                    className={
+                      selectedTabIndex === 0
+                        ? "btn btn-primary"
+                        : "btn btn-secondary"
+                    }
+                  >
+                    Profile
+                  </Tab>
+                  <Tab
+                    className={
+                      selectedTabIndex === 1
+                        ? "btn btn-primary"
+                        : "btn btn-secondary"
+                    }
+                  >
+                    My Orders
+                  </Tab>
+                </TabList>
+              </motion.div>
+              <TabPanel>
+                <ProfileInformation user={user} />
+              </TabPanel>
+              <TabPanel>
+                <UserOrders userId={userId} />
+              </TabPanel>
+            </Tabs>
           </div>
         )}
       </div>

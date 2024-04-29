@@ -20,16 +20,14 @@ export default function UserOrders({ userId }) {
     queryFn: ({ signal }) => fetchUserOrders({ signal, userId }),
   });
 
-  console.log(orders);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.5, delay: 0.4 }}
-      className="menu bg-base-100 w-100 rounded-box py-8"
+      transition={{ duration: 0.5 }}
+      className="menu bg-base-100 w-100 rounded-b-box py-8"
     >
-      <h2 className="text-2xl font-bold mb-4 text-center">Orders</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">My Orders</h2>
       {isError && (
         <div className="flex justify-center">
           <ErrorBlock
@@ -69,7 +67,7 @@ export default function UserOrders({ userId }) {
                   <motion.tr
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.6 + index * 0.2 }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
                     key={order.id}
                   >
                     <td className="px-4 py-2">{order.id}</td>

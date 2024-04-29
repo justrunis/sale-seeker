@@ -70,7 +70,6 @@ export async function fetchUser({ signal, id }) {
 }
 
 export async function fetchUserOrders({ signal, userId }) {
-  console.log("USERID", userId);
   const URL = `${BASE_URL}/orders/user/${userId}`;
   const response = await fetch(URL, {
     headers: {
@@ -109,7 +108,6 @@ export async function deleteUser({ id }) {
 
 export async function editUser({ id, user }) {
   const URL = `${BASE_URL}/users/${id}`;
-  console.log("USER", user);
   const response = await fetch(URL, {
     method: "PUT",
     body: JSON.stringify(user),
@@ -251,6 +249,30 @@ export async function fetchAverageRating({ id, signal }) {
   return averageRating.avg;
 }
 
+export async function fetchAllAverageRatings({ signal }) {
+  const URL = `${BASE_URL}/allReviews/average`;
+  const response = await fetch(URL, {
+    method: "GET",
+    signal,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error(
+      "An error occurred while fetching the average ratings"
+    );
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+  const averageRatings = await response.json();
+
+  return averageRatings;
+}
+
 export async function fetchAllOrders() {
   const URL = `${BASE_URL}/orders`;
   const response = await fetch(URL, {
@@ -272,8 +294,6 @@ export async function fetchAllOrders() {
 }
 
 export async function deleteOrder({ id }) {
-  console.log("ID", id);
-
   const URL = `${BASE_URL}/orders/${id}`;
   const response = await fetch(URL, {
     method: "DELETE",
@@ -293,9 +313,6 @@ export async function deleteOrder({ id }) {
 }
 
 export async function changeOrderStatus({ id, status }) {
-  console.log("ID", id);
-  console.log("STATUS", status);
-
   const URL = `${BASE_URL}/orderStatusChange/${id}`;
 
   const response = await fetch(URL, {

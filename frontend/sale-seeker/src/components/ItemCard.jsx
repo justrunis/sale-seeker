@@ -4,11 +4,11 @@ import { cartActions } from "../store/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { currencyFormatter } from "./util/formating";
 import { IoIosCart } from "react-icons/io";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
 
-export default function ItemCard({ item }) {
+export default function ItemCard({ item, rating }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,6 +23,14 @@ export default function ItemCard({ item }) {
   }
 
   const [ratingValue, setRatingValue] = useState(Number(item.rating));
+
+  useEffect(() => {
+    if (rating) {
+      setRatingValue(Number(rating[0]?.avg || 0).toFixed(2));
+    } else {
+      setRatingValue(0);
+    }
+  }, [ratingValue]);
 
   return (
     <>
@@ -44,12 +52,12 @@ export default function ItemCard({ item }) {
           <div className="flex items-center mt-2.5 mb-5">
             <Rating
               name="half-rating-read"
-              value={ratingValue}
+              value={Number(ratingValue) || 0}
               precision={0.1}
               readOnly
             />
             <span className="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-3">
-              {item.rating}
+              {ratingValue || 0}
             </span>
           </div>
           <div className="flex items-center justify-between gap-3">
