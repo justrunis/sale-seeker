@@ -131,18 +131,23 @@ export default function Header() {
             </>
           )}
           {!isLoggedIn && (
-            <li>
-              <Link to="/login" className="text-white hover:text-gray-300">
-                Login
-              </Link>
-            </li>
-          )}
-          {!isLoggedIn && (
-            <li>
-              <Link to="/register" className="text-white hover:text-gray-300">
-                Register
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/" className="text-white hover:text-gray-300">
+                  Welcome
+                </Link>
+              </li>
+              <li>
+                <Link to="/login" className="text-white hover:text-gray-300">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/register" className="text-white hover:text-gray-300">
+                  Register
+                </Link>
+              </li>
+            </>
           )}
           {/* Theme toggle */}
           <div className=" lg:flex lg:items-center lg:w-auto lg:space-x-4">

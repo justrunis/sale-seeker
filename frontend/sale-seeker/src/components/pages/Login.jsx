@@ -6,6 +6,7 @@ import useHttp from "../../hooks/useHttp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../../../public/logos/png/logo-color.png";
+import { motion } from "framer-motion";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -55,7 +56,10 @@ export default function Login() {
     <>
       <Header />
       <div className="w-full max-w-xl p-8 mx-auto">
-        <form
+        <motion.form
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={handleLogin}
         >
@@ -72,19 +76,22 @@ export default function Login() {
             id="password"
             type="password"
           />
-          <button
+          <motion.button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2 mx-2"
             type="submit"
             disabled={isLoading}
+            whileHover={{ scale: 1.2 }}
           >
             {isLoading ? "Loading..." : "Login"}
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2 mx-2"
             type="reset"
+            disabled={isLoading}
+            whileHover={{ scale: 1.2 }}
           >
             Clear
-          </button>
+          </motion.button>
           <p>
             Don't have an account yet?{" "}
             <a
@@ -94,7 +101,7 @@ export default function Login() {
               Register
             </a>
           </p>
-        </form>
+        </motion.form>
       </div>
     </>
   );

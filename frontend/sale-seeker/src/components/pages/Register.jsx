@@ -7,6 +7,7 @@ import useHttp from "../../hooks/useHttp";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/logos/png/logo-color.png";
+import { motion } from "framer-motion";
 
 export default function Register() {
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
@@ -73,6 +74,7 @@ export default function Register() {
 
     if (data.password !== data["confirm-password"]) {
       setPasswordsAreNotEqual(true);
+      toast.error("Passwords are not equal.");
       return;
     }
 
@@ -116,7 +118,10 @@ export default function Register() {
     <>
       <Header />
       <div className="w-full max-w-xl p-8 mx-auto">
-        <form
+        <motion.form
+          initial={{ opacity: 0, y: -30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={handleRegistration}
         >
@@ -193,33 +198,36 @@ export default function Register() {
             }`}
           />
 
-          {passwordsAreNotEqual && (
+          {confirmPasswordHasError && (
             <p className="text-red-500 text-xs italic">
               Passwords are not equal
             </p>
           )}
 
-          <button
+          <motion.button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2 mx-2"
             type="submit"
             disabled={isLoading}
+            whileHover={{ scale: 1.2 }}
           >
             {isLoading ? "Loading..." : "Register"}
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2 mx-2"
             type="button"
             onClick={clearInputs}
+            disabled={isLoading}
+            whileHover={{ scale: 1.2 }}
           >
             Clear
-          </button>
+          </motion.button>
           <p>
             Already have an account?{" "}
             <a className="text-blue-500 hover:text-blue-800 my-2" href="/login">
               Login
             </a>
           </p>
-        </form>
+        </motion.form>
       </div>
     </>
   );
