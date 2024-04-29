@@ -26,9 +26,10 @@ const db = new Pool({
   database: process.env.DB_DB,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  // ssl: {
-  //   rejectUnauthorized: false,
-  // },
+  // comment the ssl line for local development because it will cause an error if the database is not set up for ssl connections
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 /**
