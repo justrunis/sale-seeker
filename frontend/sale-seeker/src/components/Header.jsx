@@ -11,6 +11,7 @@ import { loginActions } from "../store/slices/loginSlice";
 import { cartActions } from "../store/slices/cartSlice";
 import { toast } from "react-toastify";
 import { getToken, getUserRole } from "../auth/auth";
+import { FcAbout } from "react-icons/fc";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -149,6 +150,15 @@ export default function Header() {
               </li>
             </>
           )}
+          <li>
+            <Link
+              to="/about"
+              className="text-white hover:text-gray-300 flex items-center gap-1"
+            >
+              <FcAbout />
+              About
+            </Link>
+          </li>
           {!isLoggedIn && (
             <>
               <li>
