@@ -14,7 +14,7 @@ import Admin from "./components/pages/Admin";
 import CheckoutPage from "./components/pages/Checkout";
 import Welcome from "./components/pages/Welcome";
 import Profile from "./components/pages/Profile";
-import { AnimatePresence } from "framer-motion";
+import ErrorPage from "./components/pages/ErrorPage";
 
 function App() {
   return (
@@ -35,6 +35,7 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
           <Cart />
         </BrowserRouter>

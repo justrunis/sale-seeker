@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IoIosCart, IoIosHome } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
@@ -18,14 +18,26 @@ export default function Header() {
 
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
 
+  useEffect(() => {
+    const theme = localStorage.getItem("sale-seeker-theme");
+    if (theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+    }
+  }, []);
+
   function changeTheme() {
     const root = document.documentElement;
     const theme = root.getAttribute("data-theme");
 
-    if (theme === "halloween") {
+    if (
+      theme === "halloween" ||
+      localStorage.getItem("sale-seeker-theme") === "halloween"
+    ) {
       root.setAttribute("data-theme", "emerald");
+      localStorage.setItem("sale-seeker-theme", "emerald");
     } else {
       root.setAttribute("data-theme", "halloween");
+      localStorage.setItem("sale-seeker-theme", "halloween");
     }
   }
 
