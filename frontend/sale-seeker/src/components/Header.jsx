@@ -57,7 +57,9 @@ export default function Header() {
 
   return (
     <header className="bg-primary py-4 text-neutral-content flex justify-between">
-      <h1 className="text-white text-2xl font-bold ml-5">Sale Seeker</h1>
+      <Link to="/home" className="text-white text-2xl font-bold ml-5">
+        Sale Seeker
+      </Link>
       <div className="lg:hidden">
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}

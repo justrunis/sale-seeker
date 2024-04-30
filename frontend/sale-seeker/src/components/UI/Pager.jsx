@@ -1,8 +1,15 @@
 import { Button } from "@material-tailwind/react";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
-function PageButton({ children, ...props }) {
-  return <Button {...props}>{children}</Button>;
+function PageButton({ children, className, ...props }) {
+  return (
+    <Button
+      className={`btn flex justify-center items-center ${className}`}
+      {...props}
+    >
+      {children}
+    </Button>
+  );
 }
 
 export default function Pager({ totalPages, currentPage, setCurrentPage }) {

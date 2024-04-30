@@ -104,13 +104,13 @@ export default function Home() {
   };
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Header />
       <SearchBar handleSearch={handleSearch} />
-      <div className="container mx-auto px-auto">
+      <div className="container mx-auto px-auto flex-grow">
         <h1 className="text-3xl font-bold text-center mt-10">Home</h1>
         {content}
       </div>
-    </>
+    </div>
   );
 }
