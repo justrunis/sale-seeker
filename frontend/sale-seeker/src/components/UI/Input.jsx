@@ -5,12 +5,13 @@ export default function Input({
   id,
   error,
   isTextArea,
+  labelClass,
   value,
   ...props
 }) {
   return (
     <>
-      <label className="block text-sm font-bold" htmlFor={id}>
+      <label className={`block text-sm font-bold ${labelClass}`} htmlFor={id}>
         {label}
       </label>
       {isTextArea ? (

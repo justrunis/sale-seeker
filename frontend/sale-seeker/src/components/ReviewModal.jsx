@@ -66,7 +66,10 @@ export default function ReviewModal({ close, isOpen, item }) {
             isTextArea={true}
             className={inputClasses}
           />
-          <Rating name="rating" defaultValue={0} precision={0.5} />
+          <label className="block text-sm font-bold">Rating</label>
+          <span className="bg-white p-2">
+            <Rating name="rating" defaultValue={0} precision={0.5} />
+          </span>
           <div className="flex justify-end gap-5">
             <button className="btn btn-primary">Submit</button>
             <button onClick={close} className="btn btn-accent">

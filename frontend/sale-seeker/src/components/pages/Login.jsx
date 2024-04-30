@@ -6,11 +6,13 @@ import useHttp from "../../hooks/useHttp";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../../../public/logos/png/logo-color.png";
-import { motion } from "framer-motion";
+import { motion, useAnimate, stagger } from "framer-motion";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [scope, animate] = useAnimate();
 
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
   const user = useSelector((state) => state.login.user);
@@ -40,6 +42,11 @@ export default function Login() {
 
     const response = await sendRequest(JSON.stringify(user));
     if (response.error) {
+      animate(
+        "input, Input",
+        { x: [-10, 0, 10, 0] },
+        { type: "spring", duration: 0.2, delay: stagger(0.05) }
+      );
       toast.error(response.error || "Failed to login.");
       return;
     }
@@ -61,6 +68,7 @@ export default function Login() {
           transition={{ duration: 0.5 }}
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={handleLogin}
+          ref={scope}
         >
           <h2 className="text-2xl font-bold text-center">Login</h2>
           <img

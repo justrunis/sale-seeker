@@ -16,6 +16,7 @@ import ItemForm from "./ItemForm";
 import Pager from "./UI/Pager";
 import { currencyFormatter } from "./util/formating";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function ItemsList() {
   const {
@@ -242,6 +243,9 @@ export default function ItemsList() {
                   </td>
                   <td className="px-4 py-2">{item.category}</td>
                   <td className="px-4 py-2 flex gap-5">
+                    <Link to={`/item/${item.id}`} className="btn btn-secondary">
+                      View
+                    </Link>
                     <button
                       onClick={() => handleStartEdit(item)}
                       className="btn btn-primary"

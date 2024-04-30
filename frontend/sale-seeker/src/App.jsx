@@ -15,6 +15,7 @@ import CheckoutPage from "./components/pages/Checkout";
 import Welcome from "./components/pages/Welcome";
 import Profile from "./components/pages/Profile";
 import ErrorPage from "./components/pages/ErrorPage";
+import AboutUs from "./components/pages/AboutUs";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/about" element={<AboutUs />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>
           <Cart />

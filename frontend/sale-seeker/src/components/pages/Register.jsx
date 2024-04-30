@@ -8,10 +8,13 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/logos/png/logo-color.png";
 import { motion } from "framer-motion";
+import { useAnimate, stagger } from "framer-motion";
 
 export default function Register() {
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
   const navigate = useNavigate();
+
+  const [scope, animate] = useAnimate();
 
   const {
     value: usernameValue,
@@ -73,6 +76,11 @@ export default function Register() {
 
     if (data.password !== data["confirm-password"]) {
       setPasswordsAreNotEqual(true);
+      animate(
+        "input, Input",
+        { x: [-10, 0, 10, 0] },
+        { type: "spring", duration: 0.2, delay: stagger(0.05) }
+      );
       toast.error("Passwords are not equal.");
       return;
     }
@@ -83,6 +91,11 @@ export default function Register() {
       !passwordIsValid ||
       !confirmPasswordIsValid
     ) {
+      animate(
+        "input, Input",
+        { x: [-10, 0, 10, 0] },
+        { type: "spring", duration: 0.2, delay: stagger(0.05) }
+      );
       toast.error("Invalid input. Please check the form.");
       return;
     }
@@ -123,6 +136,7 @@ export default function Register() {
           transition={{ duration: 0.5 }}
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={handleRegistration}
+          ref={scope}
         >
           <h1 className="text-2xl font-bold text-center">Register</h1>
           <img
