@@ -6,6 +6,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import Pool from "pg-pool";
 import auth from "./auth/auth.js";
+import multer from "multer";
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
 
 dotenv.config();
 
@@ -18,6 +21,39 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = multer.diskStorage({
+  destination: (req, file, callBack) => {
+    callBack(null, "uploads");
+  },
+  filename: (req, file, callBack) => {
+    const extension = file.originalname.split(".").pop();
+    const fileName = file.originalname.replace(`.${extension}`, "");
+    const currentTime = new Date().toISOString();
+
+    // check if there already is an image for this item and remove it
+    if (req.body.image) {
+      console.log("DELETING IMAGE", req.body.image);
+      const publicId = req.body.image.split("/").pop().split(".")[0];
+      cloudinary.uploader.destroy(publicId, (error, result) => {
+        console.log("DELETING IMAGE", publicId, error, result);
+        if (error) {
+          console.log("Error deleting image from cloudinary", error);
+        }
+      });
+    }
+
+    const fullName = `${fileName}-${currentTime}.${extension}`;
+    callBack(null, fullName);
+  },
+});
+let upload = multer({ storage: storage });
 
 const db = new Pool({
   user: process.env.DB_USER,
@@ -224,6 +260,25 @@ app.put("/users/:id", auth, async (req, res) => {
     return res.status(404).json({ message: "User not found." });
   }
   res.json({ message: "User updated." });
+});
+
+app.post("/upload", upload.single("file"), auth, async (req, res) => {
+  const filePath = req.file.path;
+  console.log("FILE PATH", filePath);
+
+  const result = await cloudinary.uploader.upload(filePath, {
+    folder: "sale-seeker",
+    use_filename: true,
+  });
+
+  if (!result) {
+    return res.status(500).json({ message: "Failed to upload file." });
+  }
+
+  // remove the image in the uploads folder
+  fs.unlinkSync(filePath);
+
+  res.json({ url: result.secure_url });
 });
 
 // add an item

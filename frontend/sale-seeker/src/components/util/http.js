@@ -1,5 +1,6 @@
 import { QueryClient } from "@tanstack/react-query";
 import { getToken } from "../../auth/auth";
+import axios from "axios";
 import env from "react-dotenv";
 
 export const queryClient = new QueryClient();
@@ -159,6 +160,18 @@ export async function deleteItem({ id }) {
 }
 
 export async function editItem({ id, item }) {
+  const formData = new FormData();
+  formData.append("file", item.image);
+
+  const res = await axios.post(`${BASE_URL}/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  item.image = res.data.url;
+
   const URL = `${BASE_URL}/items/${id}`;
   const response = await fetch(URL, {
     method: "PUT",
@@ -180,6 +193,18 @@ export async function editItem({ id, item }) {
 }
 
 export async function addItem({ item }) {
+  const formData = new FormData();
+  formData.append("file", item.image);
+
+  const res = await axios.post(`${BASE_URL}/upload`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  item.image = res.data.url;
+
   const URL = `${BASE_URL}/items`;
   const response = await fetch(URL, {
     method: "POST",

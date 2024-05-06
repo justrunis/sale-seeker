@@ -83,7 +83,7 @@ export default function ItemForm({
         type="number"
         className={inputClasses}
       />
-      <Input
+      {/* <Input
         label="Image URL"
         value={editingItem?.image}
         onChange={(e) =>
@@ -91,13 +91,13 @@ export default function ItemForm({
         }
         required
         className={inputClasses}
-      />
-      {/* <ImagePicker
+      /> */}
+      <ImagePicker
         label="Image"
         name="image"
         value={editingItem?.image}
         onChange={(image) => setEditingItem({ ...editingItem, image })}
-      /> */}
+      />
       <Input
         label="Description"
         value={editingItem?.description}
