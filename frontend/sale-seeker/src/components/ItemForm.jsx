@@ -3,6 +3,7 @@ import Input from "./UI/Input";
 import LoadingIndicator from "./UI/LoadingIndicator";
 import Select from "./UI/Select";
 import { useState } from "react";
+import ImagePicker from "./UI/ImagePicker";
 
 export default function ItemForm({
   item,
@@ -91,6 +92,12 @@ export default function ItemForm({
         required
         className={inputClasses}
       />
+      {/* <ImagePicker
+        label="Image"
+        name="image"
+        value={editingItem?.image}
+        onChange={(image) => setEditingItem({ ...editingItem, image })}
+      /> */}
       <Input
         label="Description"
         value={editingItem?.description}

@@ -2,7 +2,6 @@ import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import pg from "pg";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import Pool from "pg-pool";
@@ -11,9 +10,9 @@ import auth from "./auth/auth.js";
 dotenv.config();
 
 const app = express();
-const port = 4000;
-const saltRounds = 10;
-const tokenExpirationTime = "24h";
+const port = 4000; // backend port
+const saltRounds = 10; // bcrypt salt rounds
+const tokenExpirationTime = "24h"; // token expiration time
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));

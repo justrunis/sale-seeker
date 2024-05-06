@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import logo from "../../../public/logos/png/logo-color.png";
 import { motion, useAnimate, stagger } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -101,12 +102,12 @@ export default function Login() {
           </motion.button>
           <p>
             Don't have an account yet?{" "}
-            <a
+            <Link
               className="text-blue-500 hover:text-blue-800 my-2"
-              href="/register"
+              to="/register"
             >
               Register
-            </a>
+            </Link>
           </p>
         </motion.form>
       </div>

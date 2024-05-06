@@ -32,6 +32,9 @@ export function getToken() {
 }
 
 export function getUserEmail(token) {
+  if (token === undefined || token === null) {
+    return;
+  }
   const decodedToken = parseJwt(token);
   return decodedToken.email;
 }
@@ -53,6 +56,17 @@ export function getUserRole(token) {
 }
 
 export function getUsername(token) {
+  if (token === undefined || token === null) {
+    return;
+  }
   const decodedToken = parseJwt(token);
   return decodedToken.username;
+}
+
+export function getExpiration(token) {
+  if (token === undefined || token === null) {
+    return;
+  }
+  const decodedToken = parseJwt(token);
+  return decodedToken.exp;
 }

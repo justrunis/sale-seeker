@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { loginActions } from "../store/slices/loginSlice";
 import { cartActions } from "../store/slices/cartSlice";
 import { toast } from "react-toastify";
-import { getToken, getUserRole } from "../auth/auth";
+import { getToken, getUserRole, getExpiration } from "../auth/auth";
 import { FcAbout } from "react-icons/fc";
 
 export default function Header() {
@@ -18,16 +18,30 @@ export default function Header() {
   const dispatch = useDispatch();
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to track menu open/close
 
-  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    useSelector((state) => state.login.isLoggedIn)
+  );
 
   const [theme, setTheme] = useState(localStorage.getItem("sale-seeker-theme"));
 
+  // Set theme on page load
   useEffect(() => {
     const theme = localStorage.getItem("sale-seeker-theme");
     if (theme) {
       document.documentElement.setAttribute("data-theme", theme);
     }
   }, []);
+
+  // Check if token is expired
+  useEffect(() => {
+    const expiration = getExpiration(getToken());
+    if (expiration && expiration < Date.now() / 1000) {
+      dispatch(loginActions.logout());
+      setIsLoggedIn(false);
+      toast.error("Session expired. Please login again.");
+      navigate("/login");
+    }
+  }, [isLoggedIn]);
 
   function changeTheme() {
     const root = document.documentElement;

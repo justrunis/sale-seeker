@@ -2,17 +2,21 @@ import Header from "../Header";
 import Input from "../UI/Input";
 import { useInput } from "../../hooks/useInput";
 import { isEmail, isNotEmpty, hasMinLength } from "../util/validation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useHttp from "../../hooks/useHttp";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import logo from "../../../public/logos/png/logo-color.png";
 import { motion } from "framer-motion";
 import { useAnimate, stagger } from "framer-motion";
+import ReCAPTCHA from "react-google-recaptcha";
+import { Link } from "react-router-dom";
 
 export default function Register() {
   const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
   const navigate = useNavigate();
+
+  const recaptcha = useRef();
 
   const [scope, animate] = useAnimate();
 
@@ -73,6 +77,12 @@ export default function Register() {
 
     const fd = new FormData(event.target);
     const data = Object.fromEntries(fd.entries());
+
+    const captchaValue = recaptcha.current.getValue();
+    if (!captchaValue) {
+      toast.error("Please complete the reCAPTCHA challenge.");
+      return;
+    }
 
     if (data.password !== data["confirm-password"]) {
       setPasswordsAreNotEqual(true);
@@ -217,6 +227,13 @@ export default function Register() {
             </p>
           )}
 
+          <ReCAPTCHA
+            ref={recaptcha}
+            sitekey={import.meta.env.VITE_SITE_KEY}
+            size="normal"
+            theme="light"
+          />
+
           <motion.button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2 mx-2"
             type="submit"
@@ -236,9 +253,12 @@ export default function Register() {
           </motion.button>
           <p>
             Already have an account?{" "}
-            <a className="text-blue-500 hover:text-blue-800 my-2" href="/login">
+            <Link
+              className="text-blue-500 hover:text-blue-800 my-2"
+              to="/login"
+            >
               Login
-            </a>
+            </Link>
           </p>
         </motion.form>
       </div>
