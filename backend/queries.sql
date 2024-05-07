@@ -44,7 +44,13 @@ CREATE TABLE orders (
 ALTER TABLE orders
 ADD COLUMN user_id INT;
 
-
+CREATE TABLE images (
+    id SERIAL PRIMARY KEY,
+    url TEXT NOT NULL,
+    public_id TEXT NOT NULL,
+    item_id INT REFERENCES items(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 INSERT INTO items (title, description, price, image, rating, category) 
 VALUES 

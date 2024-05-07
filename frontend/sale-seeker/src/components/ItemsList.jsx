@@ -140,7 +140,7 @@ export default function ItemsList() {
         </button>
       </div>
       {isEditing && (
-        <Modal onClose={handleStopEdit} open={isEditing}>
+        <Modal key="item-edit" onClose={handleStopEdit} open={isEditing}>
           <ItemForm
             item={editedItem}
             onClose={handleStopEdit}
@@ -155,7 +155,7 @@ export default function ItemsList() {
       )}
 
       {isDeleting && (
-        <Modal onClose={handleStopDelete} open={isDeleting}>
+        <Modal key="item-delete" onClose={handleStopDelete} open={isDeleting}>
           <div className="p-10">
             <h2 className="text-2xl font-bold text-red-500">Are you sure?</h2>
             <p className="text-red-500 my-5">

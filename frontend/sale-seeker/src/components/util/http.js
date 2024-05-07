@@ -160,17 +160,22 @@ export async function deleteItem({ id }) {
 }
 
 export async function editItem({ id, item }) {
-  const formData = new FormData();
-  formData.append("file", item.image);
+  console.log("item", item);
+  if (item.image === "object") {
+    console.log("item.image", item.image);
+    const formData = new FormData();
+    formData.append("file", item.image);
+    formData.append("id", id);
 
-  const res = await axios.post(`${BASE_URL}/upload`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Authorization: `Bearer ${getToken()}`,
-    },
-  });
+    const res = await axios.post(`${BASE_URL}/upload`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${getToken()}`,
+      },
+    });
 
-  item.image = res.data.url;
+    item.image = res.data.url.secure_url;
+  }
 
   const URL = `${BASE_URL}/items/${id}`;
   const response = await fetch(URL, {

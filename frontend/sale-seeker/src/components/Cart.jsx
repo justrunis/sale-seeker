@@ -33,6 +33,7 @@ export default function Cart() {
 
   return (
     <Modal
+      key="cart"
       open={useSelector((state) => state.cart.show)}
       onClose={handleCloseCart}
       className="w-100 p-4 rounded-lg shadow-lg dark:shadow-primary-dark"

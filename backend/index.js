@@ -30,24 +30,20 @@ cloudinary.config({
 
 const storage = multer.diskStorage({
   destination: (req, file, callBack) => {
+    console.log("FILE", file);
+    if (!file) {
+      return callBack("No file uploaded", null);
+    }
     callBack(null, "uploads");
   },
   filename: (req, file, callBack) => {
+    console.log("FILE", file);
+    if (!file) {
+      return callBack("No file uploaded", null);
+    }
     const extension = file.originalname.split(".").pop();
     const fileName = file.originalname.replace(`.${extension}`, "");
     const currentTime = new Date().toISOString();
-
-    // check if there already is an image for this item and remove it
-    if (req.body.image) {
-      console.log("DELETING IMAGE", req.body.image);
-      const publicId = req.body.image.split("/").pop().split(".")[0];
-      cloudinary.uploader.destroy(publicId, (error, result) => {
-        console.log("DELETING IMAGE", publicId, error, result);
-        if (error) {
-          console.log("Error deleting image from cloudinary", error);
-        }
-      });
-    }
 
     const fullName = `${fileName}-${currentTime}.${extension}`;
     callBack(null, fullName);
@@ -263,13 +259,49 @@ app.put("/users/:id", auth, async (req, res) => {
 });
 
 app.post("/upload", upload.single("file"), auth, async (req, res) => {
+  if (!req.file) {
+    // return without the error message to prevent the frontend from crashing
+    return res.status(200).json({ message: "Failed to upload file." });
+  }
   const filePath = req.file.path;
-  console.log("FILE PATH", filePath);
+  let isEdited = false;
+
+  console.log("REQ BODY", req.body);
+
+  if (req.body.id) {
+    isEdited = true;
+    const id = req.body.id;
+    const prevImage = await query("SELECT * FROM images WHERE item_id = $1", [
+      id,
+    ]);
+    let image = await query("SELECT image FROM items WHERE id = $1", [id]);
+    image = image.rows[0].image;
+
+    // remove the image from cloudinary
+    if (image) {
+      console.log("PREV IMAGE", prevImage.rows[0]);
+      const publicId = prevImage.rows[0].public_id;
+      cloudinary.uploader.destroy(publicId, (error, result) => {
+        console.log("DELETING IMAGE", publicId, error, result);
+        if (error) {
+          console.log("Error deleting image from cloudinary", error);
+        }
+      });
+    }
+  }
 
   const result = await cloudinary.uploader.upload(filePath, {
     folder: "sale-seeker",
     use_filename: true,
   });
+
+  if (isEdited) {
+    const id = req.body.id;
+    await query(
+      "UPDATE images SET url = $1, public_id = $2 WHERE item_id = $3",
+      [result.secure_url, result.public_id, id]
+    );
+  }
 
   if (!result) {
     return res.status(500).json({ message: "Failed to upload file." });
@@ -278,7 +310,7 @@ app.post("/upload", upload.single("file"), auth, async (req, res) => {
   // remove the image in the uploads folder
   fs.unlinkSync(filePath);
 
-  res.json({ url: result.secure_url });
+  res.json({ url: result });
 });
 
 // add an item
@@ -296,11 +328,11 @@ app.post("/items", auth, async (req, res) => {
   category = category.charAt(0).toUpperCase() + category.slice(1);
 
   const result = await query(
-    "INSERT INTO items (title, price, image, description, category, rating, user_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+    "INSERT INTO items (title, price, image, description, category, rating, user_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
     [
       title,
       price,
-      image,
+      image.secure_url,
       description,
       category,
       0.0,
@@ -309,9 +341,16 @@ app.post("/items", auth, async (req, res) => {
       currentTime,
     ]
   );
+
   if (result.rowCount === 0) {
     return res.status(500).json({ message: "Failed to create item." });
   }
+  const createdItemsId = result.rows[0].id;
+
+  await query(
+    "INSERT INTO images (url, public_id, item_id) VALUES ($1, $2, $3)",
+    [image.secure_url, image.public_id, createdItemsId]
+  );
   res.status(201).json({ message: "Item created." });
 });
 
@@ -322,6 +361,24 @@ app.delete("/items/:id", auth, async (req, res) => {
     return res.status(403).json({ message: "Unauthorized" });
   }
   const id = req.params.id;
+
+  const currentImage = await query("SELECT * FROM images WHERE item_id = $1", [
+    id,
+  ]);
+
+  console.log("CURRENT IMAGE", currentImage);
+  const public_id = currentImage.rows[0].public_id;
+  console.log("PUBLIC ID", public_id);
+
+  // needs fixing later
+  cloudinary.uploader.destroy(public_id, (error, result) => {
+    console.log("DELETING IMAGE", public_id, error, result);
+    if (error) {
+      console.log("Error deleting image from cloudinary", error);
+    }
+  });
+
+  await query("DELETE FROM images WHERE item_id = $1", [id]);
 
   const result = await query("DELETE FROM items WHERE id = $1", [id]);
 
@@ -341,7 +398,14 @@ app.put("/items/:id", auth, async (req, res) => {
 
   const { id } = req.params;
 
-  const { title, price, image, description } = req.body;
+  const { title, price, description } = req.body;
+  let image = req.body.image;
+  if (!image) {
+    const prevImage = await query("SELECT image FROM items WHERE id = $1", [
+      id,
+    ]);
+    image = prevImage.rows[0].image;
+  }
   const currentTime = new Date().toISOString();
   let category =
     req.body.category.charAt(0).toUpperCase() + req.body.category.slice(1);

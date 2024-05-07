@@ -27,7 +27,7 @@ export default function UserModal({
 
   return (
     <>
-      <Modal open={open} onClose={onClose}>
+      <Modal key="edit-user" open={open} onClose={onClose}>
         <h2 className="text-2xl text-center pt-5 font-semibold text-primary dark:text-primary-dark">
           Edit user
         </h2>

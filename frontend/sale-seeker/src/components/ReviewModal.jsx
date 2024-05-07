@@ -52,7 +52,7 @@ export default function ReviewModal({ close, isOpen, item }) {
 
   return (
     <>
-      <Modal onClose={close} open={isOpen}>
+      <Modal key="review" onClose={close} open={isOpen}>
         <form onSubmit={handleSubmit} className="p-10">
           <h1 className="text-center text-3xl font-bold my-2 break-words">
             Review for {item.title}

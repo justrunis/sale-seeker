@@ -198,7 +198,7 @@ export default function Admin() {
     <div className="flex flex-col min-h-screen">
       <Header />
       {isDeleting && (
-        <Modal onClose={handleStopDelete} open={isDeleting}>
+        <Modal key="delete-user" onClose={handleStopDelete} open={isDeleting}>
           <div className="p-10">
             <h2 className="text-2xl font-bold text-red-500">Are you sure?</h2>
             <p className="text-red-500 my-5">

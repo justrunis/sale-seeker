@@ -129,7 +129,7 @@ export default function ItemForm({
       {isError && (
         <ErrorBlock
           title="An error occurred!"
-          message={error.info?.message || "Failed to create item."}
+          message={error.info?.message || "Failed to create or edit item."}
         />
       )}
       {isPending && <LoadingIndicator />}

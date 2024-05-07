@@ -126,7 +126,11 @@ export default function OrdersList() {
       )}
 
       {isDeletingOrder && (
-        <Modal onClose={handleStopDelete} open={isDeletingOrder}>
+        <Modal
+          key="order-delete"
+          onClose={handleStopDelete}
+          open={isDeletingOrder}
+        >
           <div className="p-10">
             <h2 className="text-2xl font-bold text-red-500">Are you sure?</h2>
             <p className="text-red-500 my-5">
@@ -161,6 +165,7 @@ export default function OrdersList() {
 
       {isEditingOrderStatus && (
         <Modal
+          key="order-status-edit"
           onClose={handleStopOrderStatusChange}
           open={isEditingOrderStatus}
         >
