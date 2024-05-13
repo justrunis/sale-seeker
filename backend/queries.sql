@@ -44,6 +44,9 @@ CREATE TABLE orders (
 ALTER TABLE orders
 ADD COLUMN user_id INT;
 
+ALTER TABLE users
+ADD COLUMN reset_token TEXT;
+
 CREATE TABLE images (
     id SERIAL PRIMARY KEY,
     url TEXT NOT NULL,

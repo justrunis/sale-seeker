@@ -16,6 +16,7 @@ import Welcome from "./components/pages/Welcome";
 import Profile from "./components/pages/Profile";
 import ErrorPage from "./components/pages/ErrorPage";
 import AboutUs from "./components/pages/AboutUs";
+import PasswordReset from "./components/pages/PasswordReset";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/reset-password/:token" element={<PasswordReset />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="*" element={<ErrorPage />} />
           </Routes>

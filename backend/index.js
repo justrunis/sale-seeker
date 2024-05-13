@@ -9,6 +9,7 @@ import auth from "./auth/auth.js";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -179,6 +180,99 @@ app.post("/login", async (req, res) => {
   res.json({
     message: "Logged in successfully",
     user: { username: user.username, email: user.email, token },
+  });
+});
+
+// Reset password route
+app.post("/reset-password", async (req, res) => {
+  // check if email is provided
+  if (req.body.email === undefined) {
+    return res.status(400).json({ message: "Email is required." });
+  }
+
+  // check if user exists with this email
+  const user = await emailExists(req.body.email);
+  if (user) {
+    // Generate a reset token
+    const token = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "1h",
+      }
+    );
+    // store the token in the database
+    await query("UPDATE users SET reset_token = $1 WHERE email = $2", [
+      token,
+      user.email,
+    ]);
+
+    // send email with reset password link
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: user.email,
+      subject: "Reset Your Sale-seeker Account Password",
+      text: `Hello,
+    
+    We received a request to reset your Sale-seeker account password. To reset your password, please click on the link below:
+    
+    Reset Password: http://localhost:5173/reset-password/${token}
+    
+    If you did not initiate this request or believe it's a mistake, you can safely ignore this email. Your account security is important to us.
+    
+    Thank you,
+    The Sale-seeker Team`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error sending email", error);
+        return res.status(500).json({ message: "Failed to send email." });
+      }
+      console.log("Email sent: " + info.response);
+      res.status(200).json({
+        message: "Check your email for instructions to reset your password",
+      });
+    });
+  } else {
+    res.status(404).json({ message: "Email not found." });
+  }
+});
+
+// Reset to update password route
+app.post("/reset-password/:token", async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ message: "Invalid or expired token." });
+    }
+
+    const salt = await bcrypt.genSalt(saltRounds);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const result = await query(
+      "UPDATE users SET password = $1, reset_token = $2 WHERE email = $3",
+      [hashedPassword, null, decoded.email]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.json({ message: "Password updated." });
   });
 });
 

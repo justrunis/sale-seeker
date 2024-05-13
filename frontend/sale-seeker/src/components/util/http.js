@@ -39,6 +39,46 @@ export async function fetchItem({ id, signal }) {
   return item;
 }
 
+export async function resetPassword({ email }) {
+  const URL = `${BASE_URL}/reset-password`;
+  const response = await fetch(URL, {
+    method: "POST",
+    body: JSON.stringify({ email }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while resetting the password");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return true;
+}
+
+export async function resetPasswordWithToken({ token, password }) {
+  const URL = `${BASE_URL}/reset-password/${token}`;
+  const response = await fetch(URL, {
+    method: "POST",
+    body: JSON.stringify({ password }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while resetting the password");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  return true;
+}
+
 export async function fetchUsers({ signal }) {
   const URL = `${BASE_URL}/users`;
   const response = await fetch(URL, {

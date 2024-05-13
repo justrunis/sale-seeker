@@ -8,12 +8,16 @@ import { toast } from "react-toastify";
 import logo from "../../../public/logos/png/logo-color.png";
 import { motion, useAnimate, stagger } from "framer-motion";
 import { Link } from "react-router-dom";
+import ForgotPassword from "../ForgotPasswordModal";
+import { useState } from "react";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [scope, animate] = useAnimate();
+
+  const [showModal, setShowModal] = useState(false);
 
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
   const user = useSelector((state) => state.login.user);
@@ -100,6 +104,17 @@ export default function Login() {
           >
             Clear
           </motion.button>
+          <ForgotPassword showModal={showModal} setShowModal={setShowModal} />
+          <p>
+            Forgot your password?{" "}
+            <button
+              className="text-blue-500 hover:text-blue-800 my-2"
+              onClick={() => setShowModal(true)}
+              type="button"
+            >
+              Reset
+            </button>
+          </p>
           <p>
             Don't have an account yet?{" "}
             <Link
