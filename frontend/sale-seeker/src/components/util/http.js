@@ -161,7 +161,7 @@ export async function deleteItem({ id }) {
 
 export async function editItem({ id, item }) {
   console.log("item", item);
-  if (item.image === "object") {
+  if (item.image.name !== null && item.image.name !== undefined) {
     console.log("item.image", item.image);
     const formData = new FormData();
     formData.append("file", item.image);

@@ -32,7 +32,7 @@ export default function Pager({ totalPages, currentPage, setCurrentPage }) {
   const getPagerButtons = () => {
     const firstPage = 1;
     const lastPage = totalPages;
-    const maxButtons = 7; // Number of buttons to display
+    const maxButtons = 6; // Number of buttons to display
 
     let startPage, endPage;
 
@@ -59,6 +59,14 @@ export default function Pager({ totalPages, currentPage, setCurrentPage }) {
       }
     }
 
+    // Adjust startPage and endPage if they are out of bounds
+    if (startPage < firstPage) {
+      startPage = firstPage;
+    }
+    if (endPage > lastPage) {
+      endPage = lastPage;
+    }
+
     return Array.from(
       { length: endPage - startPage + 1 },
       (_, index) => startPage + index
@@ -76,12 +84,12 @@ export default function Pager({ totalPages, currentPage, setCurrentPage }) {
         <ArrowLeftIcon strokeWidth={2} className="h-4 w-4" /> Previous
       </button>
       <div className="flex items-center gap-2">
-        {currentPage > 3 && (
+        {currentPage > 4 && (
           <>
             <PageButton {...getItemProps(1)}>1</PageButton>
           </>
         )}
-        {currentPage > 3 && <span className="text-gray-500">...</span>}
+        {currentPage > 4 && <span className="text-gray-500">...</span>}
         {getPagerButtons().map((page) => (
           <PageButton key={page} {...getItemProps(page)}>
             {page}

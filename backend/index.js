@@ -319,7 +319,6 @@ app.post("/items", auth, async (req, res) => {
   if (user.role !== "admin") {
     return res.status(403).json({ message: "Unauthorized" });
   }
-  console.log(req.body);
   const { title, price, image, description } = req.body;
   let category = req.body.category;
   const currentTime = new Date().toISOString();
@@ -373,6 +372,7 @@ app.delete("/items/:id", auth, async (req, res) => {
   // needs fixing later
   cloudinary.uploader.destroy(public_id, (error, result) => {
     console.log("DELETING IMAGE", public_id, error, result);
+    fs.unlinkSync(`uploads/${public_id}`);
     if (error) {
       console.log("Error deleting image from cloudinary", error);
     }
