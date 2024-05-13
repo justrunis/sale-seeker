@@ -1,8 +1,9 @@
-# React + Vite
+### Environment Variables
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+To run the frontend application, you need to set the following environment variables:
 
-Currently, two official plugins are available:
+- `VITE_API_URL` - The URL of the API server that the frontend application will communicate with.
+- `VITE_SITE_KEY` - The site key for integrating reCAPTCHA with your frontend application.
+- `VITE_SITE_SECRET` - The site secret for integrating reCAPTCHA with your frontend application.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Create a `.env` file in the root directory of the project and assign values to these variables based on your environment. Ensure not to expose sensitive information in your version control system.
