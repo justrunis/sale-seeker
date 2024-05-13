@@ -29,7 +29,7 @@ export default function Home() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = 1;
+  const itemsPerPage = 3;
   const filteredItems = items?.filter((item) =>
     item.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
