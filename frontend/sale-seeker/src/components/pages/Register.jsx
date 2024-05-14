@@ -2,7 +2,7 @@ import Header from "../Header";
 import Input from "../UI/Input";
 import { useInput } from "../../hooks/useInput";
 import { isEmail, isNotEmpty, hasMinLength } from "../util/validation";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import useHttp from "../../hooks/useHttp";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,6 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Link } from "react-router-dom";
 
 export default function Register() {
-  const [passwordsAreNotEqual, setPasswordsAreNotEqual] = useState(false);
   const navigate = useNavigate();
 
   const recaptcha = useRef();

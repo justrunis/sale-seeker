@@ -14,6 +14,12 @@ This repository contains the source code for Sale Seeker, a platform that allows
 - View order history and track shipping status
 - Contact customer support for assistance
 
+### For Sellers
+
+- Add, edit, and delete items in the store
+- Set prices and update inventory levels
+- View and respond to customer reviews
+
 ### For Administrators:
 
 - Manage user accounts and permissions
@@ -34,6 +40,75 @@ Sale Seeker is built using the following technologies:
 - **React Icons**: A library that provides popular icons for your React projects.
 - **React Credit Cards**: A library that provides credit card components for your React projects.
 - **Tailwind and daisyUI**: A utility-first CSS framework for rapidly building custom designs.
+
+## Setup
+
+## Prerequisites
+
+- Clone the repository
+
+```sh
+git clone https://github.com/justrunis/sale-seeker.git
+```
+
+- Have node installed
+- Have PgAdmin for database
+- Have cloudinary account
+- Enviromental variables are explained in additional README.md files inside backend and frontend folders
+
+### For database
+
+- Install PgAdmin on your system
+- Inside backend folder copy all queries from `queries.sql` file to create tables and populate with starting data
+- Inside backend folder add enviromental values: `DB_USER` `DB_HOST` `DB_DB` `DB_PASSWORD` `DB_PORT`
+- Also add `JWT_SECRET` for token generation and `EMAIL` `EMAIL_PASSWORD` for email to send refresh token
+
+### For cloudinary
+
+- Create a cloudinary account
+- In `Media Explorer` tab create a folder `sale-seeker`
+- Add the following enviromental values: `CLOUDINARY_CLOUD_NAME` `CLOUDINARY_API_KEY` `CLOUDINARY_API_SECRET`
+
+### For back-end
+
+- Navigate to backend folder:
+
+```sh
+cd ./backend
+```
+
+- Install all dependencies
+
+```sh
+npm install
+```
+
+- Run the server
+
+```sh
+node start
+```
+
+### For front-end
+
+- Add enviromental variables: `VITE_API_URL` `VITE_SITE_KEY` `VITE_SITE_SECRET`
+- Navigate to frontend folder
+
+```sh
+cd frontend/sale-seeker
+```
+
+- Install all dependencies
+
+```sh
+npm install
+```
+
+- Run the server
+
+```sh
+npm run dev
+```
 
 ## Contact
 
