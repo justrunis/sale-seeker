@@ -43,7 +43,7 @@ Sale Seeker is built using the following technologies:
 
 # Setup
 
-## Prerequisites
+### Prerequisites
 
 - Clone the repository
 
