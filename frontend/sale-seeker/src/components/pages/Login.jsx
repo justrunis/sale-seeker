@@ -1,5 +1,5 @@
 import { loginActions } from "../../store/slices/loginSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Input from "../UI/Input";
 import Header from "../Header";
 import useHttp from "../../hooks/useHttp";
@@ -9,18 +9,19 @@ import logo from "../../../public/logos/png/logo-color.png";
 import { motion, useAnimate, stagger } from "framer-motion";
 import { Link } from "react-router-dom";
 import ForgotPassword from "../ForgotPasswordModal";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [scope, animate] = useAnimate();
+  const [isInputError, setIsInputError] = useState(false);
+
+  const recaptcha = useRef();
 
   const [showModal, setShowModal] = useState(false);
-
-  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
-  const user = useSelector((state) => state.login.user);
 
   const requestConfig = {
     method: "POST",
@@ -39,6 +40,12 @@ export default function Login() {
     const fd = new FormData(event.target);
     const data = Object.fromEntries(fd.entries());
 
+    const captchaValue = recaptcha.current.getValue();
+    if (!captchaValue) {
+      toast.error("Please complete the reCAPTCHA challenge.");
+      return;
+    }
+
     const user = {
       email: data.email,
       password: data.password,
@@ -52,6 +59,7 @@ export default function Login() {
         { x: [-10, 0, 10, 0] },
         { type: "spring", duration: 0.2, delay: stagger(0.05) }
       );
+      setIsInputError(true);
       toast.error(response.error || "Failed to login.");
       return;
     }
@@ -75,19 +83,33 @@ export default function Login() {
           onSubmit={handleLogin}
           ref={scope}
         >
-          <h2 className="text-2xl font-bold text-center">Login</h2>
+          <h2 className="text-2xl font-bold text-center text-black">Login</h2>
           <img
             className="w-40 h-40 object-cover rounded-lg bg-base-100 mx-auto my-4"
             src={logo}
             alt="logo"
           />
-          <Input className={cssClasses} label="Email" id="email" type="email" />
           <Input
-            className={cssClasses}
+            className={cssClasses + (isInputError ? " border-red-500" : "")}
+            labelClass="text-black"
+            label="Email"
+            id="email"
+            type="email"
+          />
+          <Input
+            className={cssClasses + (isInputError ? " border-red-500" : "")}
+            labelClass="text-black"
             label="Password"
             id="password"
             type="password"
           />
+          <ReCAPTCHA
+            ref={recaptcha}
+            sitekey={import.meta.env.VITE_SITE_KEY}
+            size="normal"
+            theme="light"
+          />
+
           <motion.button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline my-2 mx-2"
             type="submit"
@@ -105,7 +127,7 @@ export default function Login() {
             Clear
           </motion.button>
           <ForgotPassword showModal={showModal} setShowModal={setShowModal} />
-          <p>
+          <p className="text-black">
             Forgot your password?{" "}
             <button
               className="text-blue-500 hover:text-blue-800 my-2"
@@ -115,7 +137,7 @@ export default function Login() {
               Reset
             </button>
           </p>
-          <p>
+          <p className="text-black">
             Don't have an account yet?{" "}
             <Link
               className="text-blue-500 hover:text-blue-800 my-2"

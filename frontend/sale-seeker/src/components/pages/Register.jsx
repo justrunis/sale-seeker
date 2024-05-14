@@ -148,7 +148,9 @@ export default function Register() {
           onSubmit={handleRegistration}
           ref={scope}
         >
-          <h1 className="text-2xl font-bold text-center">Register</h1>
+          <h1 className="text-2xl font-bold text-center text-black">
+            Register
+          </h1>
           <img
             className="w-40 h-40 object-cover rounded-lg bg-base-100 mx-auto my-4"
             src={logo}
@@ -166,6 +168,7 @@ export default function Register() {
             className={`${cssClasses} ${
               usernameHasError ? "border-red-500" : ""
             }`}
+            labelClass="text-black"
           />
           {usernameHasError && (
             <p className="text-red-500 text-xs italic">
@@ -183,6 +186,7 @@ export default function Register() {
             value={emailValue}
             error={emailHasError}
             className={`${cssClasses} ${emailHasError ? "border-red-500" : ""}`}
+            labelClass="text-black"
           />
           {emailHasError && (
             <p className="text-red-500 text-xs italic">Invalid email</p>
@@ -200,6 +204,7 @@ export default function Register() {
             className={`${cssClasses} ${
               passwordHasError ? "border-red-500" : ""
             }`}
+            labelClass="text-black"
           />
           {passwordHasError && (
             <p className="text-red-500 text-xs italic">
@@ -219,6 +224,7 @@ export default function Register() {
             className={`${cssClasses} ${
               confirmPasswordHasError ? "border-red-500" : ""
             }`}
+            labelClass="text-black"
           />
 
           {confirmPasswordHasError && (
@@ -251,7 +257,7 @@ export default function Register() {
           >
             Clear
           </motion.button>
-          <p>
+          <p className="text-black">
             Already have an account?{" "}
             <Link
               className="text-blue-500 hover:text-blue-800 my-2"
