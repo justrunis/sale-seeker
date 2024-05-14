@@ -3,12 +3,12 @@ import LoadingIndicator from "./UI/LoadingIndicator";
 import ErrorBlock from "./UI/ErrorBlock";
 import {
   fetchItems,
+  fetchUserItems,
   queryClient,
   deleteItem,
   editItem,
   addItem,
 } from "./util/http";
-import { Pagination } from "@mui/material";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Modal from "./UI/Modal";
@@ -16,9 +16,15 @@ import ItemForm from "./ItemForm";
 import Pager from "./UI/Pager";
 import { currencyFormatter } from "./util/formating";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getUserRole, getToken, getUserId } from "../auth/auth";
 
-export default function ItemsList() {
+export default function ItemsList({ showMyItems = false }) {
+  const role = getUserRole(getToken());
+  const id = getUserId(getToken());
+
+  const navigate = useNavigate();
+
   const {
     data: items,
     isLoading,
@@ -26,7 +32,18 @@ export default function ItemsList() {
     error,
   } = useQuery({
     queryKey: ["items"],
-    queryFn: ({ signal }) => fetchItems({ signal }),
+    queryFn: ({ signal }) => {
+      if (role === "admin") {
+        if (showMyItems) {
+          return fetchUserItems({ id, signal });
+        }
+        return fetchItems({ signal });
+      } else if (role === "seller") {
+        return fetchUserItems({ id, signal });
+      } else {
+        navigate("/login");
+      }
+    },
   });
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -134,7 +151,7 @@ export default function ItemsList() {
 
   return (
     <div className="menu bg-base-100 w-100 rounded-box py-8">
-      <div className="mb-10">
+      <div className="mb-10 flex gap-5">
         <button onClick={handleAddItem} className="btn btn-primary">
           Add Item
         </button>

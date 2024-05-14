@@ -143,6 +143,17 @@ export default function Header() {
                   </Link>
                 </li>
               )}
+              {["seller", "admin"].includes(getUserRole(getToken())) && (
+                <li>
+                  <Link
+                    to="/my-items"
+                    className="text-white hover:text-gray-300 flex items-center gap-1"
+                  >
+                    <RiAdminFill />
+                    My Items
+                  </Link>
+                </li>
+              )}
               <li>
                 <Link
                   onClick={handleShowCart}

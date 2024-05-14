@@ -10,6 +10,7 @@ import Item from "./components/pages/Item";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./components/util/http";
 import AdminRoute from "./components/AdminRoute";
+import SellerRoute from "./components/SellerRoute";
 import Admin from "./components/pages/Admin";
 import CheckoutPage from "./components/pages/Checkout";
 import Welcome from "./components/pages/Welcome";
@@ -17,6 +18,7 @@ import Profile from "./components/pages/Profile";
 import ErrorPage from "./components/pages/ErrorPage";
 import AboutUs from "./components/pages/AboutUs";
 import PasswordReset from "./components/pages/PasswordReset";
+import MyItems from "./components/pages/MyItems";
 
 function App() {
   return (
@@ -33,6 +35,9 @@ function App() {
               <Route path="/profile" element={<Profile />} />
               <Route element={<AdminRoute />}>
                 <Route path="/admin" element={<Admin />} />
+              </Route>
+              <Route element={<SellerRoute />}>
+                <Route path="/my-items" element={<MyItems />} />
               </Route>
             </Route>
             <Route path="/login" element={<Login />} />

@@ -17,6 +17,7 @@ const app = express();
 const port = 4000; // backend port
 const saltRounds = 10; // bcrypt salt rounds
 const tokenExpirationTime = "24h"; // token expiration time
+const frontendUrl = "http://localhost:5173"; // frontend url
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -31,14 +32,12 @@ cloudinary.config({
 
 const storage = multer.diskStorage({
   destination: (req, file, callBack) => {
-    console.log("FILE", file);
     if (!file) {
       return callBack("No file uploaded", null);
     }
     callBack(null, "uploads");
   },
   filename: (req, file, callBack) => {
-    console.log("FILE", file);
     if (!file) {
       return callBack("No file uploaded", null);
     }
@@ -105,15 +104,6 @@ const createUser = async (username, email, password) => {
   const hashedPassword = await bcrypt.hash(password, salt);
   const currentTime = new Date().toISOString();
   const defaultRole = "user";
-
-  console.log(
-    "createUser",
-    username,
-    email,
-    hashedPassword,
-    currentTime,
-    defaultRole
-  );
 
   const result = await query(
     "INSERT INTO users (username, email, password, created_at, updated_at, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
@@ -227,7 +217,7 @@ app.post("/reset-password", async (req, res) => {
     
     We received a request to reset your Sale-seeker account password. To reset your password, please click on the link below:
     
-    Reset Password: http://localhost:5173/reset-password/${token}
+    Reset Password: ${frontendUrl}/reset-password/${token}
     
     If you did not initiate this request or believe it's a mistake, you can safely ignore this email. Your account security is important to us.
     
@@ -246,7 +236,9 @@ app.post("/reset-password", async (req, res) => {
       });
     });
   } else {
-    res.status(404).json({ message: "Email not found." });
+    res.status(200).json({
+      message: "Check your email for instructions to reset your password",
+    });
   }
 });
 
@@ -291,6 +283,16 @@ app.get("/items/:id", async (req, res) => {
     return res.status(404).json({ message: "Item not found." });
   }
   res.json(result.rows[0]);
+});
+
+// get items for a user
+app.get("/items/user/:id", async (req, res) => {
+  const { id } = req.params;
+  const result = await query("SELECT * FROM items WHERE user_id = $1", [id]);
+  if (result.rowCount === 0) {
+    return res.json([]);
+  }
+  res.json(result.rows);
 });
 
 // get all users
@@ -340,8 +342,6 @@ app.put("/users/:id", auth, async (req, res) => {
     return res.status(403).json({ message: "Unauthorized" });
   }
   const { id, username, email, role } = req.body;
-  console.log(id);
-  console.log(req.body);
   const result = await query(
     "UPDATE users SET username = $1, email = $2, role = $3 WHERE id = $4",
     [username, email, role, id]
@@ -360,8 +360,6 @@ app.post("/upload", upload.single("file"), auth, async (req, res) => {
   const filePath = req.file.path;
   let isEdited = false;
 
-  console.log("REQ BODY", req.body);
-
   if (req.body.id) {
     isEdited = true;
     const id = req.body.id;
@@ -373,10 +371,8 @@ app.post("/upload", upload.single("file"), auth, async (req, res) => {
 
     // remove the image from cloudinary
     if (image) {
-      console.log("PREV IMAGE", prevImage.rows[0]);
       const publicId = prevImage.rows[0].public_id;
       cloudinary.uploader.destroy(publicId, (error, result) => {
-        console.log("DELETING IMAGE", publicId, error, result);
         if (error) {
           console.log("Error deleting image from cloudinary", error);
         }
@@ -410,7 +406,7 @@ app.post("/upload", upload.single("file"), auth, async (req, res) => {
 // add an item
 app.post("/items", auth, async (req, res) => {
   const user = req.user;
-  if (user.role !== "admin") {
+  if (["admin", "seller"].includes(user.role) === false) {
     return res.status(403).json({ message: "Unauthorized" });
   }
   const { title, price, image, description } = req.body;
@@ -419,6 +415,10 @@ app.post("/items", auth, async (req, res) => {
 
   // Capitalize the first letter of the category
   category = category.charAt(0).toUpperCase() + category.slice(1);
+
+  if (image?.secure_url === undefined) {
+    return res.status(400).json({ message: "Image is required." });
+  }
 
   const result = await query(
     "INSERT INTO items (title, price, image, description, category, rating, user_id, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id",
@@ -450,23 +450,32 @@ app.post("/items", auth, async (req, res) => {
 // delete an item
 app.delete("/items/:id", auth, async (req, res) => {
   const user = req.user;
-  if (user.role !== "admin") {
+  if (["admin", "seller"].includes(user.role) === false) {
     return res.status(403).json({ message: "Unauthorized" });
   }
+
+  const item = await query("SELECT user_id FROM items WHERE id = $1", [
+    req.params.id,
+  ]);
+
+  if (user.role !== "admin" && item.rows[0].user_id !== user.id) {
+    res.status(403).json({ message: "Unauthorized" });
+  }
+
   const id = req.params.id;
 
   const currentImage = await query("SELECT * FROM images WHERE item_id = $1", [
     id,
   ]);
 
-  console.log("CURRENT IMAGE", currentImage);
-  const public_id = currentImage.rows[0].public_id;
-  console.log("PUBLIC ID", public_id);
+  const public_id = currentImage.rows[0]?.public_id;
 
-  // needs fixing later
   cloudinary.uploader.destroy(public_id, (error, result) => {
-    console.log("DELETING IMAGE", public_id, error, result);
-    fs.unlinkSync(`uploads/${public_id}`);
+    // check if file exists before deleting it
+
+    if (fs.existsSync(`uploads/${public_id}`)) {
+      fs.unlinkSync(`uploads/${public_id}`);
+    }
     if (error) {
       console.log("Error deleting image from cloudinary", error);
     }
@@ -486,8 +495,16 @@ app.delete("/items/:id", auth, async (req, res) => {
 app.put("/items/:id", auth, async (req, res) => {
   const user = req.user;
 
-  if (user.role !== "admin") {
+  if (["admin", "seller"].includes(user.role) === false) {
     return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  const item = await query("SELECT user_id FROM items WHERE id = $1", [
+    req.params.id,
+  ]);
+
+  if (user.role !== "admin" && item.rows[0].user_id !== user.id) {
+    res.status(403).json({ message: "Unauthorized" });
   }
 
   const { id } = req.params;
@@ -666,9 +683,6 @@ app.put("/orderStatusChange/:id", auth, async (req, res) => {
 app.get("/orders/user/:id", auth, async (req, res) => {
   const user = req.user;
   const userId = req.params.id;
-
-  console.log("USER", user);
-  console.log("USERID", userId);
 
   if (user.id !== parseInt(userId)) {
     return res.status(403).json({ message: "Unauthorized" });

@@ -52,7 +52,7 @@ export default function ForgotPassword({ showModal, setShowModal }) {
       <h1 className="text-2xl text-center pt-5 font-semibold">
         Forgot Password
       </h1>
-      {isSent && (
+      {isSent && !isLoading && (
         <div className="p-5">
           <p>
             If an account with the email address you provided exists, you will

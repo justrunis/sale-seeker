@@ -39,6 +39,22 @@ export async function fetchItem({ id, signal }) {
   return item;
 }
 
+export async function fetchUserItems({ id, signal }) {
+  const URL = `${BASE_URL}/items/user/${id}`;
+  const response = await fetch(URL, { signal });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while fetching the items");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const items = await response.json();
+
+  return items;
+}
+
 export async function resetPassword({ email }) {
   const URL = `${BASE_URL}/reset-password`;
   const response = await fetch(URL, {

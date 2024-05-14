@@ -23,40 +23,78 @@ export default function AboutUs() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
             className="menu bg-base-100 rounded-box py-12 flex flex-col"
           >
             <h2 className="text-2xl font-semibold mb-10">Sale Seeker</h2>
-            <p className="text-base">
-              Sale Seeker is a platform that allows users to buy items online.
-              Users can create an account and purchase items from the store and
-              rate them via star system. Administrator can manage users, items,
-              and orders. Sale Seeker is a great way to find deals on items you
-              need.
+            <div className="text-base">
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, delay: 0.4 }}
+              >
+                <p>
+                  Sale Seeker is a platform that allows users to buy items
+                  online. Users can create an account and purchase items from
+                  the store and rate them via star system. Administrator can
+                  manage users, items, and orders. Sale Seeker is a great way to
+                  find deals on items you need.
+                </p>
+              </motion.div>
               <br />
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, delay: 0.6 }}
+              >
+                <p className="text-lg font-semibold">
+                  Here are some key functionalities for the User:
+                </p>
+                <ul className="list-disc list-inside pl-4">
+                  <li>Create an account to access personalized features</li>
+                  <li>Browse a wide range of items available for purchase</li>
+                  <li>Rate items using a star rating system</li>
+                  <li>Manage user profiles and preferences</li>
+                  <li>Add items to a shopping cart for easy checkout</li>
+                  <li>View order history and track shipping status</li>
+                  <li>Contact customer support for assistance</li>
+                </ul>
+              </motion.div>
               <br />
-              <p className="text-lg font-semibold">
-                Here are some key functionalities for the User:
-              </p>
-              <ul className="list-disc list-inside pl-4">
-                <li>Create an account to access personalized features</li>
-                <li>Browse a wide range of items available for purchase</li>
-                <li>Rate items using a star rating system</li>
-                <li>Manage user profiles and preferences</li>
-                <li>Add items to a shopping cart for easy checkout</li>
-                <li>View order history and track shipping status</li>
-                <li>Contact customer support for assistance</li>
-              </ul>
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, delay: 0.8 }}
+              >
+                <p className="text-lg font-semibold">
+                  Here are some key functionalities for the Seller:
+                </p>
+                <ul className="list-disc list-inside pl-4">
+                  <li>Add, edit, and delete items in the store</li>
+                  <li>Set prices and update inventory levels</li>
+                  <li>View and respond to customer reviews</li>
+                </ul>
+              </motion.div>
               <br />
-              <p className="text-lg font-semibold">
-                Here are some key functionalities for the Administrator:
-              </p>
-              <ul className="list-disc list-inside pl-4">
-                <li>Manage user accounts and permissions</li>
-                <li>Add, edit, and delete items in the store</li>
-                <li>View and process orders from customers</li>
-              </ul>
-            </p>
+              <motion.div
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.3, delay: 1 }}
+              >
+                <p className="text-lg font-semibold">
+                  Here are some key functionalities for the Admin:
+                </p>
+                <ul className="list-disc list-inside pl-4">
+                  <li>Manage user accounts and permissions</li>
+                  <li>Add, edit, and delete items in the store</li>
+                  <li>View and process orders from customers</li>
+                </ul>
+              </motion.div>
+            </div>
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: -20 }}
