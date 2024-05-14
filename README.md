@@ -2,7 +2,7 @@
 
 This repository contains the source code for Sale Seeker, a platform that allows users to buy items online. Users can create an account, purchase items from the store, and rate them using a star system. Administrators can manage users, items, and orders.
 
-## Key Functionalities
+# Key Functionalities
 
 ### For Users:
 
@@ -26,7 +26,7 @@ This repository contains the source code for Sale Seeker, a platform that allows
 - Add, edit, and delete items in the store
 - View and process orders from customers
 
-## Used Technologies
+# Used Technologies
 
 Sale Seeker is built using the following technologies:
 
@@ -41,7 +41,7 @@ Sale Seeker is built using the following technologies:
 - **React Credit Cards**: A library that provides credit card components for your React projects.
 - **Tailwind and daisyUI**: A utility-first CSS framework for rapidly building custom designs.
 
-## Setup
+# Setup
 
 ## Prerequisites
 
@@ -110,7 +110,7 @@ npm install
 npm run dev
 ```
 
-## Contact
+# Contact
 
 Thank you for your interest in Sale Seeker! If you have any questions, feedback, or inquiries, please don't hesitate to reach out:
 
