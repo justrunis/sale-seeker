@@ -27,27 +27,29 @@ export default function ProfileInformation({ user }) {
         className="w-24 h-24 rounded-full self-center mb-4"
       />
 
-      <table className="table w-full">
-        <thead>
-          <tr>
-            <th className="px-4 py-2">Information</th>
-            <th className="px-4 py-2">Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableItems.map((item, index) => (
-            <motion.tr
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-            >
-              <td className="px-4 py-2">{item.label}</td>
-              <td className="px-4 py-2">{item.value}</td>
-            </motion.tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="overflow-x-auto">
+        <table className="table w-full">
+          <thead>
+            <tr>
+              <th className="px-4 py-2">Information</th>
+              <th className="px-4 py-2">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableItems.map((item, index) => (
+              <motion.tr
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+              >
+                <td className="px-4 py-2">{item.label}</td>
+                <td className="px-4 py-2">{item.value}</td>
+              </motion.tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </motion.div>
   );
 }

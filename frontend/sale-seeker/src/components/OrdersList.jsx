@@ -233,8 +233,8 @@ export default function OrdersList() {
       )}
 
       {!isLoading && !isError && (
-        <div className="flex flex-col align-center justify-content-center items-center">
-          <table className="table w-full">
+        <div className="overflow-x-auto overflow-y-auto max-h-[400px] w-full md:w-auto flex flex-col">
+          <table className="table">
             <thead>
               <tr>
                 <th className="px-4 py-2">Order ID</th>
@@ -270,10 +270,10 @@ export default function OrdersList() {
                   </td>
                   <td>{currencyFormatter.format(order.total)}</td>
                   <td>{makeFirstLetterUpperCase(order.status)}</td>
-                  <td className="px-4 py-2 flex gap-5">
+                  <td className="flex justify-center items-center">
                     <button
                       onClick={() => handleStartOrderStatusChange(order)}
-                      className="btn btn-primary"
+                      className="btn btn-primary mr-2"
                     >
                       Change status
                     </button>

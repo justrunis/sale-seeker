@@ -1,5 +1,6 @@
 import Modal from "./UI/Modal";
 import Input from "./UI/Input";
+import Select from "./UI/Select";
 import { useState } from "react";
 import LoadingIndicator from "./UI/LoadingIndicator";
 import ErrorBlock from "./UI/ErrorBlock";
@@ -67,19 +68,20 @@ export default function UserModal({
                   setUser({ ...currentUser, email: e.target.value })
                 }
               />
-              <label className="block text-sm font-bold">Role</label>
-              <select
+              <Select
                 label="Role"
+                id="role"
+                options={[
+                  { value: "admin", label: "Admin" },
+                  { value: "user", label: "User" },
+                  { value: "seller", label: "Seller" },
+                ]}
                 value={currentUser.role}
                 className={inputClasses}
                 onChange={(e) =>
                   setUser({ ...currentUser, role: e.target.value })
                 }
-              >
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-                <option value="seller">Seller</option>
-              </select>
+              />
               <button type="submit" className="btn btn-primary">
                 Save
               </button>

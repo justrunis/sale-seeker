@@ -150,145 +150,152 @@ export default function ItemsList({ showMyItems = false }) {
   }
 
   return (
-    <div className="menu bg-base-100 w-100 rounded-box py-8">
-      <div className="mb-10 flex gap-5">
+    <>
+      <div className="my-5 flex gap-5">
         <button onClick={handleAddItem} className="btn btn-primary">
           Add Item
         </button>
       </div>
-      {isEditing && (
-        <Modal key="item-edit" onClose={handleStopEdit} open={isEditing}>
-          <ItemForm
-            item={editedItem}
-            onClose={handleStopEdit}
-            isPending={editedItem ? isPendingEdit : isPendingAdd}
-            isError={editedItem ? isEditError : isAddError}
-            error={editedItem ? editError : addError}
-            onSubmit={(item, id) =>
-              id ? handleItemEdit(item, id) : handleItemAdd(item)
-            }
-          />
-        </Modal>
-      )}
+      <div className="overflow-x-auto overflow-y-auto max-h-[400px] w-full md:w-auto">
+        {isEditing && (
+          <Modal key="item-edit" onClose={handleStopEdit} open={isEditing}>
+            <ItemForm
+              item={editedItem}
+              onClose={handleStopEdit}
+              isPending={editedItem ? isPendingEdit : isPendingAdd}
+              isError={editedItem ? isEditError : isAddError}
+              error={editedItem ? editError : addError}
+              onSubmit={(item, id) =>
+                id ? handleItemEdit(item, id) : handleItemAdd(item)
+              }
+            />
+          </Modal>
+        )}
 
-      {isDeleting && (
-        <Modal key="item-delete" onClose={handleStopDelete} open={isDeleting}>
-          <div className="p-10">
-            <h2 className="text-2xl font-bold text-red-500">Are you sure?</h2>
-            <p className="text-red-500 my-5">
-              Do you really want to delete this user? This action cannot be
-              undone.
-            </p>
-            {isDeleteError && (
-              <ErrorBlock
-                title="An error occurred!"
-                message={deleteError.info?.message || "Failed to delete item."}
-              />
-            )}
-            {isPendingDelete ? (
-              <>
-                <div className="flex items-center justify-center justify-center">
-                  <LoadingIndicator />
+        {isDeleting && (
+          <Modal key="item-delete" onClose={handleStopDelete} open={isDeleting}>
+            <div className="p-10">
+              <h2 className="text-2xl font-bold text-red-500">Are you sure?</h2>
+              <p className="text-red-500 my-5">
+                Do you really want to delete this user? This action cannot be
+                undone.
+              </p>
+              {isDeleteError && (
+                <ErrorBlock
+                  title="An error occurred!"
+                  message={
+                    deleteError.info?.message || "Failed to delete item."
+                  }
+                />
+              )}
+              {isPendingDelete ? (
+                <>
+                  <div className="flex items-center justify-center justify-center">
+                    <LoadingIndicator />
+                  </div>
+                </>
+              ) : (
+                <div className="flex gap-5">
+                  <button
+                    onClick={handleStopDelete}
+                    className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={() => handleItemDelete(deleteId)}
+                    className="text-white bg-red-400 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
+                  >
+                    Delete
+                  </button>
                 </div>
-              </>
-            ) : (
-              <div className="flex gap-5">
-                <button
-                  onClick={handleStopDelete}
-                  className="text-white bg-primary hover:bg-accent focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={() => handleItemDelete(deleteId)}
-                  className="text-white bg-red-400 hover:bg-red-300 focus:ring-4 focus:outline-none focus:ring-accent font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-dark dark:hover:bg-primary-darker dark:focus:ring-primary-lighter"
-                >
-                  Delete
-                </button>
-              </div>
-            )}
-          </div>
-        </Modal>
-      )}
+              )}
+            </div>
+          </Modal>
+        )}
 
-      {isError && (
-        <div className="flex justify-center">
-          <ErrorBlock
-            title="An error occurred!"
-            message={error.info?.message || "Failed to fetch items."}
-          />
-        </div>
-      )}
-      {isLoading && (
-        <div className="flex justify-center">
-          <LoadingIndicator />
-        </div>
-      )}
-      {!isLoading && !isError && (
-        <div className="flex flex-col align-center justify-content-center items-center">
-          <table className="table w-full">
-            <thead>
-              <tr>
-                <th className="px-4 py-2">Id</th>
-                <th className="px-4 py-2">Item</th>
-                <th className="px-4 py-2">Image</th>
-                <th className="px-4 py-2">Price</th>
-                <th className="px-4 py-2">Category</th>
-                <th className="px-4 py-2">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {currentItems.map((item, index) => (
-                <motion.tr
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.2 }}
-                  key={item.id}
-                >
-                  <td className="px-4 py-2">{item.id}</td>
-                  <td className="px-4 py-2">{item.title}</td>
-
-                  <td className="px-4 py-2">
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="h-20 w-20"
-                    />
-                  </td>
-                  <td className="px-4 py-2">
-                    {currencyFormatter.format(item.price)}
-                  </td>
-                  <td className="px-4 py-2">{item.category}</td>
-                  <td className="px-4 py-2 flex gap-5">
-                    <Link to={`/item/${item.id}`} className="btn btn-secondary">
-                      View
-                    </Link>
-                    <button
-                      onClick={() => handleStartEdit(item)}
-                      className="btn btn-primary"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleStartDelete(item.id)}
-                      className="btn btn-accent"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="mt-5">
-            <Pager
-              totalPages={totalPages}
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
+        {isError && (
+          <div className="flex justify-center">
+            <ErrorBlock
+              title="An error occurred!"
+              message={error.info?.message || "Failed to fetch items."}
             />
           </div>
-        </div>
-      )}
-    </div>
+        )}
+        {isLoading && (
+          <div className="flex justify-center">
+            <LoadingIndicator />
+          </div>
+        )}
+        {!isLoading && !isError && (
+          <div className="overflow-x-auto overflow-y-auto max-h-[400px] w-full md:w-auto flex flex-col">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th className="px-4 py-2">Id</th>
+                  <th className="px-4 py-2">Item</th>
+                  <th className="px-4 py-2">Image</th>
+                  <th className="px-4 py-2">Price</th>
+                  <th className="px-4 py-2">Category</th>
+                  <th className="px-4 py-2">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentItems.map((item, index) => (
+                  <motion.tr
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                    key={item.id}
+                  >
+                    <td className="px-4 py-2">{item.id}</td>
+                    <td className="px-4 py-2">{item.title}</td>
+
+                    <td className="px-4 py-2">
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="h-20 w-20"
+                      />
+                    </td>
+                    <td className="px-4 py-2">
+                      {currencyFormatter.format(item.price)}
+                    </td>
+                    <td className="px-4 py-2">{item.category}</td>
+                    <td className="px-4 py-2 flex gap-5">
+                      <Link
+                        to={`/item/${item.id}`}
+                        className="btn btn-secondary"
+                      >
+                        View
+                      </Link>
+                      <button
+                        onClick={() => handleStartEdit(item)}
+                        className="btn btn-primary"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleStartDelete(item.id)}
+                        className="btn btn-accent"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="my-5 self-center">
+              <Pager
+                totalPages={totalPages}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

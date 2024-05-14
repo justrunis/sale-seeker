@@ -137,48 +137,50 @@ export default function Admin() {
 
     content = (
       <>
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th className="px-4 py-2">Id</th>
-              <th className="px-4 py-2">Username</th>
-              <th className="px-4 py-2">Email</th>
-              <th className="px-4 py-2">Role</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems.map((user, index) => (
-              <motion.tr
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.2 }}
-                key={user.id}
-              >
-                <td className="px-4 py-2">{user.id}</td>
-                <td className="px-4 py-2">{user.username}</td>
-                <td className="px-4 py-2">{user.email}</td>
-                <td className="px-4 py-2">
-                  {makeFirstLetterUpperCase(user.role)}
-                </td>
-                <td className="flex gap-2">
-                  <button
-                    onClick={() => handleStartEdit(user)}
-                    className="btn btn-primary"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => handleStartDelete(user.id)}
-                    className="btn btn-accent"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </motion.tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="overflow-x-auto overflow-y-auto max-h-[400px] w-full md:w-auto">
+          <table className="table">
+            <thead>
+              <tr>
+                <th className="px-4 py-2">Id</th>
+                <th className="px-4 py-2">Username</th>
+                <th className="px-4 py-2">Email</th>
+                <th className="px-4 py-2">Role</th>
+                <th className="px-4 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((user, index) => (
+                <motion.tr
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: index * 0.2 }}
+                  key={user.id}
+                >
+                  <td className="px-4 py-2">{user.id}</td>
+                  <td className="px-4 py-2">{user.username}</td>
+                  <td className="px-4 py-2">{user.email}</td>
+                  <td className="px-4 py-2">
+                    {makeFirstLetterUpperCase(user.role)}
+                  </td>
+                  <td className="flex gap-2">
+                    <button
+                      onClick={() => handleStartEdit(user)}
+                      className="btn btn-primary"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleStartDelete(user.id)}
+                      className="btn btn-accent"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </motion.tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
         <div className="mt-5 flex justify-center">
           <Pager
             totalPages={totalPages}
@@ -282,10 +284,8 @@ export default function Admin() {
               transition={{ duration: 0.3 }}
               className="menu bg-base-100 w-100 rounded-b-box py-8"
             >
-              <div className="flex flex-col">
-                <h2 className="text-xl font-semibold mb-10">Users</h2>
-                {content}
-              </div>
+              <h2 className="text-xl font-semibold mb-10">Users</h2>
+              {content}
             </motion.div>
           </TabPanel>
           <TabPanel>
@@ -296,10 +296,8 @@ export default function Admin() {
               transition={{ duration: 0.3 }}
               className="menu bg-base-100 w-100 rounded-b-box py-8"
             >
-              <div className="flex flex-col">
-                <h2 className="text-xl font-semibold">Items</h2>
-                <ItemsList />
-              </div>
+              <h2 className="text-xl font-semibold">Items</h2>
+              <ItemsList />
             </motion.div>
           </TabPanel>
           <TabPanel>
@@ -310,10 +308,8 @@ export default function Admin() {
               transition={{ duration: 0.3 }}
               className="menu bg-base-100 w-100 rounded-b-box py-8"
             >
-              <div className="flex flex-col">
-                <h2 className="text-xl font-semibold">Orders</h2>
-                <OrdersList />
-              </div>
+              <h2 className="text-xl font-semibold">Orders</h2>
+              <OrdersList />
             </motion.div>
           </TabPanel>
         </Tabs>

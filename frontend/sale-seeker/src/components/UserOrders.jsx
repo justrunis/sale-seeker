@@ -25,7 +25,7 @@ export default function UserOrders({ userId }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="menu bg-base-100 w-100 rounded-b-box py-8"
+      className="overflow-x-auto overflow-y-auto max-h-[400px] w-full md:w-auto"
     >
       <h2 className="text-2xl font-bold mb-4 text-center">My Orders</h2>
       {isError && (
@@ -44,14 +44,14 @@ export default function UserOrders({ userId }) {
         </div>
       )}
       {!isError && !isLoading && (
-        <div className="flex flex-col align-center justify-content-center items-center">
-          <table className="table w-full">
+        <div className="overflow-x-auto overflow-y-auto max-h-[400px] w-full md:w-auto">
+          <table className="table">
             <thead>
               <tr>
                 <th className="px-4 py-2">Order ID</th>
-                <th className="px-4 py-2">Order date</th>
-                <th className="px-4 py-2">Order status</th>
-                <th className="px-4 py-2">Total price</th>
+                <th className="px-4 py-2">Order Date</th>
+                <th className="px-4 py-2">Order Status</th>
+                <th className="px-4 py-2">Total Price</th>
                 <th className="px-4 py-2">Items</th>
               </tr>
             </thead>
@@ -65,10 +65,10 @@ export default function UserOrders({ userId }) {
               ) : (
                 orders.map((order, index) => (
                   <motion.tr
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.2 }}
                     key={order.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
                   >
                     <td className="px-4 py-2">{order.id}</td>
                     <td className="px-4 py-2">
