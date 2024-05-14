@@ -73,6 +73,10 @@ export default function Admin() {
     setIsEditing(false);
   }
 
+  function handleViewUser(id) {
+    console.log(id);
+  }
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["users"],
     queryFn: ({ signal }) => fetchUsers({ signal }),
@@ -163,6 +167,13 @@ export default function Admin() {
                     {makeFirstLetterUpperCase(user.role)}
                   </td>
                   <td className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleViewUser(user.id)}
+                      className="btn btn-secondary"
+                    >
+                      View
+                    </button>
                     <button
                       onClick={() => handleStartEdit(user)}
                       className="btn btn-primary"
