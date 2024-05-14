@@ -1,7 +1,6 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import Header from "../Header";
-import { Link } from "react-router-dom";
-import { FaReact, FaNodeJs, FaCreditCard, FaGithub } from "react-icons/fa";
+import { FaReact, FaNodeJs, FaCreditCard } from "react-icons/fa";
 import {
   TbBrandFramerMotion,
   TbBrandRedux,
@@ -236,21 +235,35 @@ export default function AboutUs() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3, delay: 0.4 }}
+            transition={{ duration: 0.3, delay: 0.2 }}
             className="menu bg-base-100 rounded-box py-12 flex flex-col"
           >
             <h2 className="text-2xl font-semibold mb-10">Contact me</h2>
-            <p className="text-base">
-              Thank you for your interest in Sale Seeker! If you have any
-              questions, feedback, or inquiries, please don't hesitate to reach
-              out to me.
+            <div className="text-base">
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                Thank you for your interest in Sale Seeker! If you have any
+                questions, feedback, or inquiries, please don't hesitate to
+                reach out to me.
+              </motion.p>
               <br />
-              <br />
-              You can contact me through various channels:
-              <br />
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.6 }}
+              >
+                You can contact me through various channels:
+              </motion.p>
               <br />
               <ul className="list-disc list-inside pl-4">
-                <li>
+                <motion.li
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 0.8 }}
+                >
                   Send me a message on{" "}
                   <a
                     href="https://github.com/justrunis"
@@ -258,8 +271,12 @@ export default function AboutUs() {
                   >
                     GitHub
                   </a>
-                </li>
-                <li>
+                </motion.li>
+                <motion.li
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 1 }}
+                >
                   Connect with me on{" "}
                   <a
                     href="https://discord.com/users/264059136378011649"
@@ -267,8 +284,12 @@ export default function AboutUs() {
                   >
                     Discord
                   </a>
-                </li>
-                <li>
+                </motion.li>
+                <motion.li
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 1.2 }}
+                >
                   Write me an email at{" "}
                   <a
                     href="mailto:justrunis@gmail.com"
@@ -276,12 +297,18 @@ export default function AboutUs() {
                   >
                     justrunis@gmail.com
                   </a>
-                </li>
+                </motion.li>
               </ul>
               <br />
-              I'm looking forward to hearing from you and will do my best to
-              respond promptly.
-            </p>
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1.4 }}
+              >
+                I'm looking forward to hearing from you and will do my best to
+                respond promptly.
+              </motion.p>
+            </div>
           </motion.div>
         </div>
       </div>

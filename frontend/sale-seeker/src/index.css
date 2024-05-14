@@ -7,9 +7,9 @@
   padding: 2rem;
   position: fixed;
   top: 10vh;
-  left: calc(50% - 15rem);
-  width: 30rem;
-  max-height: 80vh;
+  left: calc(50% - 30rem);
+  width: 60rem;
+  max-height: 100vh;
   border: none;
   border-radius: 6px;
   z-index: 100;
