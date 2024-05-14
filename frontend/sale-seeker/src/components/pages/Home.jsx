@@ -8,7 +8,6 @@ import ErrorBlock from "../UI/ErrorBlock";
 import Pager from "../UI/Pager";
 import { motion, AnimatePresence } from "framer-motion";
 import SearchBar from "../SearchBar";
-import Input from "../UI/Input";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");

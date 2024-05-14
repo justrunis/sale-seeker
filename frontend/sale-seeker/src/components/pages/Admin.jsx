@@ -44,7 +44,7 @@ export default function Admin() {
 
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
-  const usersPerPage = 5;
+  const usersPerPage = 3;
 
   function handleDeleteUser() {
     deleteUserMutation({ id: deleteId });
@@ -296,7 +296,7 @@ export default function Admin() {
               transition={{ duration: 0.3 }}
               className="menu bg-base-100 w-100 rounded-b-box py-8"
             >
-              <h2 className="text-xl font-semibold">Items</h2>
+              <h2 className="text-xl font-semibold ml-5">Items</h2>
               <ItemsList />
             </motion.div>
           </TabPanel>
@@ -306,7 +306,7 @@ export default function Admin() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 20 }}
               transition={{ duration: 0.3 }}
-              className="menu bg-base-100 w-100 rounded-b-box py-8"
+              className="menu bg-base-100 w-full rounded-b-box py-8"
             >
               <h2 className="text-xl font-semibold">Orders</h2>
               <OrdersList />

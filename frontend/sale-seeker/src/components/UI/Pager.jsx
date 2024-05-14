@@ -77,7 +77,7 @@ export default function Pager({ totalPages, currentPage, setCurrentPage }) {
     <div className="flex items-center gap-4">
       <button
         variant="text"
-        className="btn btn-primary px-2 min-h-0 h-[2rem]"
+        className="btn btn-primary px-2 min-h-0 h-[3rem] hover:bg-secondary"
         onClick={prev}
         disabled={currentPage === 1}
       >
@@ -91,7 +91,15 @@ export default function Pager({ totalPages, currentPage, setCurrentPage }) {
         )}
         {currentPage > 4 && <span className="text-gray-500">...</span>}
         {getPagerButtons().map((page) => (
-          <PageButton key={page} {...getItemProps(page)}>
+          <PageButton
+            key={page}
+            {...getItemProps(page)}
+            className={
+              currentPage !== page
+                ? "bg-primary hover:bg-secondary"
+                : "bg-accent hover:bg-secondary"
+            }
+          >
             {page}
           </PageButton>
         ))}
@@ -99,12 +107,21 @@ export default function Pager({ totalPages, currentPage, setCurrentPage }) {
           <span className="text-gray-500">...</span>
         )}
         {currentPage < totalPages - 3 && (
-          <PageButton {...getItemProps(totalPages)}>{totalPages}</PageButton>
+          <PageButton
+            {...getItemProps(totalPages)}
+            className={
+              currentPage !== totalPages
+                ? "bg-primary hover:bg-secondary"
+                : "bg-accent hover:bg-secondary"
+            }
+          >
+            {totalPages}
+          </PageButton>
         )}
       </div>
       <button
         variant="text"
-        className="btn btn-primary px-2 min-h-0 h-[2rem]"
+        className="btn btn-primary px-2 min-h-0 h-[3rem] hover:bg-secondary"
         onClick={next}
         disabled={currentPage === totalPages}
       >

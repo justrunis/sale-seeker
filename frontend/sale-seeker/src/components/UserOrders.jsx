@@ -3,11 +3,13 @@ import { fetchUserOrders } from "./util/http";
 import LoadingIndicator from "./UI/LoadingIndicator";
 import ErrorBlock from "./UI/ErrorBlock";
 import {
-  dateFormating,
   currencyFormatter,
   makeFirstLetterUpperCase,
+  formatDate,
 } from "./util/formating";
 import { motion } from "framer-motion";
+import Pager from "./UI/Pager";
+import { useState } from "react";
 
 export default function UserOrders({ userId }) {
   const {
@@ -20,12 +22,25 @@ export default function UserOrders({ userId }) {
     queryFn: ({ signal }) => fetchUserOrders({ signal, userId }),
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const orderPerPage = 3;
+  let totalPages = 0;
+  let currentOrders = [];
+
+  if (orders) {
+    totalPages = Math.ceil(orders.length / orderPerPage);
+    const indexOfLastOrder = orderPerPage * currentPage;
+    const indexOfFirstOrder = indexOfLastOrder - orderPerPage;
+    currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  }
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="overflow-x-auto overflow-y-auto max-h-[400px] w-full md:w-auto"
+      className="menu bg-base-100 w-100 rounded-b-box py-8"
     >
       <h2 className="text-2xl font-bold mb-4 text-center">My Orders</h2>
       {isError && (
@@ -63,16 +78,17 @@ export default function UserOrders({ userId }) {
                   </td>
                 </tr>
               ) : (
-                orders.map((order, index) => (
+                currentOrders.map((order, index) => (
                   <motion.tr
                     key={order.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.2 }}
                   >
+                    {console.log(order)}
                     <td className="px-4 py-2">{order.id}</td>
                     <td className="px-4 py-2">
-                      {dateFormating.format(order.date)}
+                      {formatDate(order.created_at)}
                     </td>
                     <td className="px-4 py-2">
                       {makeFirstLetterUpperCase(order.status)}
@@ -95,6 +111,13 @@ export default function UserOrders({ userId }) {
               )}
             </tbody>
           </table>
+          <div className="flex justify-center mt-8">
+            <Pager
+              totalPages={totalPages}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </div>
         </div>
       )}
     </motion.div>

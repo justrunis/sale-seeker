@@ -271,7 +271,7 @@ app.post("/reset-password/:token", async (req, res) => {
 // Get all items
 app.get("/items", async (req, res) => {
   const result = await query("SELECT * FROM items");
-  result.rows.sort((a, b) => a.title.localeCompare(b.title));
+  result.rows.sort((a, b) => a.id - b.id);
   res.json(result.rows);
 });
 

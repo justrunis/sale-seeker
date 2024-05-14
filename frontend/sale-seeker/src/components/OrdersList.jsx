@@ -96,7 +96,7 @@ export default function OrdersList() {
     changeOrderStatusMutation({ id: order.id, status: order.status });
   }
 
-  const ordersPerPage = 5;
+  const ordersPerPage = 3;
 
   let totalPages = 0;
   let currentOrders = [];
@@ -288,7 +288,7 @@ export default function OrdersList() {
               ))}
             </tbody>
           </table>
-          <div className="mt-5">
+          <div className="mt-5 self-center">
             <Pager
               totalPages={totalPages}
               currentPage={currentPage}

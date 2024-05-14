@@ -54,7 +54,7 @@ export default function ItemsList({ showMyItems = false }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  const itemsPerPage = 5;
+  const itemsPerPage = 3;
 
   function handleItemEdit(item, id) {
     editItemMutation({ id, item });
@@ -151,12 +151,12 @@ export default function ItemsList({ showMyItems = false }) {
 
   return (
     <>
-      <div className="my-5 flex gap-5">
-        <button onClick={handleAddItem} className="btn btn-primary">
+      <div className="my-2 flex gap-5">
+        <button onClick={handleAddItem} className="btn btn-primary ml-5">
           Add Item
         </button>
       </div>
-      <div className="overflow-x-auto overflow-y-auto max-h-[400px] w-full md:w-auto">
+      <div className="overflow-x-auto overflow-y-auto max-h-[50rem] w-full md:w-auto">
         {isEditing && (
           <Modal key="item-edit" onClose={handleStopEdit} open={isEditing}>
             <ItemForm
@@ -228,7 +228,7 @@ export default function ItemsList({ showMyItems = false }) {
           </div>
         )}
         {!isLoading && !isError && (
-          <div className="overflow-x-auto overflow-y-auto max-h-[400px] w-full md:w-auto flex flex-col">
+          <div className="overflow-x-auto overflow-y-auto max-h-[50rem] w-full md:w-auto flex flex-col">
             <table className="table">
               <thead>
                 <tr>
@@ -255,7 +255,7 @@ export default function ItemsList({ showMyItems = false }) {
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="h-20 w-20"
+                        className="h-10 w-10 lg:h-20 lg:w-20"
                       />
                     </td>
                     <td className="px-4 py-2">
