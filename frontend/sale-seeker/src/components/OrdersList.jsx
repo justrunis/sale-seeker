@@ -169,12 +169,12 @@ export default function OrdersList() {
           onClose={handleStopOrderStatusChange}
           open={isEditingOrderStatus}
         >
-          <div className="p-10">
-            <h2 className="text-2xl font-bold text-red-500 mb-5">
-              Change order status
-            </h2>
-            <div className="flex flex-col gap-5">
-              <div>
+          <h2 className="text-2xl font-bold text-center">
+            Change order status
+          </h2>
+          <div className="flex flex-col justify-center p-5">
+            <div className="flex justify-center">
+              <div className="flex flex-col w-96 gap-2">
                 <Select
                   label="Status"
                   id="status"
@@ -194,24 +194,25 @@ export default function OrdersList() {
                   onChange={(e) =>
                     setEditedOrder({ ...editedOrder, status: e.target.value })
                   }
-                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary focus:border-primary sm:text-sm rounded-md"
+                  className="mt-1 p-2 block w-96 border border-secondary rounded-md shadow-sm focus:outline-none"
                 />
               </div>
-              {isChangeError && (
-                <ErrorBlock
-                  title="An error occurred!"
-                  message={
-                    changeError?.info?.message ||
-                    "Failed to change order status."
-                  }
-                />
-              )}
-              {isPendingChange ? (
-                <div className="flex items-center justify-center justify-center">
-                  <LoadingIndicator />
-                </div>
-              ) : (
-                <div className="flex gap-5">
+            </div>
+            {isChangeError && (
+              <ErrorBlock
+                title="An error occurred!"
+                message={
+                  changeError?.info?.message || "Failed to change order status."
+                }
+              />
+            )}
+            {isPendingChange ? (
+              <div className="flex items-center justify-center justify-center">
+                <LoadingIndicator />
+              </div>
+            ) : (
+              <div className="flex justify-center mt-2">
+                <div className="flex flex-col w-96 gap-2">
                   <button
                     className="btn btn-primary"
                     onClick={() => handleOrderStatusChange(editedOrder)}
@@ -225,8 +226,8 @@ export default function OrdersList() {
                     Cancel
                   </button>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </Modal>
       )}

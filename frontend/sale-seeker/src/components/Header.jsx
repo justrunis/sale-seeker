@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { IoIosCart, IoIosHome } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
-import { FaRegMoon, FaRegSun } from "react-icons/fa";
+import { FaRegMoon, FaRegSun, FaBox } from "react-icons/fa";
 import { RiAdminFill } from "react-icons/ri";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -149,7 +149,7 @@ export default function Header() {
                     to="/my-items"
                     className="text-white hover:text-gray-300 flex items-center gap-1"
                   >
-                    <RiAdminFill />
+                    <FaBox />
                     My Items
                   </Link>
                 </li>

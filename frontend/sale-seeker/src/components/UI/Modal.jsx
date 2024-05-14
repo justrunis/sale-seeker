@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { IoCloseCircleOutline } from "react-icons/io5";
 
 export default function Modal({ children, open, onClose, className = "" }) {
   const dialog = useRef();
@@ -31,7 +32,11 @@ export default function Modal({ children, open, onClose, className = "" }) {
         className={`modal-class ${className}`}
         onClose={onClose}
         ref={dialog}
+        key="modal"
       >
+        <div className="modal-close-btn" onClick={onClose}>
+          <IoCloseCircleOutline />
+        </div>
         {children}
       </motion.dialog>
     </AnimatePresence>,

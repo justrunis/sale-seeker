@@ -73,10 +73,6 @@ export default function Admin() {
     setIsEditing(false);
   }
 
-  function handlePageChange(page) {
-    setCurrentPage(page);
-  }
-
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["users"],
     queryFn: ({ signal }) => fetchUsers({ signal }),

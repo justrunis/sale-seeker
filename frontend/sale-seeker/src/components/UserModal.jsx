@@ -25,13 +25,16 @@ export default function UserModal({
     handleEditUser(currentUser);
   }
 
+  const inputClasses =
+    "mt-1 p-2 block w-full border border-secondary rounded-md shadow-sm focus:outline-none mb-5";
+
   return (
     <>
       <Modal key="edit-user" open={open} onClose={onClose}>
-        <h2 className="text-2xl text-center pt-5 font-semibold text-primary dark:text-primary-dark">
+        <h2 className="text-2xl text-center pt-5 font-semibold dark:text-primary-dark">
           Edit user
         </h2>
-        <div className="flex gap-5 p-5">
+        <div className="flex justify-center p-5">
           {isError && (
             <div className="flex items-center justify-center">
               <ErrorBlock
@@ -45,12 +48,12 @@ export default function UserModal({
               <LoadingIndicator />
             </div>
           ) : (
-            <form onSubmit={editUser} className={"flex flex-col gap-5 w-96"}>
+            <form onSubmit={editUser} className={"flex flex-col w-96"}>
               <Input
                 label="Username"
                 type="text"
                 value={currentUser.username}
-                className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                className={inputClasses}
                 onChange={(e) =>
                   setUser({ ...currentUser, username: e.target.value })
                 }
@@ -59,15 +62,16 @@ export default function UserModal({
                 label="Email"
                 type="email"
                 value={currentUser.email}
-                className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                className={inputClasses}
                 onChange={(e) =>
                   setUser({ ...currentUser, email: e.target.value })
                 }
               />
+              <label className="block text-sm font-bold">Role</label>
               <select
                 label="Role"
                 value={currentUser.role}
-                className="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+                className={inputClasses}
                 onChange={(e) =>
                   setUser({ ...currentUser, role: e.target.value })
                 }
@@ -82,7 +86,7 @@ export default function UserModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="btn btn-accent"
+                className="btn btn-accent mt-2"
               >
                 Close
               </button>
