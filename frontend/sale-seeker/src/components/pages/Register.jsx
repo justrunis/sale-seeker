@@ -116,7 +116,6 @@ export default function Register() {
         password: data.password,
       })
     );
-    console.log("Response data:", response);
     if (response.error) {
       toast.error(response.error || "Failed to create user.");
       return;

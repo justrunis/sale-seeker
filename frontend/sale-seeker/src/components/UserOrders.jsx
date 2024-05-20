@@ -85,7 +85,6 @@ export default function UserOrders({ userId }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.2 }}
                   >
-                    {console.log(order)}
                     <td className="px-4 py-2">{order.id}</td>
                     <td className="px-4 py-2">
                       {formatDate(order.created_at)}

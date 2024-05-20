@@ -73,10 +73,6 @@ export default function Admin() {
     setIsEditing(false);
   }
 
-  function handleViewUser(id) {
-    console.log(id);
-  }
-
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["users"],
     queryFn: ({ signal }) => fetchUsers({ signal }),
@@ -148,6 +144,8 @@ export default function Admin() {
                 <th className="px-4 py-2">Id</th>
                 <th className="px-4 py-2">Username</th>
                 <th className="px-4 py-2">Email</th>
+                <th className="px-4 py-2">Created at</th>
+                <th className="px-4 py-2">Refresh token</th>
                 <th className="px-4 py-2">Role</th>
                 <th className="px-4 py-2">Actions</th>
               </tr>
@@ -164,16 +162,13 @@ export default function Admin() {
                   <td className="px-4 py-2">{user.username}</td>
                   <td className="px-4 py-2">{user.email}</td>
                   <td className="px-4 py-2">
+                    {new Date(user.created_at).toDateString()}
+                  </td>
+                  <td className="px-4 py-2">{user.reset_token}</td>
+                  <td className="px-4 py-2">
                     {makeFirstLetterUpperCase(user.role)}
                   </td>
                   <td className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() => handleViewUser(user.id)}
-                      className="btn btn-secondary"
-                    >
-                      View
-                    </button>
                     <button
                       onClick={() => handleStartEdit(user)}
                       className="btn btn-primary"

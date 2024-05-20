@@ -71,7 +71,6 @@ export default function Home() {
   }
 
   if (items) {
-    console.log(items);
     const filteredItems = items?.items?.filter((item) =>
       item.title.toLowerCase().includes(searchQuery.toLowerCase())
     );

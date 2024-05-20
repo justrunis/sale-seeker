@@ -24,8 +24,6 @@ export default function ItemCard({ item, rating }) {
 
   const ratingValue = Number(rating).toFixed(2);
 
-  console.log(item.id, Number(rating).toFixed(2));
-
   return (
     <>
       <motion.div

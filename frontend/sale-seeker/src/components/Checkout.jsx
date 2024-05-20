@@ -8,13 +8,11 @@ import { useDispatch } from "react-redux";
 export default function Checkout() {
   const dispatch = useDispatch();
   function handleCloseCheckout() {
-    console.log("close");
     dispatch(checkoutActions.hideCheckout());
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log("submit");
   }
 
   return (
