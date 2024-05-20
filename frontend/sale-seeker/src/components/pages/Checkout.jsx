@@ -19,7 +19,7 @@ export default function Checkout() {
         transition={{ duration: 0.5, delay: 0.2 }}
         className="container mx-auto p-10 bg-secondary h-100"
       >
-        <h1 className="text-2xl font-bold my-5 text-center">Checkout</h1>
+        <h1 className="text-3xl font-bold mb-10 text-center">Checkout</h1>
         <div className="menu bg-base-100 w-100 rounded-box py-8">
           <div className="flex flex-col">
             {cartItems.length === 0 ? (

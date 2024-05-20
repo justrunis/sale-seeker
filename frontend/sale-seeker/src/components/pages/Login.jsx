@@ -83,7 +83,7 @@ export default function Login() {
           onSubmit={handleLogin}
           ref={scope}
         >
-          <h2 className="text-2xl font-bold text-center text-black">Login</h2>
+          <h2 className="text-3xl font-bold mb-10 text-center">Login</h2>
           <img
             className="w-40 h-40 object-cover rounded-lg bg-base-100 mx-auto my-4"
             src={logo}

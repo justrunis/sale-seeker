@@ -1,16 +1,18 @@
 import Rating from "@mui/material/Rating";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { cartActions } from "../store/slices/cartSlice";
 import { useNavigate } from "react-router-dom";
 import { currencyFormatter } from "./util/formating";
 import { IoIosCart } from "react-icons/io";
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
+import { getUserRole, getToken } from "../auth/auth";
 
 export default function ItemCard({ item, rating }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const userRole = getUserRole(getToken());
 
   function addItemToCartHandler() {
     dispatch(cartActions.addItemToCart(item));
@@ -68,13 +70,15 @@ export default function ItemCard({ item, rating }) {
               <button onClick={handleItemPage} className="btn btn-secondary">
                 View
               </button>
-              <button
-                onClick={addItemToCartHandler}
-                className="btn btn-primary"
-              >
-                Add to cart
-                <IoIosCart className="ml-2" />
-              </button>
+              {userRole !== undefined && (
+                <button
+                  onClick={addItemToCartHandler}
+                  className="btn btn-primary"
+                >
+                  Add to cart
+                  <IoIosCart className="ml-2" />
+                </button>
+              )}
             </div>
           </div>
         </div>

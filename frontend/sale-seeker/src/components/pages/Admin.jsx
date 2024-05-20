@@ -268,9 +268,7 @@ export default function Admin() {
         />
       )}
       <div className="container mx-auto p-10 bg-secondary h-100 flex-grow">
-        <h1 className="text-3xl font-bold uppercase mb-10 text-center">
-          Admin panel
-        </h1>
+        <h1 className="text-3xl font-bold mb-10 text-center">Admin panel</h1>
 
         <Tabs onSelect={(index) => setSelectedTabIndex(index)}>
           <TabList className="flex bg-base-100 p-2 rounded-t-md gap-5">

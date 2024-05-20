@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 export default function Profile() {
   const token = getToken();
   const userId = getUserId(token);
+  const staleTime = 1000 * 60 * 5;
 
   const {
     data: user,
@@ -22,6 +23,7 @@ export default function Profile() {
   } = useQuery({
     queryKey: ["user", { id: userId }],
     queryFn: ({ signal }) => fetchUser({ signal, id: userId }),
+    staleTime: staleTime,
   });
 
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);

@@ -42,7 +42,7 @@ export default function ImagePicker({ label, name, value, onChange }) {
       <div className="relative w-40 h-40 mb-5">
         <img
           src={pickedImage || value}
-          alt="Picked"
+          alt="Pick an image"
           className="w-full h-full object-cover"
         />
         <button

@@ -14,7 +14,7 @@ export default function AboutUs() {
     <div className="flex flex-col min-h-screen">
       <Header />
       <div className="container mx-auto p-10 bg-secondary h-100 flex-grow">
-        <h1 className="text-3xl font-bold uppercase mb-10 text-center">
+        <h1 className="text-3xl font-bold mb-10 text-center">
           About this website
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

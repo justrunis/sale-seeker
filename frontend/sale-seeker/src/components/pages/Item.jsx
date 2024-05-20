@@ -16,12 +16,16 @@ import ReviewModal from "../ReviewModal";
 import ItemRating from "../ItemRating";
 import { motion } from "framer-motion";
 import TypingAnimation from "../Animations/TypingAnimation";
+import { getUserRole, getToken } from "../../auth/auth";
+import { Link } from "react-router-dom";
 
 export default function Item() {
   const params = useParams();
   const id = params.id;
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
+
+  const userRole = getUserRole(getToken());
 
   const reviewsPerPage = 3;
   const staleTime = 1000 * 60 * 5; // 5 minutes
@@ -132,15 +136,17 @@ export default function Item() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.2 }}
-          className="flex items-center justify-between gap-5 bg-base-100 p-10 h-25 rounded justify-self-center self-center shadow-2xl"
+          className="flex items-center justify-between gap-5 bg-base-100 p-10 h-25 rounded-lg justify-self-center self-center shadow-2xl"
         >
           <span className="text-3xl font-bold dark:text-white">
             {currencyFormatter.format(item.price)}
           </span>
-          <button onClick={addItemToCartHandler} className="btn btn-primary">
-            Add to cart
-            <IoIosCart className="inline-block ml-2" />
-          </button>
+          {userRole !== undefined && (
+            <button onClick={addItemToCartHandler} className="btn btn-primary">
+              Add to cart
+              <IoIosCart className="inline-block ml-2" />
+            </button>
+          )}
         </motion.div>
       </motion.div>
     );
@@ -177,64 +183,86 @@ export default function Item() {
       />
       <div className="container mx-auto p-10 bg-secondary h-100 flex-grow">
         {content}
-        <h2 className="text-xl font-semibold mb-5">Reviews</h2>
+        {userRole !== undefined ? (
+          <>
+            <h2 className="text-xl font-semibold mb-5">Reviews</h2>
 
-        <div className="menu bg-base-100 w-100 rounded-box py-8">
-          <div className="mb-5">
-            <button onClick={handleReviewModal} className="btn btn-primary">
-              Write a review
-            </button>
-          </div>
-          {reviewsLoading && (
-            <div className="flex justify-center">
-              <LoadingIndicator />
-            </div>
-          )}
-          {isReviewError ? (
-            <div className="flex justify-center">
-              <ErrorBlock error={reviewsError} />
-            </div>
-          ) : (
-            <>
-              {reviews && reviews?.totalCount === 0 ? (
-                <motion.div
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="flex justify-center items-center flex-col"
-                >
-                  <h2 className="text-xl font-bold mb-5">No reviews found.</h2>
-                  <TypingAnimation
-                    el="p"
-                    text="Be the first to write a review for this item. Click the button above."
-                    className="text-center"
-                    once
-                  />
-                </motion.div>
+            <div className="menu bg-base-100 w-100 rounded-box py-8">
+              <div className="mb-5">
+                <button onClick={handleReviewModal} className="btn btn-primary">
+                  Write a review
+                </button>
+              </div>
+              {reviewsLoading && (
+                <div className="flex justify-center">
+                  <LoadingIndicator />
+                </div>
+              )}
+              {isReviewError ? (
+                <div className="flex justify-center">
+                  <ErrorBlock error={reviewsError} />
+                </div>
               ) : (
                 <>
-                  {currentReviews.map((review, index) => (
+                  {reviews && reviews?.totalCount === 0 ? (
                     <motion.div
-                      key={review.id}
                       initial={{ opacity: 0, y: -20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5, delay: 0.2 * index }}
+                      transition={{ duration: 0.5, delay: 0.2 }}
+                      className="flex justify-center items-center flex-col"
                     >
-                      <Review key={review.id} review={review} />
+                      <h2 className="text-xl font-bold mb-5">
+                        No reviews found.
+                      </h2>
+                      <TypingAnimation
+                        el="p"
+                        text="Be the first to write a review for this item. Click the button above."
+                        className="text-center"
+                        once
+                      />
                     </motion.div>
-                  ))}
-                  <div className="mt-5 flex justify-center">
-                    <Pager
-                      totalPages={totalPages}
-                      currentPage={currentPage}
-                      setCurrentPage={setCurrentPage}
-                    />
-                  </div>
+                  ) : (
+                    <>
+                      {currentReviews.map((review, index) => (
+                        <motion.div
+                          key={review.id}
+                          initial={{ opacity: 0, y: -20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: 0.2 * index }}
+                        >
+                          <Review key={review.id} review={review} />
+                        </motion.div>
+                      ))}
+                      <div className="mt-5 flex justify-center">
+                        <Pager
+                          totalPages={totalPages}
+                          currentPage={currentPage}
+                          setCurrentPage={setCurrentPage}
+                        />
+                      </div>
+                    </>
+                  )}
                 </>
               )}
-            </>
-          )}
-        </div>
+            </div>
+          </>
+        ) : (
+          <div class="flex justify-center">
+            <div class="bg-base-100 rounded-lg p-6 max-w-md p-8">
+              <p class="text-xl text-base text-center">
+                To add item to cart or write a review, you need to{" "}
+                <Link className="text-primary hover:underline" to="/login">
+                  log in
+                </Link>{" "}
+                or{" "}
+                <Link className="text-primary hover:underline" to="/register">
+                  create an account
+                </Link>
+                .
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

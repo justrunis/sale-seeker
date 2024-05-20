@@ -28,9 +28,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Welcome />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/item/:id" element={<Item />} />
             <Route path="/" element={<ProtectedRoute />}>
-              <Route path="/home" element={<Home />} />
-              <Route path="/item/:id" element={<Item />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/profile" element={<Profile />} />
               <Route element={<AdminRoute />}>

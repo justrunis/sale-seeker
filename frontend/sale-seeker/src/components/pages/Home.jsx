@@ -15,7 +15,7 @@ export default function Home() {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const delay = 1000; // delay in ms
+  const delay = 500; // delay in ms
   const itemsPerPage = 3;
   const staleTime = 1000 * 60 * 5; // 5 minutes
 

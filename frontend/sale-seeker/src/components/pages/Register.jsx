@@ -146,9 +146,7 @@ export default function Register() {
           onSubmit={handleRegistration}
           ref={scope}
         >
-          <h1 className="text-2xl font-bold text-center text-black">
-            Register
-          </h1>
+          <h1 className="text-3xl font-bold mb-10 text-center">Register</h1>
           <img
             className="w-40 h-40 object-cover rounded-lg bg-base-100 mx-auto my-4"
             src={logo}

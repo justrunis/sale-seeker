@@ -112,17 +112,17 @@ export default function Header() {
       </div>
       <nav className={`nav ${isMenuOpen ? "block" : "hidden"} lg:block mr-10`}>
         <ul className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4">
+          <li>
+            <Link
+              to="/home"
+              className="text-white hover:text-gray-300 flex items-center gap-1"
+            >
+              <IoIosHome />
+              Home
+            </Link>
+          </li>
           {isLoggedIn && (
             <>
-              <li>
-                <Link
-                  to="/home"
-                  className="text-white hover:text-gray-300 flex items-center gap-1"
-                >
-                  <IoIosHome />
-                  Home
-                </Link>
-              </li>
               <li>
                 <Link
                   to="/profile"
