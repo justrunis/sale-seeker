@@ -1,6 +1,12 @@
 import Header from "../Header";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { fetchUsers, deleteUser, editUser, queryClient } from "../util/http";
+import {
+  fetchUsers,
+  fetchUsersByPage,
+  deleteUser,
+  editUser,
+  queryClient,
+} from "../util/http";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
 import { getUserRole } from "../../auth/auth";
@@ -15,10 +21,12 @@ import { makeFirstLetterUpperCase } from "../util/formating";
 import OrdersList from "../OrdersList";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
   let content;
   const token = useSelector((state) => state.login.user).token;
+  const navigate = useNavigate();
 
   if (getUserRole(token) !== "admin") {
     return (
@@ -44,7 +52,8 @@ export default function Admin() {
 
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
-  const usersPerPage = 3;
+  const usersPerPage = 1;
+  const staleTime = 1000 * 60 * 5; // 5 minutes
 
   function handleDeleteUser() {
     deleteUserMutation({ id: deleteId });
@@ -74,8 +83,16 @@ export default function Admin() {
   }
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["users"],
-    queryFn: ({ signal }) => fetchUsers({ signal }),
+    queryKey: ["users", { page: currentPage }],
+    queryFn: ({ signal }) => {
+      if (getUserRole(token) === "admin") {
+        console.log("fetching users");
+        return fetchUsersByPage({ signal, page: currentPage, usersPerPage });
+      } else {
+        navigate("/login");
+      }
+    },
+    staleTime: staleTime,
   });
 
   const {
@@ -130,10 +147,9 @@ export default function Admin() {
   }
 
   if (data) {
-    const totalPages = Math.ceil(data.length / usersPerPage);
-    const indexOfLastItem = currentPage * usersPerPage;
-    const indexOfFirstItem = indexOfLastItem - usersPerPage;
-    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(data.totalCount / usersPerPage);
+
+    const currentItems = data?.users?.slice(0, usersPerPage);
 
     content = (
       <>

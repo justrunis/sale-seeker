@@ -136,6 +136,25 @@ export async function fetchUsers({ signal }) {
   return users;
 }
 
+export async function fetchUsersByPage({ signal, page, usersPerPage }) {
+  const URL = `${BASE_URL}/usersPaged?page=${page}&itemsPerPage=${usersPerPage}`;
+  const response = await fetch(URL, {
+    signal,
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while fetching users");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const users = await response.json();
+
+  return users;
+}
+
 export async function fetchUser({ signal, id }) {
   const URL = `${BASE_URL}/users/${id}`;
   const response = await fetch(URL, {

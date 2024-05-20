@@ -350,6 +350,37 @@ app.get("/users", auth, async (req, res) => {
   res.json(result.rows);
 });
 
+app.get("/usersPaged", auth, async (req, res) => {
+  const user = req.user;
+  const { page, itemsPerPage } = req.query;
+
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  if (itemsPerPage < 1 || isNaN(itemsPerPage)) {
+    return res.status(400).json({ message: "Invalid items per page number." });
+  }
+  if (page <= 0 || isNaN(page)) {
+    return res.status(400).json({ message: "Invalid page number." });
+  }
+  const offset = (page - 1) * itemsPerPage;
+
+  const result = await query(
+    "SELECT * FROM users ORDER BY created_at DESC OFFSET $1 LIMIT $2",
+    [offset, itemsPerPage]
+  );
+
+  const totalCountResult = await query("SELECT COUNT(*) FROM users");
+
+  const totalCount = parseInt(totalCountResult.rows[0].count);
+
+  if (result.rowCount === 0) {
+    return res.json({ users: [], totalCount: 0 });
+  }
+  res.json({ users: result.rows, totalCount });
+});
+
 // get a single user by id
 app.get("/users/:id", async (req, res) => {
   const { id } = req.params;
