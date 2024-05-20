@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchUserOrders } from "./util/http";
+import { fetchUserOrders, fetchUserOrdersByPage } from "./util/http";
 import LoadingIndicator from "./UI/LoadingIndicator";
 import ErrorBlock from "./UI/ErrorBlock";
 import {
@@ -12,27 +12,34 @@ import Pager from "./UI/Pager";
 import { useState } from "react";
 
 export default function UserOrders({ userId }) {
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const ordersPerPage = 3;
+  const staleTime = 1000 * 60 * 5; // 5 minutes
+
+  let totalPages = 0;
+  let currentOrders = [];
   const {
     data: orders,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["orders", { userId }],
-    queryFn: ({ signal }) => fetchUserOrders({ signal, userId }),
+    queryKey: ["orders", { userId, page: currentPage }],
+    queryFn: ({ signal }) =>
+      fetchUserOrdersByPage({
+        signal,
+        userId,
+        page: currentPage,
+        ordersPerPage: ordersPerPage,
+      }),
+    staleTime: staleTime,
   });
 
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const orderPerPage = 3;
-  let totalPages = 0;
-  let currentOrders = [];
-
   if (orders) {
-    totalPages = Math.ceil(orders.length / orderPerPage);
-    const indexOfLastOrder = orderPerPage * currentPage;
-    const indexOfFirstOrder = indexOfLastOrder - orderPerPage;
-    currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+    totalPages = Math.ceil(orders.totalCount / ordersPerPage);
+
+    currentOrders = orders?.orders?.slice(0, ordersPerPage);
   }
 
   return (

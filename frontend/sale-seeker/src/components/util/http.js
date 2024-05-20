@@ -197,6 +197,32 @@ export async function fetchUserOrders({ signal, userId }) {
   return orders;
 }
 
+export async function fetchUserOrdersByPage({
+  signal,
+  userId,
+  page,
+  ordersPerPage,
+}) {
+  const URL = `${BASE_URL}/ordersPaged/user/${userId}?page=${page}&ordersPerPage=${ordersPerPage}`;
+  const response = await fetch(URL, {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+    signal,
+  });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while fetching the orders");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const orders = await response.json();
+
+  return orders;
+}
+
 export async function deleteUser({ id }) {
   const URL = `${BASE_URL}/users/${id}`;
   const response = await fetch(URL, {

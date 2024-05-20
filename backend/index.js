@@ -292,7 +292,6 @@ app.get("/items/:id", async (req, res) => {
   if (result.rowCount === 0) {
     return res.status(404).json({ message: "Item not found." });
   }
-  console.log(result.rows[0]);
   res.json(result.rows[0]);
 });
 
@@ -848,6 +847,42 @@ app.get("/orders/user/:id", auth, async (req, res) => {
     return res.json([]);
   }
   res.json(result.rows);
+});
+
+// get orders for a user paged
+app.get("/ordersPaged/user/:id", auth, async (req, res) => {
+  const user = req.user;
+  const userId = req.params.id;
+  const { page, ordersPerPage } = req.query;
+
+  if (user.id !== parseInt(userId)) {
+    return res.status(403).json({ message: "Unauthorized" });
+  }
+
+  if (ordersPerPage < 1 || isNaN(ordersPerPage)) {
+    return res.status(400).json({ message: "Invalid items per page number." });
+  }
+  if (page <= 0 || isNaN(page)) {
+    return res.status(400).json({ message: "Invalid page number." });
+  }
+  const offset = (page - 1) * ordersPerPage;
+
+  const result = await query(
+    "SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC OFFSET $2 LIMIT $3",
+    [userId, offset, ordersPerPage]
+  );
+
+  const totalCountResult = await query(
+    "SELECT COUNT(*) FROM orders WHERE user_id = $1",
+    [userId]
+  );
+
+  const totalCount = parseInt(totalCountResult.rows[0].count);
+
+  if (result.rowCount === 0) {
+    return res.json({ orders: [], totalCount: 0 });
+  }
+  res.json({ orders: result.rows, totalCount });
 });
 
 app.listen(port, () => {

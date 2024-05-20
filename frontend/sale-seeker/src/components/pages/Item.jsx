@@ -196,7 +196,7 @@ export default function Item() {
             </div>
           ) : (
             <>
-              {reviews && reviews.length === 0 ? (
+              {reviews && reviews?.totalCount === 0 ? (
                 <motion.div
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
