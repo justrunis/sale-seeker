@@ -33,7 +33,7 @@ export default function OrdersList() {
   const [isDeletingOrder, setIsDeletingOrder] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  const ordersPerPage = 1;
+  const ordersPerPage = 3;
   const staleTime = 1000 * 60 * 5; // 5 minutes
 
   let totalPages = 0;

@@ -52,7 +52,7 @@ export default function Admin() {
 
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
 
-  const usersPerPage = 1;
+  const usersPerPage = 3;
   const staleTime = 1000 * 60 * 5; // 5 minutes
 
   function handleDeleteUser() {
