@@ -3,7 +3,7 @@ import LoadingIndicator from "./UI/LoadingIndicator";
 import ErrorBlock from "./UI/ErrorBlock";
 import {
   fetchItems,
-  fetchUserItems,
+  fetchItemsByPage,
   queryClient,
   deleteItem,
   editItem,
@@ -19,33 +19,11 @@ import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { getUserRole, getToken, getUserId } from "../auth/auth";
 
-export default function ItemsList({ showMyItems = false }) {
+export default function ItemsList() {
   const role = getUserRole(getToken());
   const id = getUserId(getToken());
 
   const navigate = useNavigate();
-
-  const {
-    data: items,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["items"],
-    queryFn: ({ signal }) => {
-      if (role === "admin") {
-        if (showMyItems) {
-          return fetchUserItems({ id, signal });
-        }
-        return fetchItems({ signal });
-      } else if (role === "seller") {
-        return fetchUserItems({ id, signal });
-      } else {
-        navigate("/login");
-      }
-    },
-  });
-
   const [currentPage, setCurrentPage] = useState(1);
 
   const [isEditing, setIsEditing] = useState(false);
@@ -54,7 +32,35 @@ export default function ItemsList({ showMyItems = false }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+
   const itemsPerPage = 3;
+  const staleTime = 1000 * 60 * 5; // 5 minutes
+
+  const {
+    data: items,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: [
+      "items",
+      { page: currentPage, searchQuery: debouncedSearchQuery },
+    ],
+    queryFn: ({ signal }) => {
+      if (role === "admin") {
+        return fetchItemsByPage({
+          signal,
+          page: currentPage,
+          itemsPerPage,
+          searchQuery: debouncedSearchQuery,
+        });
+      } else {
+        navigate("/login");
+      }
+    },
+    staleTime: staleTime,
+  });
 
   function handleItemEdit(item, id) {
     editItemMutation({ id, item });
@@ -143,10 +149,10 @@ export default function ItemsList({ showMyItems = false }) {
   let currentItems = [];
 
   if (items) {
-    totalPages = Math.ceil(items.length / itemsPerPage);
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+    totalPages = Math.ceil(items.totalCount / itemsPerPage);
+
+    currentItems = items?.items?.slice(0, itemsPerPage);
+    console.log(items);
   }
 
   return (

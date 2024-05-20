@@ -325,8 +325,6 @@ app.get("/itemsPaged", async (req, res) => {
     [`%${search}%`, offset, itemsPerPage]
   );
 
-  console.log(result.rows);
-
   // Query for the total count of items matching the search term
   const totalCountResult = await query(
     `SELECT COUNT(*) FROM items WHERE title ILIKE $1 OR description ILIKE $1`,
