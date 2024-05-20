@@ -638,6 +638,43 @@ app.get("/reviews/:id", async (req, res) => {
   res.json(reviews);
 });
 
+app.get("/reviewsPaged/:id", async (req, res) => {
+  const { id } = req.params;
+  const { page, itemsPerPage } = req.query;
+
+  if (itemsPerPage < 1 || isNaN(itemsPerPage)) {
+    return res.status(400).json({ message: "Invalid items per page number." });
+  }
+  if (page <= 0 || isNaN(page)) {
+    return res.status(400).json({ message: "Invalid page number." });
+  }
+  const offset = (page - 1) * itemsPerPage;
+
+  const result = await query(
+    `SELECT reviews.*, users.username 
+    FROM reviews 
+    INNER JOIN users ON reviews.user_id = users.id 
+    WHERE item_id = $1 
+    ORDER BY created_at DESC 
+    OFFSET $2 
+    LIMIT $3`,
+    [id, offset, itemsPerPage]
+  );
+
+  const totalCountResult = await query(
+    "SELECT COUNT(*) FROM reviews WHERE item_id = $1",
+    [id]
+  );
+
+  const totalCount = parseInt(totalCountResult.rows[0].count);
+
+  if (result.rowCount === 0) {
+    return res.json({ reviews: [], totalCount: 0 });
+  }
+
+  res.json({ reviews: result.rows, totalCount });
+});
+
 // add review
 app.post("/reviews", auth, async (req, res) => {
   const { id, comment, rating, userId } = req.body;

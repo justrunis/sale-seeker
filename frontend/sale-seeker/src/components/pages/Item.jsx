@@ -9,7 +9,7 @@ import { dummyReviews } from "../../tempdata";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../store/slices/cartSlice";
 
-import { fetchItem, fetchReviews } from "../util/http";
+import { fetchItem, fetchReviews, fetchReviewsByPage } from "../util/http";
 import { useQuery } from "@tanstack/react-query";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
@@ -25,7 +25,9 @@ export default function Item() {
   const id = params.id;
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
+
   const reviewsPerPage = 3;
+  const staleTime = 1000 * 60 * 5; // 5 minutes
 
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
@@ -45,8 +47,10 @@ export default function Item() {
     isError: isReviewError,
     error: reviewsError,
   } = useQuery({
-    queryKey: ["reviews", { id }],
-    queryFn: ({ signal }) => fetchReviews({ id, signal }),
+    queryKey: ["reviews", { id, page: currentPage }],
+    queryFn: ({ signal }) =>
+      fetchReviewsByPage({ id, page: currentPage, signal, reviewsPerPage }),
+    staleTime: staleTime,
   });
 
   let content;
@@ -157,13 +161,13 @@ export default function Item() {
     setIsReviewModalOpen(false);
   }
 
-  // Calculate the index of the first review on the current page
-  const indexOfLastReview = currentPage * reviewsPerPage;
-  const indexOfFirstReview = indexOfLastReview - reviewsPerPage;
   let currentReviews = [];
+  let totalPages = 0;
 
   if (reviews) {
-    currentReviews = reviews.slice(indexOfFirstReview, indexOfLastReview);
+    totalPages = Math.ceil(reviews.totalCount / reviewsPerPage);
+
+    currentReviews = reviews?.reviews?.slice(0, reviewsPerPage);
   }
 
   return (
@@ -224,7 +228,7 @@ export default function Item() {
                   ))}
                   <div className="mt-5 flex justify-center">
                     <Pager
-                      totalPages={Math.ceil(reviews?.length / reviewsPerPage)}
+                      totalPages={totalPages}
                       currentPage={currentPage}
                       setCurrentPage={setCurrentPage}
                     />

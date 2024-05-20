@@ -342,6 +342,22 @@ export async function fetchReviews({ id }) {
   return reviews;
 }
 
+export async function fetchReviewsByPage({ id, signal, page, reviewsPerPage }) {
+  const URL = `${BASE_URL}/reviewsPaged/${id}?page=${page}&itemsPerPage=${reviewsPerPage}`;
+  const response = await fetch(URL, { signal });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while fetching the reviews");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const reviews = await response.json();
+
+  return reviews;
+}
+
 export async function addReview({ item, userId }) {
   const URL = `${BASE_URL}/reviews`;
   const response = await fetch(URL, {
