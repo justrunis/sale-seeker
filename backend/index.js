@@ -295,6 +295,38 @@ app.get("/items/user/:id", async (req, res) => {
   res.json(result.rows);
 });
 
+app.get("/itemsPaged", async (req, res) => {
+  const { page, itemsPerPage, search } = req.query;
+
+  if (itemsPerPage < 1 || isNaN(itemsPerPage)) {
+    return res.status(400).json({ message: "Invalid items per page number." });
+  }
+  if (page <= 0 || isNaN(page)) {
+    return res.status(400).json({ message: "Invalid page number." });
+  }
+  const offset = (page - 1) * itemsPerPage;
+
+  // Query for items matching the search term
+  const result = await query(
+    `SELECT * FROM items WHERE title ILIKE $1 OR description ILIKE $1 ORDER BY created_at DESC OFFSET $2 LIMIT $3`,
+    [`%${search}%`, offset, itemsPerPage]
+  );
+
+  // Query for the total count of items matching the search term
+  const totalCountResult = await query(
+    `SELECT COUNT(*) FROM items WHERE title ILIKE $1 OR description ILIKE $1`,
+    [`%${search}%`]
+  );
+
+  const totalCount = parseInt(totalCountResult.rows[0].count);
+
+  if (result.rowCount === 0) {
+    return res.json({ items: [], totalCount: 0 });
+  }
+
+  res.json({ items: result.rows, totalCount });
+});
+
 // get all users
 app.get("/users", auth, async (req, res) => {
   const user = req.user;

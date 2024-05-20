@@ -23,6 +23,28 @@ export async function fetchItems({ signal }) {
   return items;
 }
 
+export async function fetchItemsByPage({
+  signal,
+  page,
+  itemsPerPage,
+  searchQuery,
+}) {
+  const URL = `${BASE_URL}/itemsPaged?page=${page}&itemsPerPage=${itemsPerPage}&search=${searchQuery}`;
+
+  const response = await fetch(URL, { signal });
+
+  if (!response.ok) {
+    const error = new Error("An error occurred while fetching items");
+    error.code = response.status;
+    error.info = await response.json();
+    throw error;
+  }
+
+  const items = await response.json();
+
+  return items;
+}
+
 export async function fetchItem({ id, signal }) {
   const URL = `${BASE_URL}/items/${id}`;
   const response = await fetch(URL, { signal });

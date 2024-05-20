@@ -1,8 +1,12 @@
 import Header from "../Header";
 import ItemCard from "../ItemCard";
-import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { fetchItems, fetchAllAverageRatings } from "../util/http";
+import { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  fetchItems,
+  fetchAllAverageRatings,
+  fetchItemsByPage,
+} from "../util/http";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
 import Pager from "../UI/Pager";
@@ -11,31 +15,61 @@ import SearchBar from "../SearchBar";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const delay = 1000; // delay in ms
+  const itemsPerPage = 3;
+  const staleTime = 1000 * 60 * 5; // 5 minutes
+
+  const queryClient = useQueryClient();
+
+  const cachedData = queryClient.getQueryData([
+    "items",
+    { page: currentPage, searchQuery: debouncedSearchQuery },
+  ]);
+
+  if (cachedData) {
+    console.log("Data for query key is cached:", cachedData);
+  } else {
+    console.log("No cached data found for query key");
+  }
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [searchQuery]);
+
   const {
     data: items,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["items"],
-    queryFn: ({ signal }) => fetchItems({ signal }),
+    queryKey: [
+      "items",
+      { page: currentPage, searchQuery: debouncedSearchQuery },
+    ],
+    queryFn: ({ signal }) =>
+      fetchItemsByPage({
+        signal,
+        page: currentPage,
+        itemsPerPage,
+        searchQuery: debouncedSearchQuery,
+      }),
+    staleTime: staleTime,
   });
 
   const { data: ratings } = useQuery({
     queryKey: ["reviews"],
     queryFn: ({ signal }) => fetchAllAverageRatings({ signal }),
   });
-
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const itemsPerPage = 3;
-  const filteredItems = items?.filter((item) =>
-    item.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-  const totalPages = Math.ceil(filteredItems?.length / itemsPerPage);
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filteredItems?.slice(indexOfFirstItem, indexOfLastItem);
 
   let content;
 
@@ -59,6 +93,12 @@ export default function Home() {
   }
 
   if (items) {
+    const filteredItems = items?.items?.filter((item) =>
+      item.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    const totalPages = Math.ceil(items?.totalCount / itemsPerPage);
+    const currentItems = filteredItems?.slice(0, itemsPerPage);
+
     content = (
       <motion.div
         key={currentPage} // Add key to reset animation on page change
