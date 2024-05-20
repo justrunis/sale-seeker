@@ -152,7 +152,6 @@ export default function ItemsList() {
     totalPages = Math.ceil(items.totalCount / itemsPerPage);
 
     currentItems = items?.items?.slice(0, itemsPerPage);
-    console.log(items);
   }
 
   return (

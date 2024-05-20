@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import {
   fetchAllOrders,
+  fetchOrdersByPage,
   deleteOrder,
   changeOrderStatus,
   queryClient,
@@ -15,16 +16,52 @@ import { toast } from "react-toastify";
 import Select from "./UI/Select";
 import { makeFirstLetterUpperCase } from "./util/formating";
 import { motion } from "framer-motion";
+import { getUserRole, getToken } from "../auth/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function OrdersList() {
+  const role = getUserRole(getToken());
+
+  const navigate = useNavigate();
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+
+  const [isEditingOrderStatus, setIsEditingOrderStatus] = useState(false);
+  const [editedOrder, setEditedOrder] = useState(null);
+
+  const [isDeletingOrder, setIsDeletingOrder] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  const ordersPerPage = 1;
+  const staleTime = 1000 * 60 * 5; // 5 minutes
+
+  let totalPages = 0;
+  let currentOrders = [];
+
   const {
     data: orders,
     isLoading,
     isError,
     error,
   } = useQuery({
-    queryKey: ["orders"],
-    queryFn: fetchAllOrders,
+    queryKey: [
+      "orders",
+      { page: currentPage, searchQuery: debouncedSearchQuery },
+    ],
+    queryFn: ({ signal }) => {
+      if (role === "admin") {
+        return fetchOrdersByPage({
+          signal,
+          page: currentPage,
+          ordersPerPage,
+          searchQuery: debouncedSearchQuery,
+        });
+      } else {
+        navigate("/login");
+      }
+    },
+    staleTime: staleTime,
   });
 
   const {
@@ -60,14 +97,6 @@ export default function OrdersList() {
     },
   });
 
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const [isEditingOrderStatus, setIsEditingOrderStatus] = useState(false);
-  const [editedOrder, setEditedOrder] = useState(null);
-
-  const [isDeletingOrder, setIsDeletingOrder] = useState(false);
-  const [deleteId, setDeleteId] = useState(null);
-
   // DELETING
   function handleStartDelete(id) {
     setDeleteId(id);
@@ -96,16 +125,11 @@ export default function OrdersList() {
     changeOrderStatusMutation({ id: order.id, status: order.status });
   }
 
-  const ordersPerPage = 3;
-
-  let totalPages = 0;
-  let currentOrders = [];
-
   if (orders) {
-    totalPages = Math.ceil(orders.length / ordersPerPage);
-    const indexOfLastOrder = currentPage * ordersPerPage;
-    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-    currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+    totalPages = Math.ceil(orders.totalCount / ordersPerPage);
+
+    currentOrders = orders?.orders?.slice(0, ordersPerPage);
+    console.log(orders);
   }
 
   return (
@@ -247,7 +271,7 @@ export default function OrdersList() {
               </tr>
             </thead>
             <tbody>
-              {currentOrders.map((order, index) => (
+              {currentOrders?.map((order, index) => (
                 <motion.tr
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
