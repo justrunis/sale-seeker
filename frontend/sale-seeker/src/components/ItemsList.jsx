@@ -2,7 +2,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import LoadingIndicator from "./UI/LoadingIndicator";
 import ErrorBlock from "./UI/ErrorBlock";
 import {
-  fetchItems,
   fetchItemsByPage,
   queryClient,
   deleteItem,

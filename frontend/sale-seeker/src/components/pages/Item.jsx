@@ -1,20 +1,17 @@
 import React, { useState } from "react";
 import Header from "../Header";
 import { useParams } from "react-router-dom";
-import Rating from "@mui/material/Rating";
 import Review from "../Review";
 import { currencyFormatter } from "../util/formating";
 import { IoIosCart } from "react-icons/io";
-import { dummyReviews } from "../../tempdata";
 import { useDispatch } from "react-redux";
 import { cartActions } from "../../store/slices/cartSlice";
 
-import { fetchItem, fetchReviews, fetchReviewsByPage } from "../util/http";
+import { fetchItem, fetchReviewsByPage } from "../util/http";
 import { useQuery } from "@tanstack/react-query";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
 import Pager from "../UI/Pager";
-import Modal from "../UI/Modal";
 import ReviewModal from "../ReviewModal";
 import ItemRating from "../ItemRating";
 import { motion } from "framer-motion";
@@ -128,7 +125,7 @@ export default function Item() {
             transition={{ duration: 0.5, delay: 1.0 }}
             className="mt-5"
           >
-            <ItemRating key={item.id} id={item.id} />
+            <ItemRating key={item.id} id={item.id} rating={item.avg_rating} />
           </motion.div>
         </div>
         <motion.div

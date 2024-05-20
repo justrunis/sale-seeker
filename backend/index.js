@@ -278,10 +278,21 @@ app.get("/items", async (req, res) => {
 // Get a single item
 app.get("/items/:id", async (req, res) => {
   const { id } = req.params;
-  const result = await query("SELECT * FROM items WHERE id = $1", [id]);
+  const result = await query(
+    `SELECT * FROM items 
+    LEFT JOIN ( 
+      SELECT item_id, AVG(rating) AS avg_rating 
+      FROM reviews 
+      GROUP BY item_id 
+    ) AS avg_rating 
+    ON items.id = avg_rating.item_id 
+    WHERE items.id = $1`,
+    [id]
+  );
   if (result.rowCount === 0) {
     return res.status(404).json({ message: "Item not found." });
   }
+  console.log(result.rows[0]);
   res.json(result.rows[0]);
 });
 
@@ -305,8 +316,6 @@ app.get("/itemsPaged", async (req, res) => {
     return res.status(400).json({ message: "Invalid page number." });
   }
   const offset = (page - 1) * itemsPerPage;
-
-  // "SELECT item_id, AVG(rating) FROM reviews GROUP BY item_id"
 
   // Query for items matching the search term with average rating
   const result = await query(
