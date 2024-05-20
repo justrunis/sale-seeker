@@ -22,15 +22,9 @@ export default function ItemCard({ item, rating }) {
     navigate(`/item/${item.id}`);
   }
 
-  const [ratingValue, setRatingValue] = useState(Number(item.rating));
+  const ratingValue = Number(rating).toFixed(2);
 
-  useEffect(() => {
-    if (rating) {
-      setRatingValue(Number(rating[0]?.avg || 0).toFixed(2));
-    } else {
-      setRatingValue(0);
-    }
-  }, [ratingValue]);
+  console.log(item.id, Number(rating).toFixed(2));
 
   return (
     <>

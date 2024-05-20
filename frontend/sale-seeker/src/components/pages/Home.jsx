@@ -1,12 +1,8 @@
 import Header from "../Header";
 import ItemCard from "../ItemCard";
 import { useState, useEffect } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  fetchItems,
-  fetchAllAverageRatings,
-  fetchItemsByPage,
-} from "../util/http";
+import { useQuery } from "@tanstack/react-query";
+import { fetchItemsByPage } from "../util/http";
 import LoadingIndicator from "../UI/LoadingIndicator";
 import ErrorBlock from "../UI/ErrorBlock";
 import Pager from "../UI/Pager";
@@ -22,19 +18,6 @@ export default function Home() {
   const delay = 1000; // delay in ms
   const itemsPerPage = 3;
   const staleTime = 1000 * 60 * 5; // 5 minutes
-
-  const queryClient = useQueryClient();
-
-  const cachedData = queryClient.getQueryData([
-    "items",
-    { page: currentPage, searchQuery: debouncedSearchQuery },
-  ]);
-
-  if (cachedData) {
-    console.log("Data for query key is cached:", cachedData);
-  } else {
-    console.log("No cached data found for query key");
-  }
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -66,11 +49,6 @@ export default function Home() {
     staleTime: staleTime,
   });
 
-  const { data: ratings } = useQuery({
-    queryKey: ["reviews"],
-    queryFn: ({ signal }) => fetchAllAverageRatings({ signal }),
-  });
-
   let content;
 
   if (isLoading) {
@@ -93,6 +71,7 @@ export default function Home() {
   }
 
   if (items) {
+    console.log(items);
     const filteredItems = items?.items?.filter((item) =>
       item.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -116,12 +95,7 @@ export default function Home() {
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <ItemCard
-                  item={item}
-                  rating={ratings?.filter(
-                    (rating) => rating.item_id === item.id
-                  )}
-                />
+                <ItemCard item={item} rating={item.average_rating} />
               </motion.div>
             ))}
           </AnimatePresence>

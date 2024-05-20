@@ -306,11 +306,26 @@ app.get("/itemsPaged", async (req, res) => {
   }
   const offset = (page - 1) * itemsPerPage;
 
-  // Query for items matching the search term
+  // "SELECT item_id, AVG(rating) FROM reviews GROUP BY item_id"
+
+  // Query for items matching the search term with average rating
   const result = await query(
-    `SELECT * FROM items WHERE title ILIKE $1 OR description ILIKE $1 ORDER BY created_at DESC OFFSET $2 LIMIT $3`,
+    `SELECT items.*, COALESCE(avg_rating.avg_rating, 0) AS average_rating
+    FROM items
+    LEFT JOIN (
+        SELECT item_id, AVG(rating) AS avg_rating 
+        FROM reviews 
+        GROUP BY item_id
+    ) AS avg_rating 
+    ON items.id = avg_rating.item_id
+    WHERE title ILIKE $1 OR description ILIKE $1 
+    ORDER BY items.created_at DESC 
+    OFFSET $2 
+    LIMIT $3`,
     [`%${search}%`, offset, itemsPerPage]
   );
+
+  console.log(result.rows);
 
   // Query for the total count of items matching the search term
   const totalCountResult = await query(
